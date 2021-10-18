@@ -7,6 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="httpclient5-testing-5.1" level="project" />
+    <orderEntry type="library" name="json-20210307" level="project" />
   </component>
 </module>
-
