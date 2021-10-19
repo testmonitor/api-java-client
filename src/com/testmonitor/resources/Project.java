@@ -1,30 +1,74 @@
 package com.testmonitor.resources;
 
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Project {
-    private final Integer id;
+    private Integer id;
 
-    private final String name;
+    private String name;
 
-    public Project(Integer id, String name) {
-        this.id = id;
-        this.name = name;
+    private String description;
+
+    public Project() {
+
     }
 
-    public Project(String id, String name) {
+    public Project setId(Integer id) {
+        this.id = id;
+
+        return this;
+    }
+
+    public Project setId(String id) {
         this.id = Integer.parseInt(id);
-        this.name = name;
+
+        return this;
     }
 
     public Integer getId() {
         return id;
     }
 
+    public Project setName(String name) {
+        this.name = name;
+
+        return this;
+    }
+
     public String getName() {
         return name;
     }
 
+    public Project setDescription(String description) {
+        this.description = description;
+
+        return this;
+    }
+
+    public String getDescription() {
+        return name;
+    }
+
+    public List<NameValuePair> toHttpParams() {
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+
+        params.add(new BasicNameValuePair("name", this.name));
+        params.add(new BasicNameValuePair("description", this.description));
+
+        return params;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
-        return "ID: " + this.id + "\n" + "NAME: " + this.name + "\n";
+        return "ID: " + this.id + "\n" +
+                "NAME: " + this.name + "\n" +
+                "DESCRIPTION: " + this.description + "\n";
     }
 }

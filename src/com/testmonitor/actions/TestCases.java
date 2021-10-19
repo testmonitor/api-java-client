@@ -1,6 +1,7 @@
 package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
+import com.testmonitor.parsers.TestCaseParser;
 import com.testmonitor.resources.Project;
 import com.testmonitor.resources.TestCase;
 import com.testmonitor.resources.TestSuite;
@@ -20,15 +21,7 @@ public class TestCases
 
     private final String plural = "test-cases";
 
-    private Integer projectId;
-
-    /**
-     * @param connector The TestMonitor connector to perfom HTTP requests
-     */
-    public TestCases(Connector connector)
-    {
-        this.connector = connector;
-    }
+    private final Integer projectId;
 
     /**
      * @param connector The TestMonitor connector to perfom HTTP requests
@@ -51,33 +44,13 @@ public class TestCases
     }
 
     /**
-     * Parse a JSONObject in a list of test cases
-     *
-     * @param response The JSON response of a request
-     *
-     * @return A parsed list of test cases
-     */
-    protected ArrayList<TestCase> parse(JSONObject response)
-    {
-        ArrayList<TestCase> testCases = new ArrayList<TestCase>();
-
-        for (Object obj : response.getJSONArray("data").toList()) {
-            HashMap item = (HashMap) obj;
-
-            testCases.add(new TestCase(item.get("id").toString(), item.get("name").toString()));
-        }
-
-        return testCases;
-    }
-
-    /**
      * List all test cases
      *
      * @return A list of test cases
      */
     public ArrayList<TestCase> list()
     {
-        return this.parse(this.connector.get(this.plural));
+        return TestCaseParser.Parse(this.connector.get(this.plural));
     }
 
     /**
@@ -89,10 +62,9 @@ public class TestCases
     {
         JSONObject response = this.connector.get(this.plural + "/" + id);
 
-        return new TestCase(
-            response.getJSONObject("data").get("id").toString(),
-            response.getJSONObject("data").get("name").toString()
-        );
+        HashMap<String, Object> testCase = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return TestCaseParser.Parse(testCase);
     }
 
     /**
@@ -104,7 +76,7 @@ public class TestCases
      */
     public ArrayList<TestCase> search(String search)
     {
-        return this.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
+        return TestCaseParser.Parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
     }
 
     /**
@@ -116,7 +88,7 @@ public class TestCases
      */
     public ArrayList<TestCase> search(String search, Integer testSuiteId)
     {
-        return this.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&test_suite_id=" + testSuiteId + "%query=" + search));
+        return TestCaseParser.Parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&test_suite_id=" + testSuiteId + "%query=" + search));
     }
 
     /**
@@ -138,7 +110,8 @@ public class TestCases
     /**
      * Create a test case in TestMonitor
      *
-     * @param testCase The test case your want to create
+     * @param name The name of the test case
+     * @param testSuiteId The ID of the test suite
      *
      * @return The created test case
      */
@@ -167,7 +140,7 @@ public class TestCases
     /**
      * Search or create a test case. When the test case is not found there will be a test case created.
      *
-     * @param search The search query
+     * @param testCase The search query
      *
      * @return The first result or a fresh created test case
      */
@@ -191,11 +164,6 @@ public class TestCases
             return testCases.get(0);
         }
 
-        TestCase testCase = new TestCase();
-
-        testCase.setName(search);
-        testCase.setTestSuiteId(testSuiteId);
-
-        return this.create(testCase);
+        return this.create(search, testSuiteId);
     }
 }

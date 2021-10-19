@@ -3,6 +3,7 @@ package com.testmonitor.api;
 import org.apache.hc.client5.http.ClientProtocolException;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.classic.methods.HttpPut;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
 import org.apache.hc.client5.http.entity.UrlEncodedFormEntity;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -53,6 +54,15 @@ public class Connector {
         httppost.setEntity(new UrlEncodedFormEntity(params));
 
         return this.request(httppost);
+    }
+
+    public JSONObject put(String uri, List<NameValuePair> params)
+    {
+        final HttpPut httpput = new HttpPut(this.baseUrl + uri);
+
+        httpput.setEntity(new UrlEncodedFormEntity(params));
+
+        return this.request(httpput);
     }
 
     public JSONObject request(HttpUriRequestBase httpUriRequestBase) {

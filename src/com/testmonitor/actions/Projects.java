@@ -1,6 +1,7 @@
 package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
+import com.testmonitor.parsers.ProjectParser;
 import com.testmonitor.resources.Project;
 import org.json.JSONObject;
 
@@ -15,33 +16,68 @@ public class Projects
 
     private final String plural = "projects";
 
+    /**
+     *
+     * @param connector The TestMonitor connector to perfom HTTP requests
+     */
     public Projects(Connector connector)
     {
         this.connector = connector;
     }
 
+    /**
+     * @return A list of projects
+     */
     public ArrayList<Project> list()
     {
-        ArrayList<Project> projects = new ArrayList<Project>();
-
-        JSONObject response = this.connector.get(this.plural);
-
-        for (Object obj : response.getJSONArray("data").toList()) {
-            HashMap item = (HashMap) obj;
-
-            projects.add(new Project(item.get("id").toString(), item.get("name").toString()));
-        }
-
-        return projects;
+        return this.list(1);
     }
 
+    /**
+     * @return A list of projects
+     */
+    public ArrayList<Project> list(Integer page)
+    {
+        return ProjectParser.Parse(this.connector.get(this.plural + "?page=" + page));
+    }
+
+    /**
+     * @return A list of projects
+     */
+    public ArrayList<Project> list(Integer page, Integer limit)
+    {
+        return ProjectParser.Parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit));
+    }
+
+    /**
+     * Get a single project
+     *
+     * @param id The ID of the project
+     *
+     * @return The project
+     */
     public Project get(Integer id)
     {
         JSONObject response = this.connector.get(this.plural + "/" + id);
 
-        return new Project(
-                response.getJSONObject("data").get("id").toString(),
-                response.getJSONObject("data").get("name").toString()
-        );
+        HashMap<String, Object> project = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return ProjectParser.Parse(project);
+    }
+
+    /**
+     * Update a project
+     *
+     * @param project The project you want to update
+     *
+     * @return A new instance of the project
+     */
+    public Project update(Project project)
+    {
+        JSONObject response = this.connector.put(this.plural + "/" + project.getId(), project.toHttpParams());
+
+        HashMap<String, Object> updatedProject = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return ProjectParser.Parse(updatedProject);
     }
 }

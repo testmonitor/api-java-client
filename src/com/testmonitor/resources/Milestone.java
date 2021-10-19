@@ -15,16 +15,6 @@ public class Milestone {
 
     private Integer projectId;
 
-    public Milestone(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Milestone(String id, String name) {
-        this.id = Integer.parseInt(id);
-        this.name = name;
-    }
-
     public Milestone() {
 
     }
@@ -55,8 +45,24 @@ public class Milestone {
         return this.name;
     }
 
+    public Milestone setDescription(String description) {
+        this.description = description;
+
+        return this;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
     public Milestone setProjectId(Integer projectId) {
         this.projectId = projectId;
+
+        return this;
+    }
+
+    public Milestone setProjectId(String projectId) {
+        this.projectId = Integer.parseInt(projectId);
 
         return this;
     }
@@ -77,6 +83,9 @@ public class Milestone {
 
     public String toString()
     {
-        return "ID: " + this.id + "\n" + "NAME: " + this.name + "\n";
+        return "ID: " + this.id + "\n" +
+                "NAME: " + this.name + "\n" +
+                "DESCRIPTION: " + this.description + "\n" +
+                "PROJECT_ID: " + this.projectId + "\n";
     }
 }

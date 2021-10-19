@@ -14,16 +14,6 @@ public class TestCase {
     private String description;
 
     private Integer testSuiteId;
-
-    public TestCase(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public TestCase(String id, String name) {
-        this.id = Integer.parseInt(id);
-        this.name = name;
-    }
     
     public TestCase()
     {
@@ -58,6 +48,12 @@ public class TestCase {
 
     public TestCase setTestSuiteId(Integer testSuiteId) {
         this.testSuiteId = testSuiteId;
+
+        return this;
+    }
+
+    public TestCase setTestSuiteId(String testSuiteId) {
+        this.testSuiteId = Integer.parseInt(testSuiteId);
 
         return this;
     }

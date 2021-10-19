@@ -1,10 +1,10 @@
 package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
+import com.testmonitor.parsers.MilestoneParser;
 import com.testmonitor.resources.Project;
 import com.testmonitor.resources.Milestone;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,15 +16,7 @@ public class Milestones
 
     private final String plural = "milestones";
 
-    private Integer projectId;
-
-    /**
-     * @param connector The TestMonitor connector to perfom HTTP requests
-     */
-    public Milestones(Connector connector)
-    {
-        this.connector = connector;
-    }
+    private final Integer projectId;
 
     /**
      * @param connector The TestMonitor connector to perfom HTTP requests
@@ -47,33 +39,27 @@ public class Milestones
     }
 
     /**
-     * Parse a JSONObject in a list of test suites
-     *
-     * @param response The JSON response of a request
-     *
-     * @return A parsed list of test suites
-     */
-    protected ArrayList<Milestone> parse(JSONObject response)
-    {
-        ArrayList<Milestone> milestones = new ArrayList<Milestone>();
-
-        for (Object obj : response.getJSONArray("data").toList()) {
-            HashMap item = (HashMap) obj;
-
-            milestones.add(new Milestone(item.get("id").toString(), item.get("name").toString()));
-        }
-
-        return milestones;
-    }
-
-    /**
-     * List all test suites
-     *
-     * @return A list of test suites
+     * @return A list of milestones
      */
     public ArrayList<Milestone> list()
     {
-        return this.parse(this.connector.get(this.plural));
+        return this.list(1);
+    }
+
+    /**
+     * @return A list of milestones
+     */
+    public ArrayList<Milestone> list(Integer page)
+    {
+        return MilestoneParser.Parse(this.connector.get(this.plural + "?page=" + page));
+    }
+
+    /**
+     * @return A list of milestones
+     */
+    public ArrayList<Milestone> list(Integer page, Integer limit)
+    {
+        return MilestoneParser.Parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit));
     }
 
     /**
@@ -85,14 +71,13 @@ public class Milestones
     {
         JSONObject response = this.connector.get(this.plural + "/" + id);
 
-        return new Milestone(
-            response.getJSONObject("data").get("id").toString(),
-            response.getJSONObject("data").get("name").toString()
-        );
+        HashMap<String, Object> milestone = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return MilestoneParser.Parse(milestone);
     }
 
     /**
-     * Search a test suite
+     * Search a milestone
      *
      * @param search The search string
      *
@@ -100,15 +85,15 @@ public class Milestones
      */
     public ArrayList<Milestone> search(String search)
     {
-        return this.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
+        return MilestoneParser.Parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
     }
 
     /**
-     * Create a test suite with a given name.
+     * Create a milestone with a given name.
      *
-     * @param name The name of the test suite
+     * @param name The name of the milestone
      *
-     * @return The created test suite
+     * @return The created milestone
      */
     public Milestone create(String name)
     {
@@ -121,9 +106,9 @@ public class Milestones
     }
 
     /**
-     * Create a test suite with a given name.
+     * Create a milestone
      *
-     * @param name The name of the test suite
+     * @param milestone The milestone you want to create
      *
      * @return The created test suite
      */
@@ -137,7 +122,7 @@ public class Milestones
     }
 
     /**
-     * Search or create a test suite. When the test suite is not found there will be a test suite created.
+     * Search or create a milestone. When the test suite is not found there will be a milestone created.
      *
      * @param search The search query
      *
@@ -152,5 +137,21 @@ public class Milestones
         }
 
         return this.create(search);
+    }
+
+    /**
+     * Update a milestone
+     *
+     * @param milestone The milestone you want to update
+     *
+     * @return A new instance of the milestone
+     */
+    public Milestone update(Milestone milestone)
+    {
+        JSONObject response = this.connector.put(this.plural + "/" + milestone.getId(), milestone.toHttpParams());
+
+        HashMap<String, Object> updatedMilestone = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return MilestoneParser.Parse(updatedMilestone);
     }
 }
