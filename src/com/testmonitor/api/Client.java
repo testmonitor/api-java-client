@@ -1,11 +1,9 @@
 
 package com.testmonitor.api;
 
-import com.testmonitor.actions.Projects;
-import com.testmonitor.actions.TestCases;
-import com.testmonitor.actions.TestResults;
-import com.testmonitor.actions.TestSuites;
+import com.testmonitor.actions.*;
 import com.testmonitor.resources.Project;
+import com.testmonitor.resources.TestRun;
 
 public class Client
 {
@@ -64,5 +62,15 @@ public class Client
     public TestResults testResults(Project project)
     {
         return new TestResults(this.connector, project);
+    }
+
+    public TestRuns testRuns(Integer projectId)
+    {
+        return new TestRuns(this.connector, projectId);
+    }
+
+    public TestRuns testRuns(Project project)
+    {
+        return new TestRuns(this.connector, project);
     }
 }

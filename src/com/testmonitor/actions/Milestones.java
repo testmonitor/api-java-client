@@ -63,9 +63,9 @@ public class Milestones
     }
 
     /**
-     * @param id The test suite ID
+     * @param id The milestone ID
      *
-     * @return The test suite that matches the ID
+     * @return The milestone that matches the ID
      */
     public Milestone get(Integer id)
     {

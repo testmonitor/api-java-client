@@ -15,21 +15,6 @@ public class TestRun {
 
     private Integer milestoneId;
 
-    public TestRun(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public TestRun(String id, String name) {
-        this.id = Integer.parseInt(id);
-        this.name = name;
-    }
-
-    public TestRun()
-    {
-        
-    }
-
     public TestRun setId(Integer id) {
         this.id = id;
 
@@ -62,6 +47,12 @@ public class TestRun {
         return this;
     }
 
+    public TestRun setMilestoneId(String milestoneId) {
+        this.milestoneId = Integer.parseInt(milestoneId);
+
+        return this;
+    }
+
     public Integer getMilestoneId() {
         return this.milestoneId;
     }
@@ -88,6 +79,9 @@ public class TestRun {
 
     public String toString()
     {
-        return "ID: " + this.id + "\n" + "NAME: " + this.name + "\n";
+        return "ID: " + this.id + "\n" +
+                "NAME: " + this.name + "\n" +
+                "DESCRIPTION: " + this.description + "\n" +
+                "MILESTONE_ID: " + this.milestoneId + "\n";
     }
 }

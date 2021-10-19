@@ -1,7 +1,10 @@
 package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
+import com.testmonitor.parsers.MilestoneParser;
+import com.testmonitor.parsers.ProjectParser;
 import com.testmonitor.parsers.TestCaseParser;
+import com.testmonitor.resources.Milestone;
 import com.testmonitor.resources.Project;
 import com.testmonitor.resources.TestCase;
 import com.testmonitor.resources.TestSuite;
@@ -44,13 +47,27 @@ public class TestCases
     }
 
     /**
-     * List all test cases
-     *
      * @return A list of test cases
      */
     public ArrayList<TestCase> list()
     {
-        return TestCaseParser.Parse(this.connector.get(this.plural));
+        return this.list(1);
+    }
+
+    /**
+     * @return A list of test cases
+     */
+    public ArrayList<TestCase> list(Integer page)
+    {
+        return TestCaseParser.Parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" + this.projectId));
+    }
+
+    /**
+     * @return A list of test cases
+     */
+    public ArrayList<TestCase> list(Integer page, Integer limit)
+    {
+        return TestCaseParser.Parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
     }
 
     /**
@@ -60,7 +77,7 @@ public class TestCases
      */
     public TestCase get(Integer id)
     {
-        JSONObject response = this.connector.get(this.plural + "/" + id);
+        JSONObject response = this.connector.get(this.plural + "/" + id + "?project_id=" + this.projectId);
 
         HashMap<String, Object> testCase = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
@@ -165,5 +182,21 @@ public class TestCases
         }
 
         return this.create(search, testSuiteId);
+    }
+
+    /**
+     * Update a test case
+     *
+     * @param testCase The test case you want to update
+     *
+     * @return A new instance of the project
+     */
+    public TestCase update(TestCase testCase)
+    {
+        JSONObject response = this.connector.put(this.plural + "/" + testCase.getId(), testCase.toHttpParams());
+
+        HashMap<String, Object> updatedTestCase = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return TestCaseParser.Parse(updatedTestCase);
     }
 }

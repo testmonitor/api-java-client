@@ -73,12 +73,24 @@ public class TestResult {
         return this;
     }
 
+    public TestResult setTestResultCategoryId(String testResultCategoryId) {
+        this.testResultCategoryId = Integer.parseInt(testResultCategoryId);
+
+        return this;
+    }
+
     public Integer getTestCaseId() {
         return this.testCaseId;
     }
 
     public TestResult setTestCaseId(Integer testCaseId) {
         this.testCaseId = testCaseId;
+
+        return this;
+    }
+
+    public TestResult setTestCaseId(String testCaseId) {
+        this.testCaseId = Integer.parseInt(testCaseId);
 
         return this;
     }
@@ -93,12 +105,24 @@ public class TestResult {
         return this;
     }
 
+    public TestResult setTestRunId(String testRunId) {
+        this.testRunId = Integer.parseInt(testRunId);
+
+        return this;
+    }
+
     public Boolean isDraft() {
         return this.draft;
     }
 
     public TestResult setDraft(Boolean draft) {
         this.draft = draft;
+
+        return this;
+    }
+
+    public TestResult setDraft(String draft) {
+        this.draft = draft.equals("true") || draft.equals("1");
 
         return this;
     }
@@ -125,6 +149,11 @@ public class TestResult {
 
     public String toString()
     {
-        return "ID: " + this.id + "\n" + "NAME: " + this.description + "\n";
+        return "ID: " + this.id + "\n" +
+                "DESCRIPTION: " + this.description + "\n" +
+                "TEST_CASE_ID: " + this.testCaseId + "\n" +
+                "TEST_RUN_ID: " + this.testRunId + "\n" +
+                "TEST_RESULT_CATEGORY_ID: " + this.testResultCategoryId + "\n" +
+                "DRAFT: " + this.draft + "\n";
     }
 }

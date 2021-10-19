@@ -84,6 +84,8 @@ public class TestCase {
 
     public String toString()
     {
-        return "ID: " + this.id + "\n" + "NAME: " + this.name + "\n";
+        return "ID: " + this.id + "\n" +
+                "NAME: " + this.name + "\n" +
+                "TEST_SUITE_ID: " + this.testSuiteId + "\n";
     }
 }

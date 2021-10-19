@@ -55,8 +55,24 @@ public class TestSuite {
         return this.name;
     }
 
+    public TestSuite setDescription(String description) {
+        this.description = description;
+
+        return this;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
     public TestSuite setProjectId(Integer projectId) {
         this.projectId = projectId;
+
+        return this;
+    }
+
+    public TestSuite setProjectId(String projectId) {
+        this.projectId = Integer.parseInt(projectId);
 
         return this;
     }
@@ -77,6 +93,8 @@ public class TestSuite {
 
     public String toString()
     {
-        return "ID: " + this.id + "\n" + "NAME: " + this.name + "\n";
+        return "ID: " + this.id + "\n" +
+                "NAME: " + this.name + "\n" +
+                "DESCRIPTION: " + this.description + "\n";
     }
 }

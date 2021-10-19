@@ -1,13 +1,18 @@
 package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
+import com.testmonitor.parsers.TestResultParser;
+import com.testmonitor.parsers.TestRunParser;
 import com.testmonitor.resources.Project;
+import com.testmonitor.resources.TestResult;
 import com.testmonitor.resources.TestRun;
 import com.testmonitor.resources.Milestone;
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class TestRuns
 {
@@ -17,15 +22,7 @@ public class TestRuns
 
     private final String plural = "test-runs";
 
-    private Integer projectId;
-
-    /**
-     * @param connector The TestMonitor connector to perfom HTTP requests
-     */
-    public TestRuns(Connector connector)
-    {
-        this.connector = connector;
-    }
+    private final Integer projectId;
 
     /**
      * @param connector The TestMonitor connector to perfom HTTP requests
@@ -48,33 +45,27 @@ public class TestRuns
     }
 
     /**
-     * Parse a JSONObject in a list of test cases
-     *
-     * @param response The JSON response of a request
-     *
-     * @return A parsed list of test cases
-     */
-    protected ArrayList<TestRun> parse(JSONObject response)
-    {
-        ArrayList<TestRun> testRuns = new ArrayList<TestRun>();
-
-        for (Object obj : response.getJSONArray("data").toList()) {
-            HashMap item = (HashMap) obj;
-
-            testRuns.add(new TestRun(item.get("id").toString(), item.get("name").toString()));
-        }
-
-        return testRuns;
-    }
-
-    /**
-     * List all test cases
-     *
-     * @return A list of test cases
+     * @return A list of test runs
      */
     public ArrayList<TestRun> list()
     {
-        return this.parse(this.connector.get(this.plural));
+        return this.list(1);
+    }
+
+    /**
+     * @return A list of test runs
+     */
+    public ArrayList<TestRun> list(Integer page)
+    {
+        return TestRunParser.Parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" + this.projectId));
+    }
+
+    /**
+     * @return A list of test runs
+     */
+    public ArrayList<TestRun> list(Integer page, Integer limit)
+    {
+        return TestRunParser.Parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
     }
 
     /**
@@ -84,12 +75,11 @@ public class TestRuns
      */
     public TestRun get(Integer id)
     {
-        JSONObject response = this.connector.get(this.plural + "/" + id);
+        JSONObject response = this.connector.get(this.plural + "/" + id + "?project_id=" + this.projectId);
 
-        return new TestRun(
-            response.getJSONObject("data").get("id").toString(),
-            response.getJSONObject("data").get("name").toString()
-        );
+        HashMap<String, Object> testRun = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return TestRunParser.Parse(testRun);
     }
 
     /**
@@ -101,7 +91,7 @@ public class TestRuns
      */
     public ArrayList<TestRun> search(String search)
     {
-        return this.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
+        return TestRunParser.Parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
     }
 
     /**
@@ -113,7 +103,7 @@ public class TestRuns
      */
     public ArrayList<TestRun> search(String search, Integer milestoneId)
     {
-        return this.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&test_suite_id=" + milestoneId + "%query=" + search));
+        return TestRunParser.Parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&test_suite_id=" + milestoneId + "%query=" + search));
     }
 
     /**
@@ -133,11 +123,10 @@ public class TestRuns
     }
 
     /**
-     * Create a test case in TestMonitor
+     * @param name Name of the test run
+     * @param milestoneId ID of the milestone
      *
-     * @param testRun The test case your want to create
-     *
-     * @return The created test case
+     * @return The test run
      */
     public TestRun create(String name, Integer milestoneId)
     {
@@ -164,7 +153,7 @@ public class TestRuns
     /**
      * Search or create a test case. When the test case is not found there will be a test case created.
      *
-     * @param search The search query
+     * @param testRun The search query
      *
      * @return The first result or a fresh created test case
      */
@@ -188,11 +177,66 @@ public class TestRuns
             return testRuns.get(0);
         }
 
-        TestRun testRun = new TestRun();
+        return this.create(search, milestoneId);
+    }
 
-        testRun.setName(search);
-        testRun.setMilestoneId(milestoneId);
+    /**
+     * Update a test run
+     *
+     * @param testRun The test run you want to update
+     *
+     * @return A new instance of the test run
+     */
+    public TestRun update(TestRun testRun)
+    {
+        JSONObject response = this.connector.put(this.plural + "/" + testRun.getId(), testRun.toHttpParams());
 
-        return this.create(testRun);
+        HashMap<String, Object> updatedTestRun = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return TestRunParser.Parse(updatedTestRun);
+    }
+
+    /**
+     * Add users to a test run
+     *
+     * @param testRun The test run you want to update
+     *
+     * @return A new instance of the test run
+     */
+    public TestRun addUsers(TestRun testRun, List<Integer> userIds)
+    {
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+
+        for (Integer userId : userIds) {
+            params.add(new BasicNameValuePair("users[]", userId.toString()));
+        }
+
+        JSONObject response = this.connector.put(this.plural + "/" + testRun.getId(), params);
+
+        HashMap<String, Object> updatedTestRun = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return TestRunParser.Parse(updatedTestRun);
+    }
+
+    /**
+     * Add users to a test run
+     *
+     * @param testRun The test run you want to update
+     *
+     * @return A new instance of the test run
+     */
+    public TestRun addTestCases(TestRun testRun, List<Integer> testCaseIds)
+    {
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+
+        for (Integer testCaseId : testCaseIds) {
+            params.add(new BasicNameValuePair("test_cases[]", testCaseId.toString()));
+        }
+
+        JSONObject response = this.connector.put(this.plural + "/" + testRun.getId(), params);
+
+        HashMap<String, Object> updatedTestRun = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return TestRunParser.Parse(updatedTestRun);
     }
 }

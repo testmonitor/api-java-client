@@ -1,7 +1,10 @@
 package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
+import com.testmonitor.parsers.TestCaseParser;
+import com.testmonitor.parsers.TestResultParser;
 import com.testmonitor.resources.Project;
+import com.testmonitor.resources.TestCase;
 import com.testmonitor.resources.TestResult;
 import org.json.JSONObject;
 
@@ -16,15 +19,7 @@ public class TestResults
 
     private final String plural = "test-results";
 
-    private Integer projectId;
-
-    /**
-     * @param connector The TestMonitor connector to perfom HTTP requests
-     */
-    public TestResults(Connector connector)
-    {
-        this.connector = connector;
-    }
+    private final Integer projectId;
 
     /**
      * @param connector The TestMonitor connector to perfom HTTP requests
@@ -47,33 +42,27 @@ public class TestResults
     }
 
     /**
-     * Parse a JSONObject in a list of test suites
-     *
-     * @param response The JSON response of a request
-     *
-     * @return A parsed list of test suites
-     */
-    protected ArrayList<TestResult> parse(JSONObject response)
-    {
-        ArrayList<TestResult> testResults = new ArrayList<TestResult>();
-
-        for (Object obj : response.getJSONArray("data").toList()) {
-            HashMap item = (HashMap) obj;
-
-            testResults.add(new TestResult(item.get("id").toString(), item.get("name").toString()));
-        }
-
-        return testResults;
-    }
-
-    /**
-     * List all test suites
-     *
-     * @return A list of test suites
+     * @return A list of test results
      */
     public ArrayList<TestResult> list()
     {
-        return this.parse(this.connector.get(this.plural));
+        return this.list(1);
+    }
+
+    /**
+     * @return A list of test results
+     */
+    public ArrayList<TestResult> list(Integer page)
+    {
+        return TestResultParser.Parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" + this.projectId));
+    }
+
+    /**
+     * @return A list of test results
+     */
+    public ArrayList<TestResult> list(Integer page, Integer limit)
+    {
+        return TestResultParser.Parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
     }
 
     /**
@@ -100,13 +89,13 @@ public class TestResults
      */
     public ArrayList<TestResult> search(String search)
     {
-        return this.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
+        return TestResultParser.Parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
     }
 
     /**
      * Create a test suite with a given name.
      *
-     * @param name The name of the test suite
+     * @param testResult The name of the test result
      *
      * @return The created test suite
      */
@@ -114,9 +103,24 @@ public class TestResults
     {
         JSONObject response = this.connector.post(this.plural, testResult.toHttpParams());
 
-        System.out.println(response);
         testResult.setId(response.getJSONObject("data").get("id").toString());
 
         return testResult;
+    }
+
+    /**
+     * Update a test results
+     *
+     * @param testResult The test result you want to update
+     *
+     * @return A new instance of the project
+     */
+    public TestResult update(TestResult testResult)
+    {
+        JSONObject response = this.connector.put(this.plural + "/" + testResult.getId(), testResult.toHttpParams());
+
+        HashMap<String, Object> updatedTestResult = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return TestResultParser.Parse(updatedTestResult);
     }
 }
