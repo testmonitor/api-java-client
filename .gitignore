@@ -1,5 +1,4 @@
 /.idea/
 /out/
 out/
-Main.java
-Main.class
+/src/com/testmonitor/Main.java
