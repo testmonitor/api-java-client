@@ -17,6 +17,8 @@ import java.io.BufferedWriter;
 import java.util.Base64;
 
 import com.testmonitor.actions.Projects;
+import com.testmonitor.actions.TestCases;
+import com.testmonitor.actions.TestResults;
 import com.testmonitor.actions.TestSuites;
 import com.testmonitor.resources.Project;
 
@@ -40,11 +42,6 @@ public class Client
         return new Projects(this.connector);
     }
 
-    public TestSuites testSuites()
-    {
-        return new TestSuites(this.connector);
-    }
-
     public TestSuites testSuites(Integer projectId)
     {
         return new TestSuites(this.connector, projectId);
@@ -53,5 +50,25 @@ public class Client
     public TestSuites testSuites(Project project)
     {
         return new TestSuites(this.connector, project);
+    }
+
+    public TestCases testCases(Integer projectId)
+    {
+        return new TestCases(this.connector, projectId);
+    }
+
+    public TestCases testCases(Project project)
+    {
+        return new TestCases(this.connector, project);
+    }
+
+    public TestResults testResults(Integer projectId)
+    {
+        return new TestResults(this.connector, projectId);
+    }
+
+    public TestResults testResults(Project project)
+    {
+        return new TestResults(this.connector, project);
     }
 }

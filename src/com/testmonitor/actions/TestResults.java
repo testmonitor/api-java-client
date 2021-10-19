@@ -2,29 +2,26 @@ package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
 import com.testmonitor.resources.Project;
-import com.testmonitor.resources.TestSuite;
-import org.apache.hc.core5.http.NameValuePair;
-import org.apache.hc.core5.http.message.BasicNameValuePair;
+import com.testmonitor.resources.TestResult;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-public class TestSuites
+public class TestResults
 {
     private final Connector connector;
 
-    private final String singular = "test-suite";
+    private final String singular = "test-result";
 
-    private final String plural = "test-suites";
+    private final String plural = "test-results";
 
     private Integer projectId;
 
     /**
      * @param connector The TestMonitor connector to perfom HTTP requests
      */
-    public TestSuites(Connector connector)
+    public TestResults(Connector connector)
     {
         this.connector = connector;
     }
@@ -33,7 +30,7 @@ public class TestSuites
      * @param connector The TestMonitor connector to perfom HTTP requests
      * @param projectId The project id you want to work on
      */
-    public TestSuites(Connector connector, Integer projectId)
+    public TestResults(Connector connector, Integer projectId)
     {
         this.connector = connector;
         this.projectId = projectId;
@@ -43,7 +40,7 @@ public class TestSuites
      * @param connector The TestMonitor connector to perfom HTTP requests
      * @param project The project you want to work on
      */
-    public TestSuites(Connector connector, Project project)
+    public TestResults(Connector connector, Project project)
     {
         this.connector = connector;
         this.projectId = project.getId();
@@ -56,17 +53,17 @@ public class TestSuites
      *
      * @return A parsed list of test suites
      */
-    protected ArrayList<TestSuite> parse(JSONObject response)
+    protected ArrayList<TestResult> parse(JSONObject response)
     {
-        ArrayList<TestSuite> testSuites = new ArrayList<TestSuite>();
+        ArrayList<TestResult> testResults = new ArrayList<TestResult>();
 
         for (Object obj : response.getJSONArray("data").toList()) {
             HashMap item = (HashMap) obj;
 
-            testSuites.add(new TestSuite(item.get("id").toString(), item.get("name").toString()));
+            testResults.add(new TestResult(item.get("id").toString(), item.get("name").toString()));
         }
 
-        return testSuites;
+        return testResults;
     }
 
     /**
@@ -74,7 +71,7 @@ public class TestSuites
      *
      * @return A list of test suites
      */
-    public ArrayList<TestSuite> list()
+    public ArrayList<TestResult> list()
     {
         return this.parse(this.connector.get(this.plural));
     }
@@ -84,11 +81,11 @@ public class TestSuites
      *
      * @return The test suite that matches the ID
      */
-    public TestSuite get(Integer id)
+    public TestResult get(Integer id)
     {
         JSONObject response = this.connector.get(this.plural + "/" + id);
 
-        return new TestSuite(
+        return new TestResult(
             response.getJSONObject("data").get("id").toString(),
             response.getJSONObject("data").get("name").toString()
         );
@@ -101,7 +98,7 @@ public class TestSuites
      *
      * @return A list of results
      */
-    public ArrayList<TestSuite> search(String search)
+    public ArrayList<TestResult> search(String search)
     {
         return this.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
     }
@@ -113,47 +110,13 @@ public class TestSuites
      *
      * @return The created test suite
      */
-    public TestSuite create(String name)
+    public TestResult create(TestResult testResult)
     {
-        TestSuite testSuite = new TestSuite();
+        JSONObject response = this.connector.post(this.plural, testResult.toHttpParams());
 
-        testSuite.setName(name);
-        testSuite.setProjectId(this.projectId);
+        System.out.println(response);
+        testResult.setId(response.getJSONObject("data").get("id").toString());
 
-        return this.create(testSuite);
-    }
-
-    /**
-     * Create a test suite with a given name.
-     *
-     * @param name The name of the test suite
-     *
-     * @return The created test suite
-     */
-    public TestSuite create(TestSuite testSuite)
-    {
-        JSONObject response = this.connector.post(this.plural, testSuite.toHttpParams());
-
-        testSuite.setId(response.getJSONObject("data").get("id").toString());
-
-        return testSuite;
-    }
-
-    /**
-     * Search or create a test suite. When the test suite is not found there will be a test suite created.
-     *
-     * @param search The search query
-     *
-     * @return The first result or a fresh created test suite
-     */
-    public TestSuite searchOrCreate(String search)
-    {
-        ArrayList<TestSuite> testSuites = this.search(search);
-
-        if (testSuites.size() > 0) {
-            return testSuites.get(0);
-        }
-
-        return this.create(search);
+        return testResult;
     }
 }

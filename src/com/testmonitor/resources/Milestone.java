@@ -6,7 +6,7 @@ import org.apache.hc.core5.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestSuite {
+public class Milestone {
     private Integer id;
 
     private String name;
@@ -15,27 +15,27 @@ public class TestSuite {
 
     private Integer projectId;
 
-    public TestSuite(Integer id, String name) {
+    public Milestone(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public TestSuite(String id, String name) {
+    public Milestone(String id, String name) {
         this.id = Integer.parseInt(id);
         this.name = name;
     }
 
-    public TestSuite() {
+    public Milestone() {
 
     }
 
-    public TestSuite setId(Integer id) {
+    public Milestone setId(Integer id) {
         this.id = id;
 
         return this;
     }
 
-    public TestSuite setId(String id) {
+    public Milestone setId(String id) {
         this.id = Integer.parseInt(id);
 
         return this;
@@ -45,7 +45,7 @@ public class TestSuite {
         return id;
     }
 
-    public TestSuite setName(String name) {
+    public Milestone setName(String name) {
         this.name = name;
 
         return this;
@@ -55,7 +55,7 @@ public class TestSuite {
         return this.name;
     }
 
-    public TestSuite setProjectId(Integer projectId) {
+    public Milestone setProjectId(Integer projectId) {
         this.projectId = projectId;
 
         return this;

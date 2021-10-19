@@ -1,20 +1,18 @@
 package com.testmonitor.api;
 
 import org.apache.hc.client5.http.ClientProtocolException;
-import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
+import org.apache.hc.client5.http.entity.UrlEncodedFormEntity;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.*;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
-import org.apache.hc.core5.http.protocol.HttpContext;
 import org.json.*;
-
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.util.List;
 
 
 public class Connector {
@@ -45,24 +43,27 @@ public class Connector {
     {
         final HttpGet httpget = new HttpGet(this.baseUrl + uri);
 
-        httpget.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + this.token);
-
         return this.request(httpget);
     }
 
-    public void post(String uri)
+    public JSONObject post(String uri, List<NameValuePair> params)
     {
         final HttpPost httppost = new HttpPost(this.baseUrl + uri);
 
-        System.out.print(this.request(httppost));
+        httppost.setEntity(new UrlEncodedFormEntity(params));
+
+        return this.request(httppost);
     }
 
     public JSONObject request(HttpUriRequestBase httpUriRequestBase) {
+        httpUriRequestBase.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + this.token);
+        httpUriRequestBase.setHeader(HttpHeaders.ACCEPT, "application/json");
+
         final HttpClientResponseHandler<String> responseHandler = new HttpClientResponseHandler<String>() {
 
             @Override
             public String handleResponse(
-                    final ClassicHttpResponse response) throws IOException {
+                    final ClassicHttpResponse response) throws IOException, ParseException {
                 final int status = response.getCode();
                 if (status >= HttpStatus.SC_SUCCESS && status < HttpStatus.SC_REDIRECTION) {
                     final HttpEntity entity = response.getEntity();
@@ -72,6 +73,7 @@ public class Connector {
                         throw new ClientProtocolException(ex);
                     }
                 } else {
+                    System.out.println(EntityUtils.toString(response.getEntity()));
                     throw new ClientProtocolException("Unexpected response status: " + status);
                 }
             }
