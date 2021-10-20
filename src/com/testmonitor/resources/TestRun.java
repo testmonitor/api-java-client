@@ -13,6 +13,10 @@ public class TestRun {
 
     private String description;
 
+    private String startsAt;
+
+    private String endsAt;
+
     private Integer milestoneId;
 
     public TestRun setId(Integer id) {
@@ -67,12 +71,34 @@ public class TestRun {
         return this;
     }
 
+    public String getStartsAt() {
+        return startsAt;
+    }
+
+    public TestRun setStartsAt(String startsAt) {
+        this.startsAt = startsAt;
+
+        return this;
+    }
+
+    public String getEndsAt() {
+        return endsAt;
+    }
+
+    public TestRun setEndsAt(String endsAt) {
+        this.endsAt = endsAt;
+
+        return this;
+    }
+
     public List<NameValuePair> toHttpParams() {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
 
         params.add(new BasicNameValuePair("name", this.name));
         params.add(new BasicNameValuePair("description", this.description));
-        params.add(new BasicNameValuePair("test_suite_id", this.milestoneId.toString()));
+        params.add(new BasicNameValuePair("starts_at", this.startsAt));
+        params.add(new BasicNameValuePair("ends_at", this.endsAt));
+        params.add(new BasicNameValuePair("milestone_id", this.milestoneId.toString()));
 
         return params;
     }
@@ -82,6 +108,8 @@ public class TestRun {
         return "ID: " + this.id + "\n" +
                 "NAME: " + this.name + "\n" +
                 "DESCRIPTION: " + this.description + "\n" +
-                "MILESTONE_ID: " + this.milestoneId + "\n";
+                "MILESTONE_ID: " + this.milestoneId + "\n" +
+                "STARTS_AT: " + this.startsAt + "\n" +
+                "ENDS_AT: " + this.endsAt + "\n";
     }
 }

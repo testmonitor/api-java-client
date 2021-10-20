@@ -115,7 +115,7 @@ public class TestRuns
      */
     public TestRun create(TestRun testRun)
     {
-        JSONObject response = this.connector.post(this.plural, testRun.toHttpParams());
+        JSONObject response = this.connector.post(this.plural + "?project_id=" + this.projectId, testRun.toHttpParams());
 
         testRun.setId(response.getJSONObject("data").get("id").toString());
 
@@ -128,26 +128,16 @@ public class TestRuns
      *
      * @return The test run
      */
-    public TestRun create(String name, Integer milestoneId)
+    public TestRun create(String name, String startsAt, String endsAt, Integer milestoneId)
     {
         TestRun testRun = new TestRun();
 
         testRun.setName(name);
+        testRun.setStartsAt(startsAt);
+        testRun.setEndsAt(endsAt);
         testRun.setMilestoneId(milestoneId);
 
         return this.create(testRun);
-    }
-
-    /**
-     * Search or create a test case. When the test case is not found there will be a test case created.
-     *
-     * @param search The search query
-     *
-     * @return The first result or a fresh created test case
-     */
-    public TestRun searchOrCreate(String search, Milestone testSuite)
-    {
-        return this.searchOrCreate(search, testSuite.getId());
     }
 
     /**
@@ -159,7 +149,7 @@ public class TestRuns
      */
     public TestRun searchOrCreate(TestRun testRun)
     {
-        return this.searchOrCreate(testRun.getName(), testRun.getMilestoneId());
+        return this.searchOrCreate(testRun.getName(), testRun.getStartsAt(), testRun.getEndsAt(), testRun.getMilestoneId());
     }
 
     /**
@@ -169,7 +159,7 @@ public class TestRuns
      *
      * @return The first result or a fresh created test case
      */
-    public TestRun searchOrCreate(String search, Integer milestoneId)
+    public TestRun searchOrCreate(String search, String startsAt, String endsAt, Integer milestoneId)
     {
         ArrayList<TestRun> testRuns = this.search(search);
 
@@ -177,7 +167,7 @@ public class TestRuns
             return testRuns.get(0);
         }
 
-        return this.create(search, milestoneId);
+        return this.create(search, startsAt, endsAt, milestoneId);
     }
 
     /**

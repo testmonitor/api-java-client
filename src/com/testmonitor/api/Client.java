@@ -73,4 +73,14 @@ public class Client
     {
         return new TestRuns(this.connector, project);
     }
+
+    public Milestones milestones(Integer projectId)
+    {
+        return new Milestones(this.connector, projectId);
+    }
+
+    public Milestones milestones(Project project)
+    {
+        return new Milestones(this.connector, project);
+    }
 }

@@ -13,6 +13,8 @@ public class Milestone {
 
     private String description;
 
+    private String endsAt;
+
     private Integer projectId;
 
     public Milestone() {
@@ -55,6 +57,16 @@ public class Milestone {
         return this.description;
     }
 
+    public Milestone setEndsAt(String endsAt) {
+        this.endsAt = endsAt;
+
+        return this;
+    }
+
+    public String getEndsAt() {
+        return this.endsAt;
+    }
+
     public Milestone setProjectId(Integer projectId) {
         this.projectId = projectId;
 
@@ -76,6 +88,7 @@ public class Milestone {
 
         params.add(new BasicNameValuePair("name", this.name));
         params.add(new BasicNameValuePair("description", this.description));
+        params.add(new BasicNameValuePair("ends_at", this.endsAt));
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
 
         return params;
@@ -86,6 +99,7 @@ public class Milestone {
         return "ID: " + this.id + "\n" +
                 "NAME: " + this.name + "\n" +
                 "DESCRIPTION: " + this.description + "\n" +
-                "PROJECT_ID: " + this.projectId + "\n";
+                "PROJECT_ID: " + this.projectId + "\n" +
+                "ENDS_AT: " + this.endsAt + "\n";
     }
 }

@@ -6,6 +6,7 @@ import com.testmonitor.resources.Project;
 import com.testmonitor.resources.Milestone;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class Milestones
@@ -51,7 +52,7 @@ public class Milestones
      */
     public ArrayList<Milestone> list(Integer page)
     {
-        return MilestoneParser.Parse(this.connector.get(this.plural + "?page=" + page));
+        return MilestoneParser.Parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" +  this.projectId));
     }
 
     /**
@@ -59,7 +60,7 @@ public class Milestones
      */
     public ArrayList<Milestone> list(Integer page, Integer limit)
     {
-        return MilestoneParser.Parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit));
+        return MilestoneParser.Parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" +  this.projectId));
     }
 
     /**
@@ -95,11 +96,12 @@ public class Milestones
      *
      * @return The created milestone
      */
-    public Milestone create(String name)
+    public Milestone create(String name, String endsAt)
     {
         Milestone milestone = new Milestone();
 
         milestone.setName(name);
+        milestone.setEndsAt(endsAt);
         milestone.setProjectId(this.projectId);
 
         return this.create(milestone);
@@ -128,7 +130,7 @@ public class Milestones
      *
      * @return The first result or a fresh created test suite
      */
-    public Milestone searchOrCreate(String search)
+    public Milestone searchOrCreate(String search, String endsAt)
     {
         ArrayList<Milestone> milestones = this.search(search);
 
@@ -136,7 +138,7 @@ public class Milestones
             return milestones.get(0);
         }
 
-        return this.create(search);
+        return this.create(search, endsAt);
     }
 
     /**

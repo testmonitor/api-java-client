@@ -40,7 +40,8 @@ public class MilestoneParser {
 
         milestone.setId(item.get("id").toString())
                 .setName(item.get("name").toString())
-                .setProjectId(item.get("project_id").toString());
+                .setProjectId(item.get("project_id").toString())
+                .setEndsAt(item.get("ends_at").toString());
 
         if (item.get("description") != null) {
             milestone.setDescription(item.get("description").toString());

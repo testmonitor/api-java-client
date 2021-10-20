@@ -48,7 +48,7 @@ public class Connector {
 
     public JSONObject get(String uri)
     {
-        final HttpGet httpget = new HttpGet(this.baseUrl + uri);
+        final HttpGet httpget = new HttpGet(this.baseUrl + uri.replace(" ", "%20"));
 
         return this.request(httpget);
     }
@@ -75,13 +75,13 @@ public class Connector {
     {
         HttpPost post = new HttpPost(this.baseUrl + uri);
         FileBody fileBody = new FileBody(file, ContentType.DEFAULT_BINARY);
-//
+
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.setMode(HttpMultipartMode.EXTENDED);
         builder.addPart("file", fileBody);
 
         HttpEntity entity = builder.build();
-//
+
         post.setEntity(entity);
 
         return this.request(post);
