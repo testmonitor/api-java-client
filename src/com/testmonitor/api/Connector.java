@@ -6,12 +6,18 @@ import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.classic.methods.HttpPut;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
 import org.apache.hc.client5.http.entity.UrlEncodedFormEntity;
+import org.apache.hc.client5.http.entity.mime.FileBody;
+
+import org.apache.hc.client5.http.entity.mime.HttpMultipartMode;
+import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.*;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.json.*;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -63,6 +69,22 @@ public class Connector {
         httpput.setEntity(new UrlEncodedFormEntity(params));
 
         return this.request(httpput);
+    }
+
+    public JSONObject postAttachment(String uri, File file)
+    {
+        HttpPost post = new HttpPost(this.baseUrl + uri);
+        FileBody fileBody = new FileBody(file, ContentType.DEFAULT_BINARY);
+//
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        builder.setMode(HttpMultipartMode.EXTENDED);
+        builder.addPart("file", fileBody);
+
+        HttpEntity entity = builder.build();
+//
+        post.setEntity(entity);
+
+        return this.request(post);
     }
 
     public JSONObject request(HttpUriRequestBase httpUriRequestBase) {

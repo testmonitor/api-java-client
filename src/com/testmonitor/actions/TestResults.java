@@ -3,11 +3,13 @@ package com.testmonitor.actions;
 import com.testmonitor.api.Connector;
 import com.testmonitor.parsers.TestCaseParser;
 import com.testmonitor.parsers.TestResultParser;
+import com.testmonitor.parsers.TestRunParser;
 import com.testmonitor.resources.Project;
 import com.testmonitor.resources.TestCase;
 import com.testmonitor.resources.TestResult;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -74,10 +76,9 @@ public class TestResults
     {
         JSONObject response = this.connector.get(this.plural + "/" + id);
 
-        return new TestResult(
-            response.getJSONObject("data").get("id").toString(),
-            response.getJSONObject("data").get("name").toString()
-        );
+        HashMap<String, Object> testResult = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return TestResultParser.Parse(testResult);
     }
 
     /**
@@ -122,5 +123,19 @@ public class TestResults
         HashMap<String, Object> updatedTestResult = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
         return TestResultParser.Parse(updatedTestResult);
+    }
+
+    /**
+     * Update a test results
+     *
+     * @param testResult The test result you want to update
+     *
+     * @return A new instance of the project
+     */
+    public TestResult addAttachment(TestResult testResult, File attachment)
+    {
+        this.connector.postAttachment(this.singular + "/" + testResult.getId()  + "/attachments", attachment);
+
+        return testResult;
     }
 }
