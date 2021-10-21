@@ -92,7 +92,6 @@ public class Connector {
         httpUriRequestBase.setHeader(HttpHeaders.ACCEPT, "application/json");
 
         final HttpClientResponseHandler<String> responseHandler = new HttpClientResponseHandler<String>() {
-
             @Override
             public String handleResponse(
                     final ClassicHttpResponse response) throws IOException, ParseException {
@@ -105,12 +104,12 @@ public class Connector {
                         throw new ClientProtocolException(ex);
                     }
                 } else {
-                    System.out.println(EntityUtils.toString(response.getEntity()));
-                    throw new ClientProtocolException("Unexpected response status: " + status);
+                    throw new ClientProtocolException(
+                        "Unexpected response status: " + status + "\n" + EntityUtils.toString(response.getEntity())
+                    );
                 }
             }
         };
-
 
         try {
             final String responseBody;
