@@ -30,30 +30,35 @@ public class Users
     }
 
     /**
-     * @return A list of milestones
+     * @return A list of users
      */
-    public ArrayList<Milestone> list()
+    public ArrayList<User> list()
     {
         return this.list(1);
     }
 
     /**
-     * @return A list of milestones
+     * @return A list of users
      */
-    public ArrayList<Milestone> list(Integer page)
+    public ArrayList<User> list(Integer page)
     {
-        return MilestoneParser.Parse(this.connector.get(this.plural + "?page=" + page));
+        return UserParser.Parse(this.connector.get(this.plural + "?page=" + page));
     }
 
     /**
-     * @return A list of milestones
+     * @return A list of users
      */
-    public ArrayList<Milestone> list(Integer page, Integer limit)
+    public ArrayList<User> list(Integer page, Integer limit)
     {
-        return MilestoneParser.Parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit));
+        return UserParser.Parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit));
     }
 
-    public User myAccount()
+    /**
+     * Returns the current user that is logged in on TestMonitor.
+     *
+     * @return User account
+     */
+    public User currentUser()
     {
         JSONObject response = this.connector.get("my-account");
 

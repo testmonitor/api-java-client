@@ -104,9 +104,9 @@ public class TestResults
     {
         JSONObject response = this.connector.post(this.plural, testResult.toHttpParams());
 
-        testResult.setId(response.getJSONObject("data").get("id").toString());
+        HashMap<String, Object> newTestResult = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return testResult;
+        return TestResultParser.Parse(newTestResult);
     }
 
     /**
