@@ -105,7 +105,11 @@ public class TestCases
      */
     public ArrayList<TestCase> search(String search, Integer testSuiteId)
     {
-        return TestCaseParser.Parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&test_suite_id=" + testSuiteId + "%query=" + search));
+        ArrayList<TestCase> testCases = TestCaseParser.Parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&test_suite_id=" + testSuiteId + "&query=" + search));
+
+        testCases.removeIf(testCase -> !testCase.getTestSuiteId().equals(testSuiteId));
+
+        return testCases;
     }
 
     /**
@@ -175,7 +179,7 @@ public class TestCases
      */
     public TestCase searchOrCreate(String search, Integer testSuiteId)
     {
-        ArrayList<TestCase> testCases = this.search(search);
+        ArrayList<TestCase> testCases = this.search(search, testSuiteId);
 
         if (testCases.size() > 0) {
             return testCases.get(0);
