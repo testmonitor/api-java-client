@@ -34,16 +34,6 @@ public class Client
     }
 
     /**
-     * @param projectId Project ID
-     *
-     * @return Test Suite actions
-     */
-    public TestSuites testSuites(Integer projectId)
-    {
-        return new TestSuites(this.connector, projectId);
-    }
-
-    /**
      * @param project Project object
      *
      * @return Test Suite actions
@@ -51,16 +41,6 @@ public class Client
     public TestSuites testSuites(Project project)
     {
         return new TestSuites(this.connector, project);
-    }
-
-    /**
-     * @param projectId Project ID
-     *
-     * @return Test Case actions
-     */
-    public TestCases testCases(Integer projectId)
-    {
-        return new TestCases(this.connector, projectId);
     }
 
     /**
@@ -74,16 +54,6 @@ public class Client
     }
 
     /**
-     * @param projectId Project ID
-     *
-     * @return Test Result actions
-     */
-    public TestResults testResults(Integer projectId)
-    {
-        return new TestResults(this.connector, projectId);
-    }
-
-    /**
      * @param project Project
      *
      * @return Test Result actions
@@ -94,16 +64,6 @@ public class Client
     }
 
     /**
-     * @param projectId Project ID
-     *
-     * @return Test Run actions
-     */
-    public TestRuns testRuns(Integer projectId)
-    {
-        return new TestRuns(this.connector, projectId);
-    }
-
-    /**
      * @param project Project
      *
      * @return Test Run actions
@@ -111,16 +71,6 @@ public class Client
     public TestRuns testRuns(Project project)
     {
         return new TestRuns(this.connector, project);
-    }
-
-    /**
-     * @param projectId Project ID
-     *
-     * @return Milestone actions
-     */
-    public Milestones milestones(Integer projectId)
-    {
-        return new Milestones(this.connector, projectId);
     }
 
     /**
