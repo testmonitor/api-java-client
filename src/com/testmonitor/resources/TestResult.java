@@ -21,22 +21,6 @@ public class TestResult {
 
     private Integer testResultCategoryId;
 
-
-    public TestResult(Integer id, String description) {
-        this.id = id;
-        this.description = description;
-    }
-
-    public TestResult(String id, String name) {
-        this.id = Integer.parseInt(id);
-        this.description = description;
-    }
-
-    public TestResult()
-    {
-        
-    }
-
     public TestResult setId(Integer id) {
         this.id = id;
 
@@ -128,7 +112,7 @@ public class TestResult {
     }
 
     public List<NameValuePair> toHttpParams() {
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        List<NameValuePair> params = new ArrayList<>();
 
         String draft;
 

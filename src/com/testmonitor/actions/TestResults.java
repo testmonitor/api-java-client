@@ -1,37 +1,23 @@
 package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
-import com.testmonitor.parsers.TestCaseParser;
 import com.testmonitor.parsers.TestResultParser;
-import com.testmonitor.parsers.TestRunParser;
 import com.testmonitor.resources.Project;
-import com.testmonitor.resources.TestCase;
 import com.testmonitor.resources.TestResult;
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class TestResults
 {
     private final Connector connector;
 
-    private final String singular = "test-result";
-
-    private final String plural = "test-results";
-
     private final Integer projectId;
-
-    /**
-     * @param connector The TestMonitor connector to perfom HTTP requests
-     * @param projectId The project id you want to work on
-     */
-    public TestResults(Connector connector, Integer projectId)
-    {
-        this.connector = connector;
-        this.projectId = projectId;
-    }
 
     /**
      * @param connector The TestMonitor connector to perfom HTTP requests
@@ -56,7 +42,7 @@ public class TestResults
      */
     public ArrayList<TestResult> list(Integer page)
     {
-        return TestResultParser.Parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" + this.projectId));
+        return this.list(page, 15);
     }
 
     /**
@@ -64,25 +50,31 @@ public class TestResults
      */
     public ArrayList<TestResult> list(Integer page, Integer limit)
     {
-        return TestResultParser.Parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("page", page.toString()));
+        params.add(new BasicNameValuePair("limit", limit.toString()));
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        return TestResultParser.parse(this.connector.get("test-results", params));
     }
 
     /**
-     * @param id The test suite ID
+     * @param id The test result ID
      *
-     * @return The test suite that matches the ID
+     * @return The test result that matches the ID
      */
     public TestResult get(Integer id)
     {
-        JSONObject response = this.connector.get(this.plural + "/" + id);
+        JSONObject response = this.connector.get("test-results/" + id);
 
         HashMap<String, Object> testResult = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return TestResultParser.Parse(testResult);
+        return TestResultParser.parse(testResult);
     }
 
     /**
-     * Search a test suite
+     * Search a test result
      *
      * @param search The search string
      *
@@ -90,11 +82,16 @@ public class TestResults
      */
     public ArrayList<TestResult> search(String search)
     {
-        return TestResultParser.Parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+        params.add(new BasicNameValuePair("query", this.projectId.toString()));
+
+        return TestResultParser.parse(this.connector.get("test-results", params));
     }
 
     /**
-     * Create a test suite with a given name.
+     * Create a test result
      *
      * @param testResult The name of the test result
      *
@@ -102,39 +99,39 @@ public class TestResults
      */
     public TestResult create(TestResult testResult)
     {
-        JSONObject response = this.connector.post(this.plural, testResult.toHttpParams());
+        JSONObject response = this.connector.post("test-results", testResult.toHttpParams());
 
         HashMap<String, Object> newTestResult = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return TestResultParser.Parse(newTestResult);
+        return TestResultParser.parse(newTestResult);
     }
 
     /**
-     * Update a test results
+     * Update a test result
      *
      * @param testResult The test result you want to update
      *
-     * @return A new instance of the project
+     * @return A new instance of the test result
      */
     public TestResult update(TestResult testResult)
     {
-        JSONObject response = this.connector.put(this.plural + "/" + testResult.getId(), testResult.toHttpParams());
+        JSONObject response = this.connector.put("test-results/" + testResult.getId(), testResult.toHttpParams());
 
         HashMap<String, Object> updatedTestResult = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return TestResultParser.Parse(updatedTestResult);
+        return TestResultParser.parse(updatedTestResult);
     }
 
     /**
-     * Update a test results
+     * Add an attachment to a test result
      *
-     * @param testResult The test result you want to update
+     * @param testResult The test result you want to update with an attachment
      *
      * @return A new instance of the project
      */
     public TestResult addAttachment(TestResult testResult, File attachment)
     {
-        this.connector.postAttachment(this.singular + "/" + testResult.getId()  + "/attachments", attachment);
+        this.connector.postAttachment("test-result/" + testResult.getId()  + "/attachments", attachment);
 
         return testResult;
     }

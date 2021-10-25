@@ -15,20 +15,6 @@ public class TestSuite {
 
     private Integer projectId;
 
-    public TestSuite(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public TestSuite(String id, String name) {
-        this.id = Integer.parseInt(id);
-        this.name = name;
-    }
-
-    public TestSuite() {
-
-    }
-
     public TestSuite setId(Integer id) {
         this.id = id;
 
@@ -82,7 +68,7 @@ public class TestSuite {
     }
 
     public List<NameValuePair> toHttpParams() {
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("name", this.name));
         params.add(new BasicNameValuePair("description", this.description));

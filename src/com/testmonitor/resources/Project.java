@@ -13,10 +13,6 @@ public class Project {
 
     private String description;
 
-    public Project() {
-
-    }
-
     public Project setId(Integer id) {
         this.id = id;
 
@@ -54,7 +50,7 @@ public class Project {
     }
 
     public List<NameValuePair> toHttpParams() {
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("name", this.name));
         params.add(new BasicNameValuePair("description", this.description));

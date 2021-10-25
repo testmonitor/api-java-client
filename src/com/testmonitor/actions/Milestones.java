@@ -4,30 +4,20 @@ import com.testmonitor.api.Connector;
 import com.testmonitor.parsers.MilestoneParser;
 import com.testmonitor.resources.Project;
 import com.testmonitor.resources.Milestone;
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class Milestones
 {
     private final Connector connector;
 
-    private final String singular = "milestone";
-
-    private final String plural = "milestones";
-
     private final Integer projectId;
-
-    /**
-     * @param connector The TestMonitor connector to perfom HTTP requests
-     * @param projectId The project id you want to work on
-     */
-    public Milestones(Connector connector, Integer projectId)
-    {
-        this.connector = connector;
-        this.projectId = projectId;
-    }
 
     /**
      * @param connector The TestMonitor connector to perfom HTTP requests
@@ -52,7 +42,7 @@ public class Milestones
      */
     public ArrayList<Milestone> list(Integer page)
     {
-        return MilestoneParser.Parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" +  this.projectId));
+        return this.list(page, 15);
     }
 
     /**
@@ -60,7 +50,13 @@ public class Milestones
      */
     public ArrayList<Milestone> list(Integer page, Integer limit)
     {
-        return MilestoneParser.Parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" +  this.projectId));
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("page", page.toString()));
+        params.add(new BasicNameValuePair("limit", limit.toString()));
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        return MilestoneParser.parse(this.connector.get("milestones", params));
     }
 
     /**
@@ -70,11 +66,11 @@ public class Milestones
      */
     public Milestone get(Integer id)
     {
-        JSONObject response = this.connector.get(this.plural + "/" + id);
+        JSONObject response = this.connector.get("milestones/" + id);
 
         HashMap<String, Object> milestone = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return MilestoneParser.Parse(milestone);
+        return MilestoneParser.parse(milestone);
     }
 
     /**
@@ -86,7 +82,12 @@ public class Milestones
      */
     public ArrayList<Milestone> search(String search)
     {
-        return MilestoneParser.Parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("query", search));
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        return MilestoneParser.parse(this.connector.get("milestones", params));
     }
 
     /**
@@ -96,12 +97,12 @@ public class Milestones
      *
      * @return The created milestone
      */
-    public Milestone create(String name, String endsAt)
+    public Milestone create(String name)
     {
         Milestone milestone = new Milestone();
 
         milestone.setName(name);
-        milestone.setEndsAt(endsAt);
+        milestone.setEndsAt((new Date()));
         milestone.setProjectId(this.projectId);
 
         return this.create(milestone);
@@ -116,7 +117,7 @@ public class Milestones
      */
     public Milestone create(Milestone milestone)
     {
-        JSONObject response = this.connector.post(this.plural, milestone.toHttpParams());
+        JSONObject response = this.connector.post("milestones", milestone.toHttpParams());
 
         milestone.setId(response.getJSONObject("data").get("id").toString());
 
@@ -124,21 +125,21 @@ public class Milestones
     }
 
     /**
-     * Search or create a milestone. When the test suite is not found there will be a milestone created.
+     * Find or create a milestone. When the test suite is not found there will be a milestone created.
      *
      * @param search The search query
      *
      * @return The first result or a fresh created test suite
      */
-    public Milestone searchOrCreate(String search, String endsAt)
+    public Milestone findOrCreate(String search)
     {
-        ArrayList<Milestone> milestones = this.search(search);
+        ArrayList<Milestone> milestones = this.search('"' + search + '"');
 
         if (milestones.size() > 0) {
             return milestones.get(0);
         }
 
-        return this.create(search, endsAt);
+        return this.create(search);
     }
 
     /**
@@ -150,10 +151,10 @@ public class Milestones
      */
     public Milestone update(Milestone milestone)
     {
-        JSONObject response = this.connector.put(this.plural + "/" + milestone.getId(), milestone.toHttpParams());
+        JSONObject response = this.connector.put("milestones/" + milestone.getId(), milestone.toHttpParams());
 
         HashMap<String, Object> updatedMilestone = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return MilestoneParser.Parse(updatedMilestone);
+        return MilestoneParser.parse(updatedMilestone);
     }
 }

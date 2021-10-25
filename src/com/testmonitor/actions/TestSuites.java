@@ -1,10 +1,9 @@
 package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
-import com.testmonitor.parsers.TestRunParser;
 import com.testmonitor.parsers.TestSuiteParser;
+import com.testmonitor.parsers.UserParser;
 import com.testmonitor.resources.Project;
-import com.testmonitor.resources.TestRun;
 import com.testmonitor.resources.TestSuite;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
@@ -18,21 +17,7 @@ public class TestSuites
 {
     private final Connector connector;
 
-    private final String singular = "test-suite";
-
-    private final String plural = "test-suites";
-
     private final Integer projectId;
-
-    /**
-     * @param connector The TestMonitor connector to perfom HTTP requests
-     * @param projectId The project id you want to work on
-     */
-    public TestSuites(Connector connector, Integer projectId)
-    {
-        this.connector = connector;
-        this.projectId = projectId;
-    }
 
     /**
      * @param connector The TestMonitor connector to perfom HTTP requests
@@ -57,7 +42,7 @@ public class TestSuites
      */
     public ArrayList<TestSuite> list(Integer page)
     {
-        return TestSuiteParser.Parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" + this.projectId));
+        return this.list(page, 15);
     }
 
     /**
@@ -65,7 +50,13 @@ public class TestSuites
      */
     public ArrayList<TestSuite> list(Integer page, Integer limit)
     {
-        return TestSuiteParser.Parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("page", page.toString()));
+        params.add(new BasicNameValuePair("limit", limit.toString()));
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        return TestSuiteParser.parse(this.connector.get("test-suites", params));
     }
 
     /**
@@ -75,24 +66,28 @@ public class TestSuites
      */
     public TestSuite get(Integer id)
     {
-        JSONObject response = this.connector.get(this.plural + "/" + id);
+        JSONObject response = this.connector.get("test-suites/" + id);
 
-        return new TestSuite(
-            response.getJSONObject("data").get("id").toString(),
-            response.getJSONObject("data").get("name").toString()
-        );
+        HashMap<String, Object> testSuite = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return TestSuiteParser.parse(testSuite);
     }
 
     /**
      * Search a test suite
      *
-     * @param search The search string
+     * @param query The search string
      *
      * @return A list of results
      */
-    public ArrayList<TestSuite> search(String search)
+    public ArrayList<TestSuite> search(String query)
     {
-        return TestSuiteParser.Parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("query", query));
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        return TestSuiteParser.parse(this.connector.get("test-suites", params));
     }
 
     /**
@@ -121,11 +116,11 @@ public class TestSuites
      */
     public TestSuite create(TestSuite testSuite)
     {
-        JSONObject response = this.connector.post(this.plural, testSuite.toHttpParams());
+        JSONObject response = this.connector.post("test-suites", testSuite.toHttpParams());
 
-        testSuite.setId(response.getJSONObject("data").get("id").toString());
+        HashMap<String, Object> updatedTestSuite = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return testSuite;
+        return TestSuiteParser.parse(updatedTestSuite);
     }
 
     /**
@@ -135,7 +130,7 @@ public class TestSuites
      *
      * @return The first result or a fresh created test suite
      */
-    public TestSuite searchOrCreate(String search)
+    public TestSuite findOrCreate(String search)
     {
         ArrayList<TestSuite> testSuites = this.search(search);
 
@@ -155,10 +150,10 @@ public class TestSuites
      */
     public TestSuite update(TestSuite testSuite)
     {
-        JSONObject response = this.connector.put(this.plural + "/" + testSuite.getId(), testSuite.toHttpParams());
+        JSONObject response = this.connector.put("test-suites/" + testSuite.getId(), testSuite.toHttpParams());
 
         HashMap<String, Object> updatedTestSuite = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return TestSuiteParser.Parse(updatedTestSuite);
+        return TestSuiteParser.parse(updatedTestSuite);
     }
 }

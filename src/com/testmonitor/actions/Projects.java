@@ -3,18 +3,17 @@ package com.testmonitor.actions;
 import com.testmonitor.api.Connector;
 import com.testmonitor.parsers.ProjectParser;
 import com.testmonitor.resources.Project;
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Projects
 {
     private final Connector connector;
-
-    private final String singular = "project";
-
-    private final String plural = "projects";
 
     /**
      *
@@ -38,7 +37,7 @@ public class Projects
      */
     public ArrayList<Project> list(Integer page)
     {
-        return ProjectParser.Parse(this.connector.get(this.plural + "?page=" + page));
+        return this.list(page, 15);
     }
 
     /**
@@ -46,7 +45,12 @@ public class Projects
      */
     public ArrayList<Project> list(Integer page, Integer limit)
     {
-        return ProjectParser.Parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit));
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("page", page.toString()));
+        params.add(new BasicNameValuePair("limit", limit.toString()));
+
+        return ProjectParser.parse(this.connector.get("projects", params));
     }
 
     /**
@@ -58,11 +62,11 @@ public class Projects
      */
     public Project get(Integer id)
     {
-        JSONObject response = this.connector.get(this.plural + "/" + id);
+        JSONObject response = this.connector.get("projects/" + id);
 
         HashMap<String, Object> project = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return ProjectParser.Parse(project);
+        return ProjectParser.parse(project);
     }
 
     /**
@@ -74,10 +78,10 @@ public class Projects
      */
     public Project update(Project project)
     {
-        JSONObject response = this.connector.put(this.plural + "/" + project.getId(), project.toHttpParams());
+        JSONObject response = this.connector.put( "projects/" + project.getId(), project.toHttpParams());
 
         HashMap<String, Object> updatedProject = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return ProjectParser.Parse(updatedProject);
+        return ProjectParser.parse(updatedProject);
     }
 }

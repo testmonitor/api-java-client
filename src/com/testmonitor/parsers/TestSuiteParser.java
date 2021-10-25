@@ -1,6 +1,5 @@
 package com.testmonitor.parsers;
 
-import com.testmonitor.resources.Milestone;
 import com.testmonitor.resources.TestSuite;
 import org.json.JSONObject;
 
@@ -15,14 +14,14 @@ public class TestSuiteParser {
      *
      * @return A parsed list of projects
      */
-    public static ArrayList<TestSuite> Parse(JSONObject response)
+    public static ArrayList<TestSuite> parse(JSONObject response)
     {
         ArrayList<TestSuite> testSuites = new ArrayList<TestSuite>();
 
         for (Object obj : response.getJSONArray("data").toList()) {
             HashMap<String, Object> testSuite = (HashMap<String, Object>) obj;
 
-            testSuites.add(Parse(testSuite));
+            testSuites.add(parse(testSuite));
         }
 
         return testSuites;
@@ -35,7 +34,7 @@ public class TestSuiteParser {
      *
      * @return The parsed test suite
      */
-    public static TestSuite Parse(HashMap<String, Object> item)
+    public static TestSuite parse(HashMap<String, Object> item)
     {
         TestSuite testSuite = new TestSuite();
 

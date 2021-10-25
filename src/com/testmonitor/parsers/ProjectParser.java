@@ -14,14 +14,14 @@ public class ProjectParser {
      *
      * @return A parsed list of projects
      */
-    public static ArrayList<Project> Parse(JSONObject response)
+    public static ArrayList<Project> parse(JSONObject response)
     {
         ArrayList<Project> projects = new ArrayList<Project>();
 
         for (Object obj : response.getJSONArray("data").toList()) {
             HashMap<String, Object> project = (HashMap<String, Object>) obj;
 
-            projects.add(Parse(project));
+            projects.add(parse(project));
         }
 
         return projects;
@@ -34,7 +34,7 @@ public class ProjectParser {
      *
      * @return The parsed project
      */
-    public static Project Parse(HashMap<String, Object> item)
+    public static Project parse(HashMap<String, Object> item)
     {
         Project project = new Project();
 

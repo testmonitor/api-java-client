@@ -1,5 +1,8 @@
 package com.testmonitor.api;
 
+import com.testmonitor.exceptions.NotFoundException;
+import com.testmonitor.exceptions.ServerException;
+import com.testmonitor.exceptions.UnprocessableEntityException;
 import org.apache.hc.client5.http.ClientProtocolException;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
@@ -15,10 +18,12 @@ import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.*;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.net.URIBuilder;
 import org.json.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 
@@ -41,11 +46,21 @@ public class Connector {
         this.httpClient = HttpClients.createDefault();
     }
 
+    /**
+     * @return The TestMonitor API base url.
+     */
     protected String baseUrl()
     {
         return "https://" + this.domain + "/api/v1/";
     }
 
+    /**
+     * Perform a GET request.
+     *
+     * @param uri A relative path
+     *
+     * @return The HTTP response as a JSONObject.
+     */
     public JSONObject get(String uri)
     {
         final HttpGet httpget = new HttpGet(this.baseUrl + uri.replace(" ", "%20"));
@@ -53,6 +68,40 @@ public class Connector {
         return this.request(httpget);
     }
 
+    /**
+     * Perform a GET request with GET parameters.
+     *
+     * @param uri A relative path
+     * @param params Key/Value
+     *
+     * @return The HTTP response as a JSONObject.
+     */
+    public JSONObject get(String uri, List<NameValuePair> params)
+    {
+        URIBuilder uriBuilder = null;
+
+        try {
+            uriBuilder = new URIBuilder(this.baseUrl + uri);
+            uriBuilder.addParameters(params);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        final HttpGet httpget = new HttpGet(uriBuilder.toString());
+
+        httpget.setEntity(new UrlEncodedFormEntity(params));
+
+        return this.request(httpget);
+    }
+
+    /**
+     * Perform a POST request.
+     *
+     * @param uri A relative path
+     * @param params The arguments to post
+     *
+     * @return The HTTP response as a JSONObject.
+     */
     public JSONObject post(String uri, List<NameValuePair> params)
     {
         final HttpPost httppost = new HttpPost(this.baseUrl + uri);
@@ -62,6 +111,14 @@ public class Connector {
         return this.request(httppost);
     }
 
+    /**
+     * Perform a PUT request.
+     *
+     * @param uri A relative path
+     * @param params The arguments to put
+     *
+     * @return The HTTP response as a JSONObject.
+     */
     public JSONObject put(String uri, List<NameValuePair> params)
     {
         final HttpPut httpput = new HttpPut(this.baseUrl + uri);
@@ -71,6 +128,14 @@ public class Connector {
         return this.request(httpput);
     }
 
+    /**
+     * Send am attachment.
+     *
+     * @param uri A relative path
+     * @param file the file you want to send as an attachment
+     *
+     * @return The HTTP response as a JSONObject.
+     */
     public JSONObject postAttachment(String uri, File file)
     {
         HttpPost post = new HttpPost(this.baseUrl + uri);
@@ -87,11 +152,18 @@ public class Connector {
         return this.request(post);
     }
 
+    /**
+     * Perform a request on teh TestMonitor API
+     *
+     * @param httpUriRequestBase
+     *
+     * @return HTTP response converted to JSON format
+     */
     public JSONObject request(HttpUriRequestBase httpUriRequestBase) {
         httpUriRequestBase.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + this.token);
         httpUriRequestBase.setHeader(HttpHeaders.ACCEPT, "application/json");
 
-        final HttpClientResponseHandler<String> responseHandler = new HttpClientResponseHandler<String>() {
+        final HttpClientResponseHandler<String> responseHandler = new HttpClientResponseHandler<>() {
             @Override
             public String handleResponse(
                     final ClassicHttpResponse response) throws IOException, ParseException {
@@ -104,9 +176,17 @@ public class Connector {
                         throw new ClientProtocolException(ex);
                     }
                 } else {
-                    throw new ClientProtocolException(
-                        "Unexpected response status: " + status + "\n" + EntityUtils.toString(response.getEntity())
-                    );
+                    if (status == 500) {
+                        throw new ServerException(status, EntityUtils.toString(response.getEntity()));
+                    } else if (status == 422) {
+                        throw new UnprocessableEntityException(status, EntityUtils.toString(response.getEntity()));
+                    } else if (status == 404) {
+                        throw new NotFoundException(status, EntityUtils.toString(response.getEntity()));
+                    } else {
+                        throw new ClientProtocolException(
+                                "Unexpected response status: " + status + "\n" + EntityUtils.toString(response.getEntity())
+                        );
+                    }
                 }
             }
         };
@@ -119,6 +199,8 @@ public class Connector {
             return new JSONObject(responseBody);
         } catch (IOException e) {
             e.printStackTrace();
+
+            System.exit(1);
         }
 
         return new JSONObject();
