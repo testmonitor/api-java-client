@@ -130,7 +130,7 @@ public class TestSuites
      *
      * @return The first result or a fresh created test suite
      */
-    public TestSuite searchOrCreate(String search)
+    public TestSuite findOrCreate(String search)
     {
         ArrayList<TestSuite> testSuites = this.search(search);
 

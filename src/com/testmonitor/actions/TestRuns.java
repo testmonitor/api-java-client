@@ -144,9 +144,9 @@ public class TestRuns
      *
      * @return The first result or a fresh created test case
      */
-    public TestRun searchOrCreate(TestRun testRun)
+    public TestRun findOrCreate(TestRun testRun)
     {
-        return this.searchOrCreate(testRun.getName(), testRun.getStartsAt(), testRun.getEndsAt(), testRun.getMilestoneId());
+        return this.findOrCreate(testRun.getName(), testRun.getStartsAt(), testRun.getEndsAt(), testRun.getMilestoneId());
     }
 
     /**
@@ -156,7 +156,7 @@ public class TestRuns
      *
      * @return The first result or a fresh created test case
      */
-    public TestRun searchOrCreate(String search, String startsAt, String endsAt, Integer milestoneId)
+    public TestRun findOrCreate(String search, String startsAt, String endsAt, Integer milestoneId)
     {
         ArrayList<TestRun> testRuns = this.search(search);
 

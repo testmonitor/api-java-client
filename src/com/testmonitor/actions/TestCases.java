@@ -147,9 +147,9 @@ public class TestCases
      *
      * @return The first result or a fresh created test case
      */
-    public TestCase searchOrCreate(String search, TestSuite testSuite)
+    public TestCase findOrCreate(String search, TestSuite testSuite)
     {
-        return this.searchOrCreate(search, testSuite.getId());
+        return this.findOrCreate(search, testSuite.getId());
     }
 
     /**
@@ -159,9 +159,9 @@ public class TestCases
      *
      * @return The first result or a fresh created test case
      */
-    public TestCase searchOrCreate(TestCase testCase)
+    public TestCase findOrCreate(TestCase testCase)
     {
-        return this.searchOrCreate(testCase.getName(), testCase.getTestSuiteId());
+        return this.findOrCreate(testCase.getName(), testCase.getTestSuiteId());
     }
 
     /**
@@ -171,7 +171,7 @@ public class TestCases
      *
      * @return The first result or a fresh created test case
      */
-    public TestCase searchOrCreate(String search, Integer testSuiteId)
+    public TestCase findOrCreate(String search, Integer testSuiteId)
     {
         ArrayList<TestCase> testCases = this.search(search, testSuiteId);
 

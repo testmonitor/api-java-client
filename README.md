@@ -39,4 +39,4 @@ To get a list of milestones you can do the statement below. Please note that pag
 ```ArrayList<Milestone> milestones = client.milestones(1).list();```
 
 Sometimes you want to search of create a milestone when it does nog exists. The following example will search for a milestone and, if there is nothing found, it will create one with the given date. Please note that when there is a match on the name of the milestone, the date will not be updated.
-```Milestone milestone = client.milestones(1).searchOrCreate("My Stone", "2021-01-01")```
+```Milestone milestone = client.milestones(1).findOrCreate("My Stone", "2021-01-01")```

@@ -129,7 +129,7 @@ public class Milestones
      *
      * @return The first result or a fresh created test suite
      */
-    public Milestone searchOrCreate(String search, String endsAt)
+    public Milestone findOrCreate(String search, String endsAt)
     {
         ArrayList<Milestone> milestones = this.search(search);
 
