@@ -1,6 +1,5 @@
 package com.testmonitor.parsers;
 
-import com.testmonitor.resources.TestCase;
 import com.testmonitor.resources.TestRun;
 import org.json.JSONObject;
 
@@ -15,14 +14,14 @@ public class TestRunParser {
      *
      * @return A parsed list of projects
      */
-    public static ArrayList<TestRun> Parse(JSONObject response)
+    public static ArrayList<TestRun> parse(JSONObject response)
     {
         ArrayList<TestRun> testRuns = new ArrayList<TestRun>();
 
         for (Object obj : response.getJSONArray("data").toList()) {
             HashMap<String, Object> testRun = (HashMap<String, Object>) obj;
 
-            testRuns.add(Parse(testRun));
+            testRuns.add(parse(testRun));
         }
 
         return testRuns;
@@ -35,7 +34,7 @@ public class TestRunParser {
      *
      * @return The parsed milestone
      */
-    public static TestRun Parse(HashMap<String, Object> item)
+    public static TestRun parse(HashMap<String, Object> item)
     {
         TestRun testRun = new TestRun();
 

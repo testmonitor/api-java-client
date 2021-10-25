@@ -1,20 +1,14 @@
 package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
-import com.testmonitor.parsers.MilestoneParser;
-import com.testmonitor.parsers.ProjectParser;
 import com.testmonitor.parsers.TestCaseParser;
-import com.testmonitor.resources.Milestone;
 import com.testmonitor.resources.Project;
 import com.testmonitor.resources.TestCase;
 import com.testmonitor.resources.TestSuite;
-import org.apache.hc.core5.http.NameValuePair;
-import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class TestCases
 {
@@ -59,7 +53,7 @@ public class TestCases
      */
     public ArrayList<TestCase> list(Integer page)
     {
-        return TestCaseParser.Parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" + this.projectId));
+        return TestCaseParser.parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" + this.projectId));
     }
 
     /**
@@ -67,7 +61,7 @@ public class TestCases
      */
     public ArrayList<TestCase> list(Integer page, Integer limit)
     {
-        return TestCaseParser.Parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
+        return TestCaseParser.parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
     }
 
     /**
@@ -81,7 +75,7 @@ public class TestCases
 
         HashMap<String, Object> testCase = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return TestCaseParser.Parse(testCase);
+        return TestCaseParser.parse(testCase);
     }
 
     /**
@@ -93,7 +87,7 @@ public class TestCases
      */
     public ArrayList<TestCase> search(String search)
     {
-        return TestCaseParser.Parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
+        return TestCaseParser.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
     }
 
     /**
@@ -105,7 +99,7 @@ public class TestCases
      */
     public ArrayList<TestCase> search(String search, Integer testSuiteId)
     {
-        ArrayList<TestCase> testCases = TestCaseParser.Parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&test_suite_id=" + testSuiteId + "&query=" + search));
+        ArrayList<TestCase> testCases = TestCaseParser.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&test_suite_id=" + testSuiteId + "&query=" + search));
 
         testCases.removeIf(testCase -> !testCase.getTestSuiteId().equals(testSuiteId));
 
@@ -201,6 +195,6 @@ public class TestCases
 
         HashMap<String, Object> updatedTestCase = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return TestCaseParser.Parse(updatedTestCase);
+        return TestCaseParser.parse(updatedTestCase);
     }
 }

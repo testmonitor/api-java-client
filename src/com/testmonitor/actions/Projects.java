@@ -38,7 +38,7 @@ public class Projects
      */
     public ArrayList<Project> list(Integer page)
     {
-        return ProjectParser.Parse(this.connector.get(this.plural + "?page=" + page));
+        return ProjectParser.parse(this.connector.get(this.plural + "?page=" + page));
     }
 
     /**
@@ -46,7 +46,7 @@ public class Projects
      */
     public ArrayList<Project> list(Integer page, Integer limit)
     {
-        return ProjectParser.Parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit));
+        return ProjectParser.parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit));
     }
 
     /**
@@ -62,7 +62,7 @@ public class Projects
 
         HashMap<String, Object> project = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return ProjectParser.Parse(project);
+        return ProjectParser.parse(project);
     }
 
     /**
@@ -78,6 +78,6 @@ public class Projects
 
         HashMap<String, Object> updatedProject = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return ProjectParser.Parse(updatedProject);
+        return ProjectParser.parse(updatedProject);
     }
 }

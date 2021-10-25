@@ -1,11 +1,8 @@
 package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
-import com.testmonitor.parsers.TestCaseParser;
 import com.testmonitor.parsers.TestResultParser;
-import com.testmonitor.parsers.TestRunParser;
 import com.testmonitor.resources.Project;
-import com.testmonitor.resources.TestCase;
 import com.testmonitor.resources.TestResult;
 import org.json.JSONObject;
 
@@ -56,7 +53,7 @@ public class TestResults
      */
     public ArrayList<TestResult> list(Integer page)
     {
-        return TestResultParser.Parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" + this.projectId));
+        return TestResultParser.parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" + this.projectId));
     }
 
     /**
@@ -64,7 +61,7 @@ public class TestResults
      */
     public ArrayList<TestResult> list(Integer page, Integer limit)
     {
-        return TestResultParser.Parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
+        return TestResultParser.parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
     }
 
     /**
@@ -78,7 +75,7 @@ public class TestResults
 
         HashMap<String, Object> testResult = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return TestResultParser.Parse(testResult);
+        return TestResultParser.parse(testResult);
     }
 
     /**
@@ -90,7 +87,7 @@ public class TestResults
      */
     public ArrayList<TestResult> search(String search)
     {
-        return TestResultParser.Parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
+        return TestResultParser.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
     }
 
     /**
@@ -106,7 +103,7 @@ public class TestResults
 
         HashMap<String, Object> newTestResult = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return TestResultParser.Parse(newTestResult);
+        return TestResultParser.parse(newTestResult);
     }
 
     /**
@@ -122,7 +119,7 @@ public class TestResults
 
         HashMap<String, Object> updatedTestResult = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return TestResultParser.Parse(updatedTestResult);
+        return TestResultParser.parse(updatedTestResult);
     }
 
     /**

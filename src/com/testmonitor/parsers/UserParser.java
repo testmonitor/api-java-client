@@ -1,6 +1,5 @@
 package com.testmonitor.parsers;
 
-import com.testmonitor.resources.Project;
 import com.testmonitor.resources.User;
 import org.json.JSONObject;
 
@@ -15,14 +14,14 @@ public class UserParser {
      *
      * @return A parsed list of users
      */
-    public static ArrayList<User> Parse(JSONObject response)
+    public static ArrayList<User> parse(JSONObject response)
     {
         ArrayList<User> users = new ArrayList<User>();
 
         for (Object obj : response.getJSONArray("data").toList()) {
             HashMap<String, Object> user = (HashMap<String, Object>) obj;
 
-            users.add(Parse(user));
+            users.add(parse(user));
         }
 
         return users;
@@ -35,7 +34,7 @@ public class UserParser {
      *
      * @return The parsed project
      */
-    public static User Parse(HashMap<String, Object> item)
+    public static User parse(HashMap<String, Object> item)
     {
         User user = new User();
 

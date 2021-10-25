@@ -1,18 +1,13 @@
 package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
-import com.testmonitor.parsers.TestRunParser;
 import com.testmonitor.parsers.TestSuiteParser;
 import com.testmonitor.resources.Project;
-import com.testmonitor.resources.TestRun;
 import com.testmonitor.resources.TestSuite;
-import org.apache.hc.core5.http.NameValuePair;
-import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class TestSuites
 {
@@ -57,7 +52,7 @@ public class TestSuites
      */
     public ArrayList<TestSuite> list(Integer page)
     {
-        return TestSuiteParser.Parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" + this.projectId));
+        return TestSuiteParser.parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" + this.projectId));
     }
 
     /**
@@ -65,7 +60,7 @@ public class TestSuites
      */
     public ArrayList<TestSuite> list(Integer page, Integer limit)
     {
-        return TestSuiteParser.Parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
+        return TestSuiteParser.parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
     }
 
     /**
@@ -92,7 +87,7 @@ public class TestSuites
      */
     public ArrayList<TestSuite> search(String search)
     {
-        return TestSuiteParser.Parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
+        return TestSuiteParser.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
     }
 
     /**
@@ -159,6 +154,6 @@ public class TestSuites
 
         HashMap<String, Object> updatedTestSuite = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return TestSuiteParser.Parse(updatedTestSuite);
+        return TestSuiteParser.parse(updatedTestSuite);
     }
 }

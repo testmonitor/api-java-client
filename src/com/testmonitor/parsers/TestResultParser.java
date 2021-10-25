@@ -13,14 +13,14 @@ public class TestResultParser {
      *
      * @return A parsed list of test results
      */
-    public static ArrayList<TestResult> Parse(JSONObject response)
+    public static ArrayList<TestResult> parse(JSONObject response)
     {
         ArrayList<TestResult> testResults = new ArrayList<TestResult>();
 
         for (Object obj : response.getJSONArray("data").toList()) {
             HashMap<String, Object> testResult = (HashMap<String, Object>) obj;
 
-            testResults.add(Parse(testResult));
+            testResults.add(parse(testResult));
         }
 
         return testResults;
@@ -33,7 +33,7 @@ public class TestResultParser {
      *
      * @return The parsed milestone
      */
-    public static TestResult Parse(HashMap<String, Object> item)
+    public static TestResult parse(HashMap<String, Object> item)
     {
         TestResult testResult = new TestResult();
 

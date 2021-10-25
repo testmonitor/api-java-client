@@ -1,12 +1,9 @@
 package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
-import com.testmonitor.parsers.TestResultParser;
 import com.testmonitor.parsers.TestRunParser;
 import com.testmonitor.resources.Project;
-import com.testmonitor.resources.TestResult;
 import com.testmonitor.resources.TestRun;
-import com.testmonitor.resources.Milestone;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -57,7 +54,7 @@ public class TestRuns
      */
     public ArrayList<TestRun> list(Integer page)
     {
-        return TestRunParser.Parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" + this.projectId));
+        return TestRunParser.parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" + this.projectId));
     }
 
     /**
@@ -65,7 +62,7 @@ public class TestRuns
      */
     public ArrayList<TestRun> list(Integer page, Integer limit)
     {
-        return TestRunParser.Parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
+        return TestRunParser.parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
     }
 
     /**
@@ -79,7 +76,7 @@ public class TestRuns
 
         HashMap<String, Object> testRun = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return TestRunParser.Parse(testRun);
+        return TestRunParser.parse(testRun);
     }
 
     /**
@@ -91,7 +88,7 @@ public class TestRuns
      */
     public ArrayList<TestRun> search(String search)
     {
-        return TestRunParser.Parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
+        return TestRunParser.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
     }
 
     /**
@@ -103,7 +100,7 @@ public class TestRuns
      */
     public ArrayList<TestRun> search(String search, Integer milestoneId)
     {
-        return TestRunParser.Parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&test_suite_id=" + milestoneId + "%query=" + search));
+        return TestRunParser.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&test_suite_id=" + milestoneId + "%query=" + search));
     }
 
     /**
@@ -183,7 +180,7 @@ public class TestRuns
 
         HashMap<String, Object> updatedTestRun = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return TestRunParser.Parse(updatedTestRun);
+        return TestRunParser.parse(updatedTestRun);
     }
 
     /**
@@ -205,7 +202,7 @@ public class TestRuns
 
         HashMap<String, Object> updatedTestRun = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return TestRunParser.Parse(updatedTestRun);
+        return TestRunParser.parse(updatedTestRun);
     }
 
     /**
@@ -227,6 +224,6 @@ public class TestRuns
 
         HashMap<String, Object> updatedTestRun = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return TestRunParser.Parse(updatedTestRun);
+        return TestRunParser.parse(updatedTestRun);
     }
 }

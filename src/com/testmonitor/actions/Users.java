@@ -1,11 +1,7 @@
 package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
-import com.testmonitor.parsers.MilestoneParser;
-import com.testmonitor.parsers.ProjectParser;
 import com.testmonitor.parsers.UserParser;
-import com.testmonitor.resources.Milestone;
-import com.testmonitor.resources.Project;
 import com.testmonitor.resources.User;
 import org.json.JSONObject;
 
@@ -42,7 +38,7 @@ public class Users
      */
     public ArrayList<User> list(Integer page)
     {
-        return UserParser.Parse(this.connector.get(this.plural + "?page=" + page));
+        return UserParser.parse(this.connector.get(this.plural + "?page=" + page));
     }
 
     /**
@@ -50,7 +46,7 @@ public class Users
      */
     public ArrayList<User> list(Integer page, Integer limit)
     {
-        return UserParser.Parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit));
+        return UserParser.parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit));
     }
 
     /**
@@ -64,6 +60,6 @@ public class Users
 
         HashMap<String, Object> user = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return UserParser.Parse(user);
+        return UserParser.parse(user);
     }
 }

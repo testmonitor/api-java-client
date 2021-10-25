@@ -14,14 +14,14 @@ public class MilestoneParser {
      *
      * @return A parsed list of projects
      */
-    public static ArrayList<Milestone> Parse(JSONObject response)
+    public static ArrayList<Milestone> parse(JSONObject response)
     {
         ArrayList<Milestone> milestones = new ArrayList<Milestone>();
 
         for (Object obj : response.getJSONArray("data").toList()) {
             HashMap<String, Object> milestone = (HashMap<String, Object>) obj;
 
-            milestones.add(Parse(milestone));
+            milestones.add(parse(milestone));
         }
 
         return milestones;
@@ -34,7 +34,7 @@ public class MilestoneParser {
      *
      * @return The parsed milestone
      */
-    public static Milestone Parse(HashMap<String, Object> item)
+    public static Milestone parse(HashMap<String, Object> item)
     {
         Milestone milestone = new Milestone();
 
