@@ -12,10 +12,6 @@ public class Projects
 {
     private final Connector connector;
 
-    private final String singular = "project";
-
-    private final String plural = "projects";
-
     /**
      *
      * @param connector The TestMonitor connector to perfom HTTP requests
@@ -38,7 +34,7 @@ public class Projects
      */
     public ArrayList<Project> list(Integer page)
     {
-        return ProjectParser.parse(this.connector.get(this.plural + "?page=" + page));
+        return ProjectParser.parse(this.connector.get("projects/?page=" + page));
     }
 
     /**
@@ -46,7 +42,7 @@ public class Projects
      */
     public ArrayList<Project> list(Integer page, Integer limit)
     {
-        return ProjectParser.parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit));
+        return ProjectParser.parse(this.connector.get("projects?page=" + page + "&limit=" + limit));
     }
 
     /**
@@ -58,7 +54,7 @@ public class Projects
      */
     public Project get(Integer id)
     {
-        JSONObject response = this.connector.get(this.plural + "/" + id);
+        JSONObject response = this.connector.get("projects/" + id);
 
         HashMap<String, Object> project = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
@@ -74,7 +70,7 @@ public class Projects
      */
     public Project update(Project project)
     {
-        JSONObject response = this.connector.put(this.plural + "/" + project.getId(), project.toHttpParams());
+        JSONObject response = this.connector.put( "projects/" + project.getId(), project.toHttpParams());
 
         HashMap<String, Object> updatedProject = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 

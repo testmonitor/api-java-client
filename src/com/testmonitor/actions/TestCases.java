@@ -14,10 +14,6 @@ public class TestCases
 {
     private final Connector connector;
 
-    private final String singular = "test-case";
-
-    private final String plural = "test-cases";
-
     private final Integer projectId;
 
     /**
@@ -53,7 +49,7 @@ public class TestCases
      */
     public ArrayList<TestCase> list(Integer page)
     {
-        return TestCaseParser.parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" + this.projectId));
+        return TestCaseParser.parse(this.connector.get("test-cases?page=" + page + "&project_id=" + this.projectId));
     }
 
     /**
@@ -61,7 +57,7 @@ public class TestCases
      */
     public ArrayList<TestCase> list(Integer page, Integer limit)
     {
-        return TestCaseParser.parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
+        return TestCaseParser.parse(this.connector.get("test-cases?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
     }
 
     /**
@@ -71,7 +67,7 @@ public class TestCases
      */
     public TestCase get(Integer id)
     {
-        JSONObject response = this.connector.get(this.plural + "/" + id + "?project_id=" + this.projectId);
+        JSONObject response = this.connector.get("test-cases/" + id + "?project_id=" + this.projectId);
 
         HashMap<String, Object> testCase = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
@@ -87,7 +83,7 @@ public class TestCases
      */
     public ArrayList<TestCase> search(String search)
     {
-        return TestCaseParser.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
+        return TestCaseParser.parse(this.connector.get("test-cases/?project_id=" + this.projectId + "&query=" + search));
     }
 
     /**
@@ -99,7 +95,7 @@ public class TestCases
      */
     public ArrayList<TestCase> search(String search, Integer testSuiteId)
     {
-        ArrayList<TestCase> testCases = TestCaseParser.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&test_suite_id=" + testSuiteId + "&query=" + search));
+        ArrayList<TestCase> testCases = TestCaseParser.parse(this.connector.get("test-cases/?project_id=" + this.projectId + "&test_suite_id=" + testSuiteId + "&query=" + search));
 
         testCases.removeIf(testCase -> !testCase.getTestSuiteId().equals(testSuiteId));
 
@@ -115,7 +111,7 @@ public class TestCases
      */
     public TestCase create(TestCase testCase)
     {
-        JSONObject response = this.connector.post(this.plural, testCase.toHttpParams());
+        JSONObject response = this.connector.post("test-cases", testCase.toHttpParams());
 
         testCase.setId(response.getJSONObject("data").get("id").toString());
 
@@ -191,7 +187,7 @@ public class TestCases
      */
     public TestCase update(TestCase testCase)
     {
-        JSONObject response = this.connector.put(this.plural + "/" + testCase.getId(), testCase.toHttpParams());
+        JSONObject response = this.connector.put("test-cases/" + testCase.getId(), testCase.toHttpParams());
 
         HashMap<String, Object> updatedTestCase = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 

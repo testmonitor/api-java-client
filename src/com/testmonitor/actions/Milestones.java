@@ -12,10 +12,6 @@ public class Milestones
 {
     private final Connector connector;
 
-    private final String singular = "milestone";
-
-    private final String plural = "milestones";
-
     private final Integer projectId;
 
     /**
@@ -51,7 +47,7 @@ public class Milestones
      */
     public ArrayList<Milestone> list(Integer page)
     {
-        return MilestoneParser.parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" +  this.projectId));
+        return MilestoneParser.parse(this.connector.get("milestones/?page=" + page + "&project_id=" +  this.projectId));
     }
 
     /**
@@ -59,7 +55,7 @@ public class Milestones
      */
     public ArrayList<Milestone> list(Integer page, Integer limit)
     {
-        return MilestoneParser.parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" +  this.projectId));
+        return MilestoneParser.parse(this.connector.get("milestones/?page=" + page + "&limit=" + limit + "&project_id=" +  this.projectId));
     }
 
     /**
@@ -69,7 +65,7 @@ public class Milestones
      */
     public Milestone get(Integer id)
     {
-        JSONObject response = this.connector.get(this.plural + "/" + id);
+        JSONObject response = this.connector.get("milestones/" + id);
 
         HashMap<String, Object> milestone = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
@@ -85,7 +81,7 @@ public class Milestones
      */
     public ArrayList<Milestone> search(String search)
     {
-        return MilestoneParser.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
+        return MilestoneParser.parse(this.connector.get("milestones/?project_id=" + this.projectId + "&query=" + search));
     }
 
     /**
@@ -115,7 +111,7 @@ public class Milestones
      */
     public Milestone create(Milestone milestone)
     {
-        JSONObject response = this.connector.post(this.plural, milestone.toHttpParams());
+        JSONObject response = this.connector.post("milestones", milestone.toHttpParams());
 
         milestone.setId(response.getJSONObject("data").get("id").toString());
 
@@ -149,7 +145,7 @@ public class Milestones
      */
     public Milestone update(Milestone milestone)
     {
-        JSONObject response = this.connector.put(this.plural + "/" + milestone.getId(), milestone.toHttpParams());
+        JSONObject response = this.connector.put("milestones/" + milestone.getId(), milestone.toHttpParams());
 
         HashMap<String, Object> updatedMilestone = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 

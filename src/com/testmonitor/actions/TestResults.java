@@ -14,10 +14,6 @@ public class TestResults
 {
     private final Connector connector;
 
-    private final String singular = "test-result";
-
-    private final String plural = "test-results";
-
     private final Integer projectId;
 
     /**
@@ -53,7 +49,7 @@ public class TestResults
      */
     public ArrayList<TestResult> list(Integer page)
     {
-        return TestResultParser.parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" + this.projectId));
+        return TestResultParser.parse(this.connector.get("test-results?page=" + page + "&project_id=" + this.projectId));
     }
 
     /**
@@ -61,7 +57,7 @@ public class TestResults
      */
     public ArrayList<TestResult> list(Integer page, Integer limit)
     {
-        return TestResultParser.parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
+        return TestResultParser.parse(this.connector.get("test-results?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
     }
 
     /**
@@ -71,7 +67,7 @@ public class TestResults
      */
     public TestResult get(Integer id)
     {
-        JSONObject response = this.connector.get(this.plural + "/" + id);
+        JSONObject response = this.connector.get("test-results/" + id);
 
         HashMap<String, Object> testResult = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
@@ -87,7 +83,7 @@ public class TestResults
      */
     public ArrayList<TestResult> search(String search)
     {
-        return TestResultParser.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
+        return TestResultParser.parse(this.connector.get("test-results/?project_id=" + this.projectId + "&query=" + search));
     }
 
     /**
@@ -99,7 +95,7 @@ public class TestResults
      */
     public TestResult create(TestResult testResult)
     {
-        JSONObject response = this.connector.post(this.plural, testResult.toHttpParams());
+        JSONObject response = this.connector.post("test-results", testResult.toHttpParams());
 
         HashMap<String, Object> newTestResult = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
@@ -115,7 +111,7 @@ public class TestResults
      */
     public TestResult update(TestResult testResult)
     {
-        JSONObject response = this.connector.put(this.plural + "/" + testResult.getId(), testResult.toHttpParams());
+        JSONObject response = this.connector.put("test-results/" + testResult.getId(), testResult.toHttpParams());
 
         HashMap<String, Object> updatedTestResult = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
@@ -131,7 +127,7 @@ public class TestResults
      */
     public TestResult addAttachment(TestResult testResult, File attachment)
     {
-        this.connector.postAttachment(this.singular + "/" + testResult.getId()  + "/attachments", attachment);
+        this.connector.postAttachment("test-result/" + testResult.getId()  + "/attachments", attachment);
 
         return testResult;
     }

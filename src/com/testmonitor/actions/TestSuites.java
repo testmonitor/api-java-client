@@ -13,10 +13,6 @@ public class TestSuites
 {
     private final Connector connector;
 
-    private final String singular = "test-suite";
-
-    private final String plural = "test-suites";
-
     private final Integer projectId;
 
     /**
@@ -52,7 +48,7 @@ public class TestSuites
      */
     public ArrayList<TestSuite> list(Integer page)
     {
-        return TestSuiteParser.parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" + this.projectId));
+        return TestSuiteParser.parse(this.connector.get("test-suites?page=" + page + "&project_id=" + this.projectId));
     }
 
     /**
@@ -60,7 +56,7 @@ public class TestSuites
      */
     public ArrayList<TestSuite> list(Integer page, Integer limit)
     {
-        return TestSuiteParser.parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
+        return TestSuiteParser.parse(this.connector.get("test-suites?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
     }
 
     /**
@@ -70,7 +66,7 @@ public class TestSuites
      */
     public TestSuite get(Integer id)
     {
-        JSONObject response = this.connector.get(this.plural + "/" + id);
+        JSONObject response = this.connector.get("test-suites/" + id);
 
         return new TestSuite(
             response.getJSONObject("data").get("id").toString(),
@@ -87,7 +83,7 @@ public class TestSuites
      */
     public ArrayList<TestSuite> search(String search)
     {
-        return TestSuiteParser.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
+        return TestSuiteParser.parse(this.connector.get("test-suites/?project_id=" + this.projectId + "&query=" + search));
     }
 
     /**
@@ -116,7 +112,7 @@ public class TestSuites
      */
     public TestSuite create(TestSuite testSuite)
     {
-        JSONObject response = this.connector.post(this.plural, testSuite.toHttpParams());
+        JSONObject response = this.connector.post("test-suites", testSuite.toHttpParams());
 
         testSuite.setId(response.getJSONObject("data").get("id").toString());
 
@@ -150,7 +146,7 @@ public class TestSuites
      */
     public TestSuite update(TestSuite testSuite)
     {
-        JSONObject response = this.connector.put(this.plural + "/" + testSuite.getId(), testSuite.toHttpParams());
+        JSONObject response = this.connector.put("test-suites/" + testSuite.getId(), testSuite.toHttpParams());
 
         HashMap<String, Object> updatedTestSuite = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 

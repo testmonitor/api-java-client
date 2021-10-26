@@ -15,10 +15,6 @@ public class TestRuns
 {
     private final Connector connector;
 
-    private final String singular = "test-run";
-
-    private final String plural = "test-runs";
-
     private final Integer projectId;
 
     /**
@@ -54,7 +50,7 @@ public class TestRuns
      */
     public ArrayList<TestRun> list(Integer page)
     {
-        return TestRunParser.parse(this.connector.get(this.plural + "?page=" + page + "&project_id=" + this.projectId));
+        return TestRunParser.parse(this.connector.get("test-runs?page=" + page + "&project_id=" + this.projectId));
     }
 
     /**
@@ -62,7 +58,7 @@ public class TestRuns
      */
     public ArrayList<TestRun> list(Integer page, Integer limit)
     {
-        return TestRunParser.parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
+        return TestRunParser.parse(this.connector.get("test-runs?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
     }
 
     /**
@@ -72,7 +68,7 @@ public class TestRuns
      */
     public TestRun get(Integer id)
     {
-        JSONObject response = this.connector.get(this.plural + "/" + id + "?project_id=" + this.projectId);
+        JSONObject response = this.connector.get("test-runs/" + id + "?project_id=" + this.projectId);
 
         HashMap<String, Object> testRun = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
@@ -88,7 +84,7 @@ public class TestRuns
      */
     public ArrayList<TestRun> search(String search)
     {
-        return TestRunParser.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&query=" + search));
+        return TestRunParser.parse(this.connector.get("test-runs/?project_id=" + this.projectId + "&query=" + search));
     }
 
     /**
@@ -100,7 +96,7 @@ public class TestRuns
      */
     public ArrayList<TestRun> search(String search, Integer milestoneId)
     {
-        return TestRunParser.parse(this.connector.get(this.plural + "/?project_id=" + this.projectId + "&test_suite_id=" + milestoneId + "%query=" + search));
+        return TestRunParser.parse(this.connector.get("test-runs/?project_id=" + this.projectId + "&test_suite_id=" + milestoneId + "%query=" + search));
     }
 
     /**
@@ -112,7 +108,7 @@ public class TestRuns
      */
     public TestRun create(TestRun testRun)
     {
-        JSONObject response = this.connector.post(this.plural + "?project_id=" + this.projectId, testRun.toHttpParams());
+        JSONObject response = this.connector.post("test-runs?project_id=" + this.projectId, testRun.toHttpParams());
 
         testRun.setId(response.getJSONObject("data").get("id").toString());
 
@@ -176,7 +172,7 @@ public class TestRuns
      */
     public TestRun update(TestRun testRun)
     {
-        JSONObject response = this.connector.put(this.plural + "/" + testRun.getId(), testRun.toHttpParams());
+        JSONObject response = this.connector.put("test-runs/" + testRun.getId(), testRun.toHttpParams());
 
         HashMap<String, Object> updatedTestRun = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
@@ -192,13 +188,13 @@ public class TestRuns
      */
     public TestRun addUsers(TestRun testRun, List<Integer> userIds)
     {
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        List<NameValuePair> params = new ArrayList<>();
 
         for (Integer userId : userIds) {
             params.add(new BasicNameValuePair("users[]", userId.toString()));
         }
 
-        JSONObject response = this.connector.put(this.plural + "/" + testRun.getId(), params);
+        JSONObject response = this.connector.put("test-runs/" + testRun.getId(), params);
 
         HashMap<String, Object> updatedTestRun = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
@@ -214,13 +210,13 @@ public class TestRuns
      */
     public TestRun addTestCases(TestRun testRun, List<Integer> testCaseIds)
     {
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        List<NameValuePair> params = new ArrayList<>();
 
         for (Integer testCaseId : testCaseIds) {
             params.add(new BasicNameValuePair("test_cases[]", testCaseId.toString()));
         }
 
-        JSONObject response = this.connector.put(this.plural + "/" + testRun.getId(), params);
+        JSONObject response = this.connector.put("test-runs/" + testRun.getId(), params);
 
         HashMap<String, Object> updatedTestRun = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 

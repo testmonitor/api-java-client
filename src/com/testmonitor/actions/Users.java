@@ -12,11 +12,6 @@ public class Users
 {
     private final Connector connector;
 
-    private final String singular = "user";
-
-    private final String plural = "users";
-
-
     /**
      * @param connector The TestMonitor connector to perfom HTTP requests
      */
@@ -38,7 +33,7 @@ public class Users
      */
     public ArrayList<User> list(Integer page)
     {
-        return UserParser.parse(this.connector.get(this.plural + "?page=" + page));
+        return UserParser.parse(this.connector.get("users?page=" + page));
     }
 
     /**
@@ -46,7 +41,7 @@ public class Users
      */
     public ArrayList<User> list(Integer page, Integer limit)
     {
-        return UserParser.parse(this.connector.get(this.plural + "?page=" + page + "&limit=" + limit));
+        return UserParser.parse(this.connector.get("users?page=" + page + "&limit=" + limit));
     }
 
     /**
