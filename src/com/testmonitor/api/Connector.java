@@ -15,10 +15,12 @@ import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.*;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.net.URIBuilder;
 import org.json.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 
@@ -49,6 +51,24 @@ public class Connector {
     public JSONObject get(String uri)
     {
         final HttpGet httpget = new HttpGet(this.baseUrl + uri.replace(" ", "%20"));
+
+        return this.request(httpget);
+    }
+
+    public JSONObject get(String uri, List<NameValuePair> params)
+    {
+        URIBuilder uriBuilder = null;
+
+        try {
+            uriBuilder = new URIBuilder(this.baseUrl + uri);
+            uriBuilder.addParameters(params);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        final HttpGet httpget = new HttpGet(uriBuilder.toString());
+
+        httpget.setEntity(new UrlEncodedFormEntity(params));
 
         return this.request(httpget);
     }

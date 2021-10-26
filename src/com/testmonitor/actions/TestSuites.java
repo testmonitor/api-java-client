@@ -2,6 +2,7 @@ package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
 import com.testmonitor.parsers.TestSuiteParser;
+import com.testmonitor.parsers.UserParser;
 import com.testmonitor.resources.Project;
 import com.testmonitor.resources.TestSuite;
 import org.json.JSONObject;
@@ -58,10 +59,9 @@ public class TestSuites
     {
         JSONObject response = this.connector.get("test-suites/" + id);
 
-        return new TestSuite(
-            response.getJSONObject("data").get("id").toString(),
-            response.getJSONObject("data").get("name").toString()
-        );
+        HashMap<String, Object> testSuite = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return TestSuiteParser.parse(testSuite);
     }
 
     /**

@@ -4,9 +4,12 @@ import com.testmonitor.api.Connector;
 import com.testmonitor.parsers.MilestoneParser;
 import com.testmonitor.resources.Project;
 import com.testmonitor.resources.Milestone;
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Milestones
 {
@@ -37,7 +40,12 @@ public class Milestones
      */
     public ArrayList<Milestone> list(Integer page)
     {
-        return MilestoneParser.parse(this.connector.get("milestones/?page=" + page + "&project_id=" +  this.projectId));
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("page", page.toString()));
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        return MilestoneParser.parse(this.connector.get("milestones", params));
     }
 
     /**
