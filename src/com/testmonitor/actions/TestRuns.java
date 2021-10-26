@@ -19,16 +19,6 @@ public class TestRuns
 
     /**
      * @param connector The TestMonitor connector to perfom HTTP requests
-     * @param projectId The project id you want to work on
-     */
-    public TestRuns(Connector connector, Integer projectId)
-    {
-        this.connector = connector;
-        this.projectId = projectId;
-    }
-
-    /**
-     * @param connector The TestMonitor connector to perfom HTTP requests
      * @param project The project you want to work on
      */
     public TestRuns(Connector connector, Project project)
