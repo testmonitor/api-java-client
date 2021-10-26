@@ -17,10 +17,6 @@ public class Milestone {
 
     private Integer projectId;
 
-    public Milestone() {
-
-    }
-
     public Milestone setId(Integer id) {
         this.id = id;
 
@@ -84,7 +80,7 @@ public class Milestone {
     }
 
     public List<NameValuePair> toHttpParams() {
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("name", this.name));
         params.add(new BasicNameValuePair("description", this.description));
