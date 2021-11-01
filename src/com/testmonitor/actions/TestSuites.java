@@ -76,13 +76,18 @@ public class TestSuites
     /**
      * Search a test suite
      *
-     * @param search The search string
+     * @param query The search string
      *
      * @return A list of results
      */
-    public ArrayList<TestSuite> search(String search)
+    public ArrayList<TestSuite> search(String query)
     {
-        return TestSuiteParser.parse(this.connector.get("test-suites/?project_id=" + this.projectId + "&query=" + search));
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("query", query));
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        return TestSuiteParser.parse(this.connector.get("test-suites", params));
     }
 
     /**
@@ -113,9 +118,9 @@ public class TestSuites
     {
         JSONObject response = this.connector.post("test-suites", testSuite.toHttpParams());
 
-        testSuite.setId(response.getJSONObject("data").get("id").toString());
+        HashMap<String, Object> updatedTestSuite = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
-        return testSuite;
+        return TestSuiteParser.parse(updatedTestSuite);
     }
 
     /**
