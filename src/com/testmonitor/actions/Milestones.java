@@ -40,12 +40,7 @@ public class Milestones
      */
     public ArrayList<Milestone> list(Integer page)
     {
-        List<NameValuePair> params = new ArrayList<>();
-
-        params.add(new BasicNameValuePair("page", page.toString()));
-        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
-
-        return MilestoneParser.parse(this.connector.get("milestones", params));
+        return this.list(page, 15);
     }
 
     /**
@@ -53,7 +48,13 @@ public class Milestones
      */
     public ArrayList<Milestone> list(Integer page, Integer limit)
     {
-        return MilestoneParser.parse(this.connector.get("milestones/?page=" + page + "&limit=" + limit + "&project_id=" +  this.projectId));
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("page", page.toString()));
+        params.add(new BasicNameValuePair("limit", limit.toString()));
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        return MilestoneParser.parse(this.connector.get("milestones", params));
     }
 
     /**

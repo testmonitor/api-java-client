@@ -5,10 +5,13 @@ import com.testmonitor.parsers.TestSuiteParser;
 import com.testmonitor.parsers.UserParser;
 import com.testmonitor.resources.Project;
 import com.testmonitor.resources.TestSuite;
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class TestSuites
 {
@@ -39,7 +42,7 @@ public class TestSuites
      */
     public ArrayList<TestSuite> list(Integer page)
     {
-        return TestSuiteParser.parse(this.connector.get("test-suites?page=" + page + "&project_id=" + this.projectId));
+        return this.list(page, 15);
     }
 
     /**
@@ -47,7 +50,13 @@ public class TestSuites
      */
     public ArrayList<TestSuite> list(Integer page, Integer limit)
     {
-        return TestSuiteParser.parse(this.connector.get("test-suites?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("page", page.toString()));
+        params.add(new BasicNameValuePair("limit", limit.toString()));
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        return TestSuiteParser.parse(this.connector.get("test-suites", params));
     }
 
     /**

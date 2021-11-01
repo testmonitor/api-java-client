@@ -4,11 +4,14 @@ import com.testmonitor.api.Connector;
 import com.testmonitor.parsers.TestResultParser;
 import com.testmonitor.resources.Project;
 import com.testmonitor.resources.TestResult;
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class TestResults
 {
@@ -39,7 +42,7 @@ public class TestResults
      */
     public ArrayList<TestResult> list(Integer page)
     {
-        return TestResultParser.parse(this.connector.get("test-results?page=" + page + "&project_id=" + this.projectId));
+        return this.list(page, 15);
     }
 
     /**
@@ -47,7 +50,13 @@ public class TestResults
      */
     public ArrayList<TestResult> list(Integer page, Integer limit)
     {
-        return TestResultParser.parse(this.connector.get("test-results?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("page", page.toString()));
+        params.add(new BasicNameValuePair("limit", limit.toString()));
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        return TestResultParser.parse(this.connector.get("test-results", params));
     }
 
     /**

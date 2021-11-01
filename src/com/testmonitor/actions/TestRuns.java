@@ -40,7 +40,7 @@ public class TestRuns
      */
     public ArrayList<TestRun> list(Integer page)
     {
-        return TestRunParser.parse(this.connector.get("test-runs?page=" + page + "&project_id=" + this.projectId));
+        return this.list(page, 15);
     }
 
     /**
@@ -48,7 +48,13 @@ public class TestRuns
      */
     public ArrayList<TestRun> list(Integer page, Integer limit)
     {
-        return TestRunParser.parse(this.connector.get("test-runs?page=" + page + "&limit=" + limit + "&project_id=" + this.projectId));
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("page", page.toString()));
+        params.add(new BasicNameValuePair("limit", limit.toString()));
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        return TestRunParser.parse(this.connector.get("test-runs", params));
     }
 
     /**

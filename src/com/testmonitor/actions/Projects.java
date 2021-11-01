@@ -3,10 +3,13 @@ package com.testmonitor.actions;
 import com.testmonitor.api.Connector;
 import com.testmonitor.parsers.ProjectParser;
 import com.testmonitor.resources.Project;
+import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Projects
 {
@@ -34,7 +37,7 @@ public class Projects
      */
     public ArrayList<Project> list(Integer page)
     {
-        return ProjectParser.parse(this.connector.get("projects/?page=" + page));
+        return this.list(page, 15);
     }
 
     /**
@@ -42,7 +45,12 @@ public class Projects
      */
     public ArrayList<Project> list(Integer page, Integer limit)
     {
-        return ProjectParser.parse(this.connector.get("projects?page=" + page + "&limit=" + limit));
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("page", page.toString()));
+        params.add(new BasicNameValuePair("limit", limit.toString()));
+
+        return ProjectParser.parse(this.connector.get("projects", params));
     }
 
     /**
