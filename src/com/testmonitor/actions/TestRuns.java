@@ -64,7 +64,11 @@ public class TestRuns
      */
     public TestRun get(Integer id)
     {
-        JSONObject response = this.connector.get("test-runs/" + id + "?project_id=" + this.projectId);
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        JSONObject response = this.connector.get("test-runs/" + id, params);
 
         HashMap<String, Object> testRun = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
@@ -80,7 +84,12 @@ public class TestRuns
      */
     public ArrayList<TestRun> search(String search)
     {
-        return TestRunParser.parse(this.connector.get("test-runs/?project_id=" + this.projectId + "&query=" + search));
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("query", search));
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        return TestRunParser.parse(this.connector.get("test-runs", params));
     }
 
     /**
@@ -92,7 +101,13 @@ public class TestRuns
      */
     public ArrayList<TestRun> search(String search, Integer milestoneId)
     {
-        return TestRunParser.parse(this.connector.get("test-runs/?project_id=" + this.projectId + "&test_suite_id=" + milestoneId + "%query=" + search));
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("query", search));
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+        params.add(new BasicNameValuePair("milestone_id", milestoneId.toString()));
+
+        return TestRunParser.parse(this.connector.get("test-runs", params));
     }
 
     /**
