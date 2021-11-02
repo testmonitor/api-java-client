@@ -66,7 +66,11 @@ public class TestCases
      */
     public TestCase get(Integer id)
     {
-        JSONObject response = this.connector.get("test-cases/" + id + "?project_id=" + this.projectId);
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        JSONObject response = this.connector.get("test-cases/" + id, params);
 
         HashMap<String, Object> testCase = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
@@ -82,6 +86,7 @@ public class TestCases
      */
     public ArrayList<TestCase> search(String search)
     {
+
         return TestCaseParser.parse(this.connector.get("test-cases/?project_id=" + this.projectId + "&query=" + search));
     }
 
