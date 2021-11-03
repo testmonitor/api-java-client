@@ -7,7 +7,12 @@ import com.testmonitor.resources.TestRun;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -136,20 +141,23 @@ public class TestRuns
      *
      * @return The test run
      */
-    public TestRun create(String name, String startsAt, String endsAt, Integer milestoneId)
+    public TestRun create(String name, Integer milestoneId)
     {
         TestRun testRun = new TestRun();
 
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime now = LocalDateTime.now();
+
         testRun.setName(name);
-        testRun.setStartsAt(startsAt);
-        testRun.setEndsAt(endsAt);
+        testRun.setStartsAt(dtf.format(now));
+        testRun.setEndsAt(dtf.format(now));
         testRun.setMilestoneId(milestoneId);
 
         return this.create(testRun);
     }
 
     /**
-     * Search or create a test case. When the test case is not found there will be a test case created.
+     * Search or create a test run. When the test run is not found there will be a test run created.
      *
      * @param testRun The search query
      *
@@ -157,7 +165,7 @@ public class TestRuns
      */
     public TestRun findOrCreate(TestRun testRun)
     {
-        return this.findOrCreate(testRun.getName(), testRun.getStartsAt(), testRun.getEndsAt(), testRun.getMilestoneId());
+        return this.findOrCreate(testRun.getName(), testRun.getMilestoneId());
     }
 
     /**
@@ -167,7 +175,7 @@ public class TestRuns
      *
      * @return The first result or a fresh created test case
      */
-    public TestRun findOrCreate(String search, String startsAt, String endsAt, Integer milestoneId)
+    public TestRun findOrCreate(String search, Integer milestoneId)
     {
         ArrayList<TestRun> testRuns = this.search(search);
 
@@ -175,7 +183,7 @@ public class TestRuns
             return testRuns.get(0);
         }
 
-        return this.create(search, startsAt, endsAt, milestoneId);
+        return this.create(search, milestoneId);
     }
 
     /**
