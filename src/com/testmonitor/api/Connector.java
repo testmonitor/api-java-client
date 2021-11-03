@@ -43,11 +43,21 @@ public class Connector {
         this.httpClient = HttpClients.createDefault();
     }
 
+    /**
+     * @return The TestMonitor API base url.
+     */
     protected String baseUrl()
     {
         return "https://" + this.domain + "/api/v1/";
     }
 
+    /**
+     * Perform a GET request.
+     *
+     * @param uri A relative path
+     *
+     * @return The HTTP response as a JSONObject.
+     */
     public JSONObject get(String uri)
     {
         final HttpGet httpget = new HttpGet(this.baseUrl + uri.replace(" ", "%20"));
@@ -55,6 +65,14 @@ public class Connector {
         return this.request(httpget);
     }
 
+    /**
+     * Perform a GET request with GET parameters.
+     *
+     * @param uri A relative path
+     * @param params Key/Value
+     *
+     * @return The HTTP response as a JSONObject.
+     */
     public JSONObject get(String uri, List<NameValuePair> params)
     {
         URIBuilder uriBuilder = null;
