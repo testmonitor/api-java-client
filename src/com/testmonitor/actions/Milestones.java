@@ -7,6 +7,9 @@ import com.testmonitor.resources.Milestone;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -95,12 +98,15 @@ public class Milestones
      *
      * @return The created milestone
      */
-    public Milestone create(String name, String endsAt)
+    public Milestone create(String name)
     {
         Milestone milestone = new Milestone();
 
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime now = LocalDateTime.now();
+
         milestone.setName(name);
-        milestone.setEndsAt(endsAt);
+        milestone.setEndsAt(dtf.format(now));
         milestone.setProjectId(this.projectId);
 
         return this.create(milestone);
@@ -129,7 +135,7 @@ public class Milestones
      *
      * @return The first result or a fresh created test suite
      */
-    public Milestone findOrCreate(String search, String endsAt)
+    public Milestone findOrCreate(String search)
     {
         ArrayList<Milestone> milestones = this.search(search);
 
@@ -137,7 +143,7 @@ public class Milestones
             return milestones.get(0);
         }
 
-        return this.create(search, endsAt);
+        return this.create(search);
     }
 
     /**
