@@ -74,7 +74,7 @@ public class TestResults
     }
 
     /**
-     * Search a test suite
+     * Search a test result
      *
      * @param search The search string
      *
@@ -82,7 +82,12 @@ public class TestResults
      */
     public ArrayList<TestResult> search(String search)
     {
-        return TestResultParser.parse(this.connector.get("test-results/?project_id=" + this.projectId + "&query=" + search));
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+        params.add(new BasicNameValuePair("query", this.projectId.toString()));
+
+        return TestResultParser.parse(this.connector.get("test-results", params));
     }
 
     /**
