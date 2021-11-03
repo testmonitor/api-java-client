@@ -86,8 +86,12 @@ public class TestCases
      */
     public ArrayList<TestCase> search(String search)
     {
+        List<NameValuePair> params = new ArrayList<>();
 
-        return TestCaseParser.parse(this.connector.get("test-cases/?project_id=" + this.projectId + "&query=" + search));
+        params.add(new BasicNameValuePair("query", search));
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        return TestCaseParser.parse(this.connector.get("test-cases", params));
     }
 
     /**
@@ -99,7 +103,7 @@ public class TestCases
      */
     public ArrayList<TestCase> search(String search, Integer testSuiteId)
     {
-        ArrayList<TestCase> testCases = TestCaseParser.parse(this.connector.get("test-cases/?project_id=" + this.projectId + "&test_suite_id=" + testSuiteId + "&query=" + search));
+        ArrayList<TestCase> testCases = this.search(search);
 
         testCases.removeIf(testCase -> !testCase.getTestSuiteId().equals(testSuiteId));
 

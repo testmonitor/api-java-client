@@ -119,11 +119,15 @@ public class TestRuns
      */
     public TestRun create(TestRun testRun)
     {
-        JSONObject response = this.connector.post("test-runs?project_id=" + this.projectId, testRun.toHttpParams());
+        List<NameValuePair> params = testRun.toHttpParams();
 
-        testRun.setId(response.getJSONObject("data").get("id").toString());
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
 
-        return testRun;
+        JSONObject response = this.connector.post("test-runs", params);
+
+        HashMap<String, Object> newTestRun = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return TestRunParser.parse(newTestRun);
     }
 
     /**

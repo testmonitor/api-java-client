@@ -80,7 +80,12 @@ public class Milestones
      */
     public ArrayList<Milestone> search(String search)
     {
-        return MilestoneParser.parse(this.connector.get("milestones/?project_id=" + this.projectId + "&query=" + search));
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("query", search));
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        return MilestoneParser.parse(this.connector.get("milestones", params));
     }
 
     /**
