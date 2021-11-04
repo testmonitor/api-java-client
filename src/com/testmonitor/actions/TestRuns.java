@@ -8,11 +8,9 @@ import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -63,9 +61,9 @@ public class TestRuns
     }
 
     /**
-     * @param id The test case ID
+     * @param id The test run ID
      *
-     * @return The test case that matches the ID
+     * @return The test run that matches the ID
      */
     public TestRun get(Integer id)
     {
@@ -81,7 +79,7 @@ public class TestRuns
     }
 
     /**
-     * Search a test case
+     * Search a test run
      *
      * @param search The search string
      *
@@ -98,7 +96,7 @@ public class TestRuns
     }
 
     /**
-     * Search a test case
+     * Search a test run
      *
      * @param search The search string
      *
@@ -116,7 +114,7 @@ public class TestRuns
     }
 
     /**
-     * Create a test case in TestMonitor
+     * Create a test run in TestMonitor
      *
      * @param testRun The test case your want to create
      *
@@ -169,7 +167,7 @@ public class TestRuns
     }
 
     /**
-     * Search or create a test case. When the test case is not found there will be a test case created.
+     * Search or create a test rub. When the test run is not found there will be a test run created.
      *
      * @param search The search query
      *

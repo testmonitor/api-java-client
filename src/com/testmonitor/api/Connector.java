@@ -91,6 +91,14 @@ public class Connector {
         return this.request(httpget);
     }
 
+    /**
+     * Perform a POST request.
+     *
+     * @param uri A relative path
+     * @param params The arguments to post
+     *
+     * @return The HTTP response as a JSONObject.
+     */
     public JSONObject post(String uri, List<NameValuePair> params)
     {
         final HttpPost httppost = new HttpPost(this.baseUrl + uri);
@@ -100,6 +108,14 @@ public class Connector {
         return this.request(httppost);
     }
 
+    /**
+     * Perform a PUT request.
+     *
+     * @param uri A relative path
+     * @param params The arguments to put
+     *
+     * @return The HTTP response as a JSONObject.
+     */
     public JSONObject put(String uri, List<NameValuePair> params)
     {
         final HttpPut httpput = new HttpPut(this.baseUrl + uri);
@@ -109,6 +125,14 @@ public class Connector {
         return this.request(httpput);
     }
 
+    /**
+     * Send am attachment.
+     *
+     * @param uri A relative path
+     * @param file the file you want to send as an attachment
+     *
+     * @return The HTTP response as a JSONObject.
+     */
     public JSONObject postAttachment(String uri, File file)
     {
         HttpPost post = new HttpPost(this.baseUrl + uri);
@@ -125,11 +149,18 @@ public class Connector {
         return this.request(post);
     }
 
+    /**
+     * Perform a request on teh TestMonitor API
+     *
+     * @param httpUriRequestBase
+     *
+     * @return HTTP response converted to JSON format
+     */
     public JSONObject request(HttpUriRequestBase httpUriRequestBase) {
         httpUriRequestBase.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + this.token);
         httpUriRequestBase.setHeader(HttpHeaders.ACCEPT, "application/json");
 
-        final HttpClientResponseHandler<String> responseHandler = new HttpClientResponseHandler<String>() {
+        final HttpClientResponseHandler<String> responseHandler = new HttpClientResponseHandler<>() {
             @Override
             public String handleResponse(
                     final ClassicHttpResponse response) throws IOException, ParseException {
