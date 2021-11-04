@@ -1,6 +1,8 @@
 /.idea/
 /out/
 out/
+/target/
+target/
 /src/com/testmonitor/Main.java
 /src/com/testmonitor/Main.class
 *.iml
