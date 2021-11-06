@@ -1,9 +1,37 @@
-/.idea/
-/out/
-out/
-/target/
-target/
-/src/com/testmonitor/Main.java
-/src/com/testmonitor/Main.class
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Intellij
+.idea/
 *.iml
-bin/*
+*.iws
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
+
+# Inclusions
+# !lib/**
+
+# Compiled Files
+*.class
+bin/
+build/
+java/build/**
+
+# Test Files
+src/com/testmonitor/Main.java
+
+# Documentation
+javadoc/
+
