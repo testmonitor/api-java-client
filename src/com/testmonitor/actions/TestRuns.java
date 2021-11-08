@@ -201,13 +201,13 @@ public class TestRuns
     }
 
     /**
-     * Add users to a test run
+     * Assign users to a test run
      *
      * @param testRun The test run you want to update
      *
      * @return A new instance of the test run
      */
-    public TestRun addUsers(TestRun testRun, List<Integer> userIds)
+    public TestRun assignUsers(TestRun testRun, List<Integer> userIds)
     {
         List<NameValuePair> params = new ArrayList<>();
 
@@ -223,35 +223,13 @@ public class TestRuns
     }
 
     /**
-     * Add test cases to a test run
+     * Assign new test cases to a test run
      *
      * @param testRun The test run you want to update
      *
      * @return A new instance of the test run
      */
-    public TestRun addTestCases(TestRun testRun, List<Integer> testCaseIds)
-    {
-        List<NameValuePair> params = new ArrayList<>();
-
-        for (Integer testCaseId : testCaseIds) {
-            params.add(new BasicNameValuePair("test_cases[]", testCaseId.toString()));
-        }
-
-        JSONObject response = this.connector.put("test-runs/" + testRun.getId(), params);
-
-        HashMap<String, Object> updatedTestRun = (HashMap<String, Object>) response.getJSONObject("data").toMap();
-
-        return TestRunParser.parse(updatedTestRun);
-    }
-
-    /**
-     * Merge new test cases to a test run
-     *
-     * @param testRun The test run you want to update
-     *
-     * @return A new instance of the test run
-     */
-    public TestRun mergeTestCases(TestRun testRun, List<Integer> testCaseIds)
+    public TestRun assignTestCases(TestRun testRun, List<Integer> testCaseIds)
     {
         List<NameValuePair> params = new ArrayList<>();
 
