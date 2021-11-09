@@ -60,9 +60,9 @@ public class TestResults
     }
 
     /**
-     * @param id The test suite ID
+     * @param id The test result ID
      *
-     * @return The test suite that matches the ID
+     * @return The test result that matches the ID
      */
     public TestResult get(Integer id)
     {
@@ -91,7 +91,7 @@ public class TestResults
     }
 
     /**
-     * Create a test suite with a given name.
+     * Create a test result
      *
      * @param testResult The name of the test result
      *
@@ -107,11 +107,11 @@ public class TestResults
     }
 
     /**
-     * Update a test results
+     * Update a test result
      *
      * @param testResult The test result you want to update
      *
-     * @return A new instance of the project
+     * @return A new instance of the test result
      */
     public TestResult update(TestResult testResult)
     {
@@ -125,7 +125,7 @@ public class TestResults
     /**
      * Update a test results
      *
-     * @param testResult The test result you want to update
+     * @param testResult The test result you want to update with an attachment
      *
      * @return A new instance of the project
      */

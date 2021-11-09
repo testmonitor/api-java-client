@@ -9,8 +9,6 @@ import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -85,7 +83,7 @@ public class TestRuns
      *
      * @param search The search string
      *
-     * @return A list of results
+     * @return A list of test runs
      */
     public ArrayList<TestRun> search(String search)
     {
@@ -102,7 +100,7 @@ public class TestRuns
      *
      * @param search The search string
      *
-     * @return A list of results
+     * @return A list of test runs
      */
     public ArrayList<TestRun> search(String search, Integer milestoneId)
     {
@@ -118,9 +116,9 @@ public class TestRuns
     /**
      * Create a test run in TestMonitor
      *
-     * @param testRun The test case your want to create
+     * @param testRun The test run your want to create
      *
-     * @return The created test case
+     * @return The created test run
      */
     public TestRun create(TestRun testRun)
     {
@@ -158,7 +156,7 @@ public class TestRuns
      *
      * @param testRun The search query
      *
-     * @return The first result or a fresh created test case
+     * @return The first result or a fresh created test run
      */
     public TestRun findOrCreate(TestRun testRun)
     {
@@ -171,7 +169,7 @@ public class TestRuns
      * @param search The search query
      * @param milestone The milestone of the test run
      *
-     * @return The first result or a fresh created test case
+     * @return The first result or a fresh created test run
      */
     public TestRun findOrCreate(String search, Milestone milestone)
     {
@@ -183,7 +181,7 @@ public class TestRuns
      *
      * @param search The search query
      *
-     * @return The first result or a fresh created test case
+     * @return The first result or a fresh created test run
      */
     public TestRun findOrCreate(String search, Integer milestoneId)
     {
