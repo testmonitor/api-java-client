@@ -35,3 +35,5 @@ src/com/testmonitor/Main.java
 # Documentation
 javadoc/
 
+/src/com/testmonitor/main/Main.java
+/src/com/testmonitor/main/Main.java

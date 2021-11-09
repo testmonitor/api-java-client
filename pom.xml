@@ -2,9 +2,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.testmonitor.client</groupId>
-	<artifactId>TestMonitorClient</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<groupId>com.testmonitor</groupId>
+	<artifactId>api-java-client</artifactId>
+	<version>1.0</version>
 	<name>TestMonitorClient</name>
 
 	<dependencies>
@@ -21,9 +21,12 @@
 			<artifactId>json</artifactId>
 			<version>20210307</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>
+		<sourceDirectory>${project.basedir}/src</sourceDirectory>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -34,6 +37,29 @@
 					<target>17</target>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>net.ju-n.maven.plugins</groupId>
+				<artifactId>checksum-maven-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>generate-artifact-checksum</id>
+						<phase>package</phase>
+						<goals>
+							<goal>files</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<fileSets>
+						<fileSet>
+							<directory>${project.build.directory}</directory>
+						</fileSet>
+					</fileSets>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>
