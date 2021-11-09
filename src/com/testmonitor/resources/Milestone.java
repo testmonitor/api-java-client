@@ -1,9 +1,17 @@
 package com.testmonitor.resources;
 
+import com.testmonitor.parsers.DateParser;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 
+import javax.swing.text.DateFormatter;
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Milestone {
@@ -13,7 +21,7 @@ public class Milestone {
 
     private String description;
 
-    private String endsAt;
+    private Date endsAt;
 
     private Integer projectId;
 
@@ -53,13 +61,13 @@ public class Milestone {
         return this.description;
     }
 
-    public Milestone setEndsAt(String endsAt) {
+    public Milestone setEndsAt(Date endsAt) {
         this.endsAt = endsAt;
 
         return this;
     }
 
-    public String getEndsAt() {
+    public Date getEndsAt() {
         return this.endsAt;
     }
 
@@ -84,18 +92,21 @@ public class Milestone {
 
         params.add(new BasicNameValuePair("name", this.name));
         params.add(new BasicNameValuePair("description", this.description));
-        params.add(new BasicNameValuePair("ends_at", this.endsAt));
+        params.add(new BasicNameValuePair("ends_at", DateParser.toDateString(this.endsAt)));
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
 
         return params;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
         return "ID: " + this.id + "\n" +
                 "NAME: " + this.name + "\n" +
                 "DESCRIPTION: " + this.description + "\n" +
                 "PROJECT_ID: " + this.projectId + "\n" +
-                "ENDS_AT: " + this.endsAt + "\n";
+                "ENDS_AT: " + DateParser.toDateString(this.endsAt) + "\n";
     }
 }

@@ -16,7 +16,7 @@ public class MilestoneParser {
      */
     public static ArrayList<Milestone> parse(JSONObject response)
     {
-        ArrayList<Milestone> milestones = new ArrayList<Milestone>();
+        ArrayList<Milestone> milestones = new ArrayList<>();
 
         for (Object obj : response.getJSONArray("data").toList()) {
             HashMap<String, Object> milestone = (HashMap<String, Object>) obj;
@@ -41,7 +41,7 @@ public class MilestoneParser {
         milestone.setId(item.get("id").toString())
                 .setName(item.get("name").toString())
                 .setProjectId(item.get("project_id").toString())
-                .setEndsAt(item.get("ends_at").toString());
+                .setEndsAt(DateParser.toDateObject(item.get("ends_at").toString()));
 
         if (item.get("description") != null) {
             milestone.setDescription(item.get("description").toString());

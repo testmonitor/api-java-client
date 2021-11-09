@@ -2,6 +2,7 @@ package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
 import com.testmonitor.parsers.TestRunParser;
+import com.testmonitor.resources.Milestone;
 import com.testmonitor.resources.Project;
 import com.testmonitor.resources.TestRun;
 import org.apache.hc.core5.http.NameValuePair;
@@ -11,6 +12,7 @@ import org.json.JSONObject;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -143,12 +145,9 @@ public class TestRuns
     {
         TestRun testRun = new TestRun();
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDateTime now = LocalDateTime.now();
-
         testRun.setName(name);
-        testRun.setStartsAt(dtf.format(now));
-        testRun.setEndsAt(dtf.format(now));
+        testRun.setStartsAt(new Date());
+        testRun.setEndsAt(new Date());
         testRun.setMilestoneId(milestoneId);
 
         return this.create(testRun);
@@ -167,6 +166,19 @@ public class TestRuns
     }
 
     /**
+     * Search or create a test run. When the test run is not found there will be a test run created.
+     *
+     * @param search The search query
+     * @param milestone The milestone of the test run
+     *
+     * @return The first result or a fresh created test case
+     */
+    public TestRun findOrCreate(String search, Milestone milestone)
+    {
+        return this.findOrCreate(search, milestone.getId());
+    }
+
+    /**
      * Search or create a test rub. When the test run is not found there will be a test run created.
      *
      * @param search The search query
@@ -175,7 +187,7 @@ public class TestRuns
      */
     public TestRun findOrCreate(String search, Integer milestoneId)
     {
-        ArrayList<TestRun> testRuns = this.search(search);
+        ArrayList<TestRun> testRuns = this.search('"' + search + '"');
 
         if (testRuns.size() > 0) {
             return testRuns.get(0);

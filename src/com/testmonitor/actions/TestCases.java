@@ -177,7 +177,7 @@ public class TestCases
      */
     public TestCase findOrCreate(String search, Integer testSuiteId)
     {
-        ArrayList<TestCase> testCases = this.search(search, testSuiteId);
+        ArrayList<TestCase> testCases = this.search('"' + search + '"', testSuiteId);
 
         if (testCases.size() > 0) {
             return testCases.get(0);

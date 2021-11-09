@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -102,11 +103,8 @@ public class Milestones
     {
         Milestone milestone = new Milestone();
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDateTime now = LocalDateTime.now();
-
         milestone.setName(name);
-        milestone.setEndsAt(dtf.format(now));
+        milestone.setEndsAt((new Date()));
         milestone.setProjectId(this.projectId);
 
         return this.create(milestone);
@@ -129,7 +127,7 @@ public class Milestones
     }
 
     /**
-     * Search or create a milestone. When the test suite is not found there will be a milestone created.
+     * Find or create a milestone. When the test suite is not found there will be a milestone created.
      *
      * @param search The search query
      *
@@ -137,7 +135,7 @@ public class Milestones
      */
     public Milestone findOrCreate(String search)
     {
-        ArrayList<Milestone> milestones = this.search(search);
+        ArrayList<Milestone> milestones = this.search('"' + search + '"');
 
         if (milestones.size() > 0) {
             return milestones.get(0);
