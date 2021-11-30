@@ -53,7 +53,6 @@ public class Milestones
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
-
         params.add(new BasicNameValuePair("page", page.toString()));
         params.add(new BasicNameValuePair("limit", limit.toString()));
 
