@@ -10,7 +10,7 @@
 
     <name>TestMonitorClient</name>
     <description>TestMonitor API client</description>
-    <url>https://www.testmonitor.com</url>
+    <url>https://www.testmonitor.com/</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -38,9 +38,9 @@
             <email>sgrootveld@testmonitor.com</email>
             <url>https://www.testmonitor.com</url>
             <organization>TestMonitor</organization>
-            <organizationUrl>https://www.testmonitor.com</organizationUrl>
+            <organizationUrl>https://www.testmonitor.com/</organizationUrl>
             <roles>
-                <role>developer</role>
+                <role>Developer</role>
             </roles>
         </developer>
 
@@ -50,9 +50,9 @@
             <email>tkok@testmonitor.com</email>
             <url>https://www.testmonitor.com</url>
             <organization>TestMonitor</organization>
-            <organizationUrl>https://www.testmonitor.com</organizationUrl>
+            <organizationUrl>https://www.testmonitor.com/</organizationUrl>
             <roles>
-                <role>lead developer</role>
+                <role>Lead Developer</role>
             </roles>
         </developer>
     </developers>

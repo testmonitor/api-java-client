@@ -20,8 +20,8 @@ public class TestResults
     private final Integer projectId;
 
     /**
-     * @param connector The TestMonitor connector to perfom HTTP requests
-     * @param project The project you want to work on
+     * @param connector The TestMonitor connector
+     * @param project The TestMonitor project
      */
     public TestResults(Connector connector, Project project)
     {
@@ -52,9 +52,9 @@ public class TestResults
     {
         List<NameValuePair> params = new ArrayList<>();
 
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
         params.add(new BasicNameValuePair("page", page.toString()));
         params.add(new BasicNameValuePair("limit", limit.toString()));
-        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
 
         return TestResultParser.parse(this.connector.get("test-results", params));
     }
@@ -74,17 +74,18 @@ public class TestResults
     }
 
     /**
-     * Search a test result
+     * Search through test results.
      *
-     * @param search The search string
+     * @param search The search query
      *
      * @return A list of results
      */
-    public ArrayList<TestResult> search(String search)
+    public ArrayList<TestResult> search(String query)
     {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
         params.add(new BasicNameValuePair("query", this.projectId.toString()));
 
         return TestResultParser.parse(this.connector.get("test-results", params));
@@ -93,9 +94,9 @@ public class TestResults
     /**
      * Create a test result
      *
-     * @param testResult The name of the test result
+     * @param testResult The test result
      *
-     * @return The created test suite
+     * @return The created test result
      */
     public TestResult create(TestResult testResult)
     {
@@ -107,11 +108,11 @@ public class TestResults
     }
 
     /**
-     * Update a test result
+     * Update a test result.
      *
      * @param testResult The test result you want to update
      *
-     * @return A new instance of the test result
+     * @return The updated test result
      */
     public TestResult update(TestResult testResult)
     {
@@ -123,11 +124,11 @@ public class TestResults
     }
 
     /**
-     * Add an attachment to a test result
+     * Add an attachment to a test result.
      *
-     * @param testResult The test result you want to update with an attachment
+     * @param testResult The test result you want to add an attachment to
      *
-     * @return A new instance of the project
+     * @return The test result
      */
     public TestResult addAttachment(TestResult testResult, File attachment)
     {

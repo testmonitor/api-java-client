@@ -17,7 +17,7 @@ public class Projects
 
     /**
      *
-     * @param connector The TestMonitor connector to perfom HTTP requests
+     * @param connector The TestMonitor connector
      */
     public Projects(Connector connector)
     {
@@ -74,7 +74,7 @@ public class Projects
      *
      * @param project The project you want to update
      *
-     * @return A new instance of the project
+     * @return The updated project
      */
     public Project update(Project project)
     {
