@@ -53,7 +53,6 @@ public class TestResults
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
-
         params.add(new BasicNameValuePair("page", page.toString()));
         params.add(new BasicNameValuePair("limit", limit.toString()));
 
@@ -77,11 +76,11 @@ public class TestResults
     /**
      * Search through test results.
      *
-     * @param search The search keywords
+     * @param search The search query
      *
      * @return A list of results
      */
-    public ArrayList<TestResult> search(String keywords)
+    public ArrayList<TestResult> search(String query)
     {
         List<NameValuePair> params = new ArrayList<>();
 

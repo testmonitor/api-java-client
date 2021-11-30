@@ -82,16 +82,16 @@ public class TestRuns
     /**
      * Search through test runs.
      *
-     * @param keywords The search keywords
+     * @param query The search query
      *
      * @return A list of test runs
      */
-    public ArrayList<TestRun> search(String keywords)
+    public ArrayList<TestRun> search(String query)
     {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
-        params.add(new BasicNameValuePair("query", keywords));
+        params.add(new BasicNameValuePair("query", query));
 
         return TestRunParser.parse(this.connector.get("test-runs", params));
     }
@@ -99,19 +99,19 @@ public class TestRuns
     /**
      * Search through test runs within a milestone.
      *
-     * @param keywords The search keywords
+     * @param query The search query
      * @param milestoneId The milestone ID
      *
      * @return A list of test runs
      */
-    public ArrayList<TestRun> search(String keywords, Integer milestoneId)
+    public ArrayList<TestRun> search(String query, Integer milestoneId)
     {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
         params.add(new BasicNameValuePair("milestone", milestoneId.toString()));
 
-        params.add(new BasicNameValuePair("query", keywords));
+        params.add(new BasicNameValuePair("query", query));
 
         return TestRunParser.parse(this.connector.get("test-runs", params));
     }
@@ -182,35 +182,35 @@ public class TestRuns
     }
 
     /**
-     * Find a test run using the provided keywords and milestone or create a new one.
+     * Find a test run using the provided query and milestone or create a new one.
      *
-     * @param search The search keywords
+     * @param search The search query
      * @param milestone The milestone
      *
-     * @return A test run matching the keywords and milestone or a new test run.
+     * @return A test run matching the query and milestone or a new test run.
      */
-    public TestRun findOrCreate(String keywords, Milestone milestone)
+    public TestRun findOrCreate(String query, Milestone milestone)
     {
-        return this.findOrCreate(keywords, milestone.getId());
+        return this.findOrCreate(query, milestone.getId());
     }
 
     /**
-     * Find a test run using the provided keywords and milestone ID or create a new one.
+     * Find a test run using the provided query and milestone ID or create a new one.
      *
-     * @param search The search keywords
+     * @param search The search query
      * @param milestoneId The milestone ID
      *
-     * @return A test run matching the keywords and milestone ID or a new test run.
+     * @return A test run matching the query and milestone ID or a new test run.
      */
-    public TestRun findOrCreate(String keywords, Integer milestoneId)
+    public TestRun findOrCreate(String query, Integer milestoneId)
     {
-        ArrayList<TestRun> testRuns = this.search('"' + keywords + '"');
+        ArrayList<TestRun> testRuns = this.search('"' + query + '"');
 
         if (testRuns.size() > 0) {
             return testRuns.get(0);
         }
 
-        return this.create(keywords, milestoneId);
+        return this.create(query, milestoneId);
     }
 
     /**

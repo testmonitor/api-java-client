@@ -2,7 +2,6 @@ package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
 import com.testmonitor.parsers.TestSuiteParser;
-import com.testmonitor.parsers.UserParser;
 import com.testmonitor.resources.Project;
 import com.testmonitor.resources.TestSuite;
 import org.apache.hc.core5.http.NameValuePair;
@@ -76,17 +75,16 @@ public class TestSuites
     /**
      * Search through test suites.
      *
-     * @param query The search keywords
+     * @param query The search query
      *
      * @return A list of results
      */
-    public ArrayList<TestSuite> search(String keywords)
+    public ArrayList<TestSuite> search(String query)
     {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
-
-        params.add(new BasicNameValuePair("query", keywords));
+        params.add(new BasicNameValuePair("query", query));
 
         return TestSuiteParser.parse(this.connector.get("test-suites", params));
     }
@@ -125,21 +123,21 @@ public class TestSuites
     }
 
     /**
-     * Find a test suite using the provided keywords or create a new one.
+     * Find a test suite using the provided query or create a new one.
      *
-     * @param keywords The search keywords
+     * @param query The search query
      *
-     * @return A test suite matching the keywords or a new test suite.
+     * @return A test suite matching the query or a new test suite.
      */
-    public TestSuite findOrCreate(String keywords)
+    public TestSuite findOrCreate(String query)
     {
-        ArrayList<TestSuite> testSuites = this.search(keywords);
+        ArrayList<TestSuite> testSuites = this.search(query);
 
         if (testSuites.size() > 0) {
             return testSuites.get(0);
         }
 
-        return this.create(keywords);
+        return this.create(query);
     }
 
     /**

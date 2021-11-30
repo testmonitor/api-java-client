@@ -75,19 +75,18 @@ public class Milestones
     }
 
     /**
-     * Search through milestones
+     * Search through milestones.
      *
-     * @param keywords The search keywords
+     * @param query The search query
      *
      * @return A list of search results
      */
-    public ArrayList<Milestone> search(String keywords)
+    public ArrayList<Milestone> search(String query)
     {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
-
-        params.add(new BasicNameValuePair("query", keywords));
+        params.add(new BasicNameValuePair("query", query));
 
         return MilestoneParser.parse(this.connector.get("milestones", params));
     }
@@ -104,7 +103,7 @@ public class Milestones
         Milestone milestone = new Milestone();
 
         milestone.setName(name);
-        milestone.setEndsAt(LocalDate.now().plusMonths(1));
+        milestone.setEndsAt(new Date());
         milestone.setProjectId(this.projectId);
 
         return this.create(milestone);
@@ -127,21 +126,21 @@ public class Milestones
     }
 
     /**
-     * Find a milestone using the provided keywords or create a new one.
+     * Find a milestone using the provided query or create a new one.
      *
-     * @param search The search keywords
+     * @param search The search query
      *
-     * @return A milestone matching the keywords or a new milestone.
+     * @return A milestone matching the query or a new milestone.
      */
-    public Milestone findOrCreate(String keywords)
+    public Milestone findOrCreate(String query)
     {
-        ArrayList<Milestone> milestones = this.search('"' + keywords + '"');
+        ArrayList<Milestone> milestones = this.search('"' + query + '"');
 
         if (milestones.size() > 0) {
             return milestones.get(0);
         }
 
-        return this.create(keywords);
+        return this.create(query);
     }
 
     /**

@@ -81,17 +81,17 @@ public class TestCases
     /**
      * Search through test cases.
      *
-     * @param search The search keywords
+     * @param search The search query
      *
      * @return A list of results
      */
-    public ArrayList<TestCase> search(String keywords)
+    public ArrayList<TestCase> search(String query)
     {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
 
-        params.add(new BasicNameValuePair("query", keywords));
+        params.add(new BasicNameValuePair("query", query));
 
         return TestCaseParser.parse(this.connector.get("test-cases", params));
     }
@@ -99,18 +99,18 @@ public class TestCases
     /**
      * Search though test cases in a test suite.
      *
-     * @param search The search keywords
+     * @param search The search query
      *
      * @return A list of results
      */
-    public ArrayList<TestCase> search(String keywords, Integer testSuiteId)
+    public ArrayList<TestCase> search(String query, Integer testSuiteId)
     {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
         params.add(new BasicNameValuePair("test_suite", testSuiteId.toString()));
 
-        params.add(new BasicNameValuePair("query", keywords));
+        params.add(new BasicNameValuePair("query", query));
 
         return TestCaseParser.parse(this.connector.get("test-cases", params));
     }
@@ -163,15 +163,15 @@ public class TestCases
     }
 
     /**
-     * Find a test case using the provided keywords and test suite or create a new one.
+     * Find a test case using the provided query and test suite or create a new one.
      *
-     * @param keywords The search keywords
+     * @param query The search query
      *
-     * @return A test case matching the keywords or a new test case.
+     * @return A test case matching the query or a new test case.
      */
-    public TestCase findOrCreate(String keywords, TestSuite testSuite)
+    public TestCase findOrCreate(String query, TestSuite testSuite)
     {
-        return this.findOrCreate(keywords, testSuite.getId());
+        return this.findOrCreate(query, testSuite.getId());
     }
 
     /**
@@ -187,21 +187,21 @@ public class TestCases
     }
 
     /**
-     * Find a test case using the provided keywords and test suite ID or create a new one.
+     * Find a test case using the provided query and test suite ID or create a new one.
      *
-     * @param keywords The search keywords
+     * @param query The search query
      *
-     * @return A test case matching the keywords and test suite ID or a new test case.
+     * @return A test case matching the query and test suite ID or a new test case.
      */
-    public TestCase findOrCreate(String keywords, Integer testSuiteId)
+    public TestCase findOrCreate(String query, Integer testSuiteId)
     {
-        ArrayList<TestCase> testCases = this.search('"' + keywords + '"', testSuiteId);
+        ArrayList<TestCase> testCases = this.search('"' + query + '"', testSuiteId);
 
         if (testCases.size() > 0) {
             return testCases.get(0);
         }
 
-        return this.create(keywords, testSuiteId);
+        return this.create(query, testSuiteId);
     }
 
     /**
