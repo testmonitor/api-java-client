@@ -5,8 +5,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.testmonitor</groupId>
 	<artifactId>api-java-client</artifactId>
-	<packaging>pom</packaging>
-	<version>1.0</version>
+	<packaging>jar</packaging>
+	<version>0.91</version>
 
 	<name>TestMonitorClient</name>
 	<description>TestMonitor API client</description>
@@ -16,6 +16,48 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
+
+	<scm>
+		<connection>scm:git:https://github.com/testmonitor/api-java-client.git</connection>
+		<developerConnection>scm:git:https://github.com/testmonitor/api-java-client.git</developerConnection>
+		<url>https://github.com/testmonitor/api-java-client/tree/${project.scm.tag}</url>
+		<tag>main</tag>
+	</scm>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>sgrootveld</id>
+			<name>Stephan Grootveld</name>
+			<email>sgrootveld@testmonitor.com</email>
+			<url>https://www.testmonitor.com</url>
+			<organization>TestMonitor</organization>
+			<organizationUrl>https://www.testmonitor.com</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+
+		<developer>
+			<id>tkok</id>
+			<name>Thijs Kok</name>
+			<email>tkok@testmonitor.com</email>
+			<url>https://www.testmonitor.com</url>
+			<organization>TestMonitor</organization>
+			<organizationUrl>https://www.testmonitor.com</organizationUrl>
+			<roles>
+				<role>lead developer</role>
+			</roles>
+		</developer>
+	</developers>
 
 	<dependencies>
         <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5 -->
@@ -49,34 +91,88 @@
 			</plugin>
 
 			<plugin>
-				<groupId>net.ju-n.maven.plugins</groupId>
-				<artifactId>checksum-maven-plugin</artifactId>
-				<version>1.4</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
-						<id>generate-artifact-checksum</id>
-						<phase>package</phase>
+						<id>attach-sources</id>
 						<goals>
-							<goal>files</goal>
+							<goal>jar</goal>
 						</goals>
 					</execution>
 				</executions>
-				<configuration>
-					<fileSets>
-						<fileSet>
-							<directory>${project.build.directory}</directory>
-						</fileSet>
-					</fileSets>
-				</configuration>
 			</plugin>
 
+<!--			<plugin>-->
+<!--				<groupId>net.ju-n.maven.plugins</groupId>-->
+<!--				<artifactId>checksum-maven-plugin</artifactId>-->
+<!--				<version>1.4</version>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>generate-artifact-checksum</id>-->
+<!--						<phase>package</phase>-->
+<!--						<goals>-->
+<!--							<goal>files</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--				<configuration>-->
+<!--					<fileSets>-->
+<!--						<fileSet>-->
+<!--							<directory>${project.build.directory}</directory>-->
+<!--						</fileSet>-->
+<!--					</fileSets>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
+
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.3.0</version>
 				<configuration>
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
 				</configuration>
+				<executions>
+					<execution>
+						<id>standalone</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.3.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 		</plugins>
