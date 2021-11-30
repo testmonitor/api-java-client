@@ -13,7 +13,7 @@
 *.iml
 *.iws
 
-# VSCpde
+# VSCode
 .vscode/
 
 # Mac
