@@ -2,7 +2,6 @@ package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
 import com.testmonitor.parsers.TestSuiteParser;
-import com.testmonitor.parsers.UserParser;
 import com.testmonitor.resources.Project;
 import com.testmonitor.resources.TestSuite;
 import org.apache.hc.core5.http.NameValuePair;
