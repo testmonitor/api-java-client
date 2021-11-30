@@ -20,8 +20,8 @@ public class Milestones
     private final Integer projectId;
 
     /**
-     * @param connector The TestMonitor connector to perfom HTTP requests
-     * @param project The project you want to work on
+     * @param connector The TestMonitor connector
+     * @param project The TestMonitor project
      */
     public Milestones(Connector connector, Project project)
     {
@@ -52,9 +52,10 @@ public class Milestones
     {
         List<NameValuePair> params = new ArrayList<>();
 
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
         params.add(new BasicNameValuePair("page", page.toString()));
         params.add(new BasicNameValuePair("limit", limit.toString()));
-        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
 
         return MilestoneParser.parse(this.connector.get("milestones", params));
     }
@@ -62,7 +63,7 @@ public class Milestones
     /**
      * @param id The milestone ID
      *
-     * @return The milestone that matches the ID
+     * @return The milestone matching the ID
      */
     public Milestone get(Integer id)
     {
@@ -74,24 +75,25 @@ public class Milestones
     }
 
     /**
-     * Search a milestone
+     * Search through milestones
      *
-     * @param search The search string
+     * @param keywords The search keywords
      *
-     * @return A list of results
+     * @return A list of search results
      */
-    public ArrayList<Milestone> search(String search)
+    public ArrayList<Milestone> search(String keywords)
     {
         List<NameValuePair> params = new ArrayList<>();
 
-        params.add(new BasicNameValuePair("query", search));
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        params.add(new BasicNameValuePair("query", keywords));
 
         return MilestoneParser.parse(this.connector.get("milestones", params));
     }
 
     /**
-     * Create a milestone with a given name.
+     * Create a milestone using the provided name. The end date will be set for next month.
      *
      * @param name The name of the milestone
      *
@@ -102,18 +104,18 @@ public class Milestones
         Milestone milestone = new Milestone();
 
         milestone.setName(name);
-        milestone.setEndsAt((new Date()));
+        milestone.setEndsAt(LocalDate.now().plusMonths(1));
         milestone.setProjectId(this.projectId);
 
         return this.create(milestone);
     }
 
     /**
-     * Create a milestone
+     * Create a milestone.
      *
-     * @param milestone The milestone you want to create
+     * @param milestone The new milestone
      *
-     * @return The created test suite
+     * @return The created milestone
      */
     public Milestone create(Milestone milestone)
     {
@@ -125,29 +127,29 @@ public class Milestones
     }
 
     /**
-     * Find or create a milestone. When the test suite is not found there will be a milestone created.
+     * Find a milestone using the provided keywords or create a new one.
      *
-     * @param search The search query
+     * @param search The search keywords
      *
-     * @return The first result or a fresh created test suite
+     * @return A milestone matching the keywords or a new milestone.
      */
-    public Milestone findOrCreate(String search)
+    public Milestone findOrCreate(String keywords)
     {
-        ArrayList<Milestone> milestones = this.search('"' + search + '"');
+        ArrayList<Milestone> milestones = this.search('"' + keywords + '"');
 
         if (milestones.size() > 0) {
             return milestones.get(0);
         }
 
-        return this.create(search);
+        return this.create(keywords);
     }
 
     /**
-     * Update a milestone
+     * Update a milestone.
      *
      * @param milestone The milestone you want to update
      *
-     * @return A new instance of the milestone
+     * @return The updated milestone
      */
     public Milestone update(Milestone milestone)
     {

@@ -20,8 +20,8 @@ public class TestSuites
     private final Integer projectId;
 
     /**
-     * @param connector The TestMonitor connector to perfom HTTP requests
-     * @param project The project you want to work on
+     * @param connector The TestMonitor connector
+     * @param project The TestMonitor project
      */
     public TestSuites(Connector connector, Project project)
     {
@@ -62,7 +62,7 @@ public class TestSuites
     /**
      * @param id The test suite ID
      *
-     * @return The test suite that matches the ID
+     * @return The test suite matching the ID
      */
     public TestSuite get(Integer id)
     {
@@ -74,24 +74,25 @@ public class TestSuites
     }
 
     /**
-     * Search a test suite
+     * Search through test suites.
      *
-     * @param query The search string
+     * @param query The search keywords
      *
      * @return A list of results
      */
-    public ArrayList<TestSuite> search(String query)
+    public ArrayList<TestSuite> search(String keywords)
     {
         List<NameValuePair> params = new ArrayList<>();
 
-        params.add(new BasicNameValuePair("query", query));
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        params.add(new BasicNameValuePair("query", keywords));
 
         return TestSuiteParser.parse(this.connector.get("test-suites", params));
     }
 
     /**
-     * Create a test suite with a given name.
+     * Create a test suite using the provided name.
      *
      * @param name The name of the test suite
      *
@@ -108,9 +109,9 @@ public class TestSuites
     }
 
     /**
-     * Create a test suite with a given name.
+     * Create a test suite using the test suite object.
      *
-     * @param testSuite The name of the test suite
+     * @param testSuite The test suite object
      *
      * @return The created test suite
      */
@@ -124,29 +125,29 @@ public class TestSuites
     }
 
     /**
-     * Search or create a test suite. When the test suite is not found there will be a test suite created.
+     * Find a test suite using the provided keywords or create a new one.
      *
-     * @param search The search query
+     * @param keywords The search keywords
      *
-     * @return The first result or a fresh created test suite
+     * @return A test suite matching the keywords or a new test suite.
      */
-    public TestSuite findOrCreate(String search)
+    public TestSuite findOrCreate(String keywords)
     {
-        ArrayList<TestSuite> testSuites = this.search(search);
+        ArrayList<TestSuite> testSuites = this.search(keywords);
 
         if (testSuites.size() > 0) {
             return testSuites.get(0);
         }
 
-        return this.create(search);
+        return this.create(keywords);
     }
 
     /**
-     * Update a test suite
+     * Update a test suite.
      *
      * @param testSuite The test suite you want to update
      *
-     * @return A new instance of the test suite
+     * @return The updated test suite
      */
     public TestSuite update(TestSuite testSuite)
     {

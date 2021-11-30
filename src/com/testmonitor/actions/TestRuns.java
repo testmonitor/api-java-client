@@ -21,8 +21,8 @@ public class TestRuns
     private final Integer projectId;
 
     /**
-     * @param connector The TestMonitor connector to perfom HTTP requests
-     * @param project The project you want to work on
+     * @param connector The TestMonitor connector
+     * @param project The TestMonitor project
      */
     public TestRuns(Connector connector, Project project)
     {
@@ -53,9 +53,10 @@ public class TestRuns
     {
         List<NameValuePair> params = new ArrayList<>();
 
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
         params.add(new BasicNameValuePair("page", page.toString()));
         params.add(new BasicNameValuePair("limit", limit.toString()));
-        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
 
         return TestRunParser.parse(this.connector.get("test-runs", params));
     }
@@ -79,42 +80,44 @@ public class TestRuns
     }
 
     /**
-     * Search a test run
+     * Search through test runs.
      *
-     * @param search The search string
+     * @param keywords The search keywords
      *
      * @return A list of test runs
      */
-    public ArrayList<TestRun> search(String search)
+    public ArrayList<TestRun> search(String keywords)
     {
         List<NameValuePair> params = new ArrayList<>();
 
-        params.add(new BasicNameValuePair("query", search));
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+        params.add(new BasicNameValuePair("query", keywords));
 
         return TestRunParser.parse(this.connector.get("test-runs", params));
     }
 
     /**
-     * Search a test run
+     * Search through test runs within a milestone.
      *
-     * @param search The search string
+     * @param keywords The search keywords
+     * @param milestoneId The milestone ID
      *
      * @return A list of test runs
      */
-    public ArrayList<TestRun> search(String search, Integer milestoneId)
+    public ArrayList<TestRun> search(String keywords, Integer milestoneId)
     {
         List<NameValuePair> params = new ArrayList<>();
 
-        params.add(new BasicNameValuePair("query", search));
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
-        params.add(new BasicNameValuePair("milestone_id", milestoneId.toString()));
+        params.add(new BasicNameValuePair("milestone", milestoneId.toString()));
+
+        params.add(new BasicNameValuePair("query", keywords));
 
         return TestRunParser.parse(this.connector.get("test-runs", params));
     }
 
     /**
-     * Create a test run in TestMonitor
+     * Create a test run.
      *
      * @param testRun The test run your want to create
      *
@@ -134,10 +137,12 @@ public class TestRuns
     }
 
     /**
-     * @param name Name of the test run
-     * @param milestoneId ID of the milestone
+     * Create a test run using the provided name and milestone ID. The start and end date will be set to today.
      *
-     * @return The test run
+     * @param name Name of the test run
+     * @param milestoneId The milestone ID
+     *
+     * @return The created test run
      */
     public TestRun create(String name, Integer milestoneId)
     {
@@ -152,10 +157,12 @@ public class TestRuns
     }
 
     /**
+     * Create a test run using the provided name and milestone. The start and end date will be set to today.
+     *
      * @param name Name of the test run
      * @param milestone The milestone
      *
-     * @return The test run
+     * @return The created test run
      */
     public TestRun create(String name, Milestone milestone)
     {
@@ -163,11 +170,11 @@ public class TestRuns
     }
 
     /**
-     * Search or create a test run. When the test run is not found there will be a test run created.
+     * Find a test run using the provided test run object or create a new one.
      *
-     * @param testRun The search query
+     * @param testRun The test run
      *
-     * @return The first result or a fresh created test run
+     * @return A test run matching the test run or a new test run.
      */
     public TestRun findOrCreate(TestRun testRun)
     {
@@ -175,42 +182,43 @@ public class TestRuns
     }
 
     /**
-     * Search or create a test run. When the test run is not found there will be a test run created.
+     * Find a test run using the provided keywords and milestone or create a new one.
      *
-     * @param search The search query
-     * @param milestone The milestone of the test run
+     * @param search The search keywords
+     * @param milestone The milestone
      *
-     * @return The first result or a fresh created test run
+     * @return A test run matching the keywords and milestone or a new test run.
      */
-    public TestRun findOrCreate(String search, Milestone milestone)
+    public TestRun findOrCreate(String keywords, Milestone milestone)
     {
-        return this.findOrCreate(search, milestone.getId());
+        return this.findOrCreate(keywords, milestone.getId());
     }
 
     /**
-     * Search or create a test rub. When the test run is not found there will be a test run created.
+     * Find a test run using the provided keywords and milestone ID or create a new one.
      *
-     * @param search The search query
+     * @param search The search keywords
+     * @param milestoneId The milestone ID
      *
-     * @return The first result or a fresh created test run
+     * @return A test run matching the keywords and milestone ID or a new test run.
      */
-    public TestRun findOrCreate(String search, Integer milestoneId)
+    public TestRun findOrCreate(String keywords, Integer milestoneId)
     {
-        ArrayList<TestRun> testRuns = this.search('"' + search + '"');
+        ArrayList<TestRun> testRuns = this.search('"' + keywords + '"');
 
         if (testRuns.size() > 0) {
             return testRuns.get(0);
         }
 
-        return this.create(search, milestoneId);
+        return this.create(keywords, milestoneId);
     }
 
     /**
-     * Update a test run
+     * Update a test run.
      *
      * @param testRun The test run you want to update
      *
-     * @return A new instance of the test run
+     * @return The updated test run
      */
     public TestRun update(TestRun testRun)
     {
@@ -222,11 +230,12 @@ public class TestRuns
     }
 
     /**
-     * Assign users to a test run
+     * Assign users to a test run.
      *
      * @param testRun The test run you want to update
+     * @param userIds A list of users ID's
      *
-     * @return A new instance of the test run
+     * @return The updated test run
      */
     public TestRun assignUsers(TestRun testRun, List<Integer> userIds)
     {
@@ -244,11 +253,12 @@ public class TestRuns
     }
 
     /**
-     * Assign new test cases to a test run
+     * Assign new test cases to a test run.
      *
      * @param testRun The test run you want to update
+     * @param testCaseIds A list of test case ID's
      *
-     * @return A new instance of the test run
+     * @return The updated test run
      */
     public TestRun assignTestCases(TestRun testRun, List<Integer> testCaseIds)
     {

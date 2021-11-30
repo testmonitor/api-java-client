@@ -16,7 +16,7 @@ public class Users
     private final Connector connector;
 
     /**
-     * @param connector The TestMonitor connector to perfom HTTP requests
+     * @param connector The TestMonitor connector
      */
     public Users(Connector connector)
     {
@@ -53,11 +53,11 @@ public class Users
     }
 
     /**
-     * Returns the current user that is logged in on TestMonitor.
+     * Returns the currently authenticated user.
      *
-     * @return User account
+     * @return Current user
      */
-    public User currentUser()
+    public User authenticatedUser()
     {
         JSONObject response = this.connector.get("my-account");
 

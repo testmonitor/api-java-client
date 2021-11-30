@@ -10,7 +10,7 @@ public class Client
 
     /**
      * @param domain The TestMonitor domain
-     * @param token The TestMonitor auth token
+     * @param token The TestMonitor API token
      */
     public Client(String domain, String token)
     {
@@ -34,7 +34,7 @@ public class Client
     }
 
     /**
-     * @param project Project object
+     * @param project Project
      *
      * @return Test Suite actions
      */

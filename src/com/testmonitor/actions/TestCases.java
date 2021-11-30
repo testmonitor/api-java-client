@@ -20,8 +20,8 @@ public class TestCases
     private final Integer projectId;
 
     /**
-     * @param connector The TestMonitor connector to perfom HTTP requests
-     * @param project The project you want to work on
+     * @param connector The TestMonitor connector
+     * @param project The TestMonitor project
      */
     public TestCases(Connector connector, Project project)
     {
@@ -52,9 +52,10 @@ public class TestCases
     {
         List<NameValuePair> params = new ArrayList<>();
 
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
         params.add(new BasicNameValuePair("page", page.toString()));
         params.add(new BasicNameValuePair("limit", limit.toString()));
-        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
 
         return TestCaseParser.parse(this.connector.get("test-cases", params));
     }
@@ -62,7 +63,7 @@ public class TestCases
     /**
      * @param id The test case ID
      *
-     * @return The test case that matches the ID
+     * @return The test case matching the ID
      */
     public TestCase get(Integer id)
     {
@@ -78,40 +79,44 @@ public class TestCases
     }
 
     /**
-     * Search a test case
+     * Search through test cases.
      *
-     * @param search The search string
+     * @param search The search keywords
      *
      * @return A list of results
      */
-    public ArrayList<TestCase> search(String search)
+    public ArrayList<TestCase> search(String keywords)
     {
         List<NameValuePair> params = new ArrayList<>();
 
-        params.add(new BasicNameValuePair("query", search));
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        params.add(new BasicNameValuePair("query", keywords));
 
         return TestCaseParser.parse(this.connector.get("test-cases", params));
     }
 
     /**
-     * Search a test case
+     * Search though test cases in a test suite.
      *
-     * @param search The search string
+     * @param search The search keywords
      *
      * @return A list of results
      */
-    public ArrayList<TestCase> search(String search, Integer testSuiteId)
+    public ArrayList<TestCase> search(String keywords, Integer testSuiteId)
     {
-        ArrayList<TestCase> testCases = this.search(search);
+        List<NameValuePair> params = new ArrayList<>();
 
-        testCases.removeIf(testCase -> !testCase.getTestSuiteId().equals(testSuiteId));
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+        params.add(new BasicNameValuePair("test_suite", testSuiteId.toString()));
 
-        return testCases;
+        params.add(new BasicNameValuePair("query", keywords));
+
+        return TestCaseParser.parse(this.connector.get("test-cases", params));
     }
 
     /**
-     * Create a test case in TestMonitor
+     * Create a test case.
      *
      * @param testCase The test case your want to create
      *
@@ -127,7 +132,7 @@ public class TestCases
     }
 
     /**
-     * Create a test case in TestMonitor
+     * Create a test case using the provided name and test suite ID.
      *
      * @param name The name of the test case
      * @param testSuiteId The ID of the test suite
@@ -145,10 +150,10 @@ public class TestCases
     }
 
     /**
-     * Create a test case in TestMonitor
+     * Create a test case using the provided name and test suite.
      *
      * @param name The name of the test case
-     * @param testSuite The ID of the test suite
+     * @param testSuite The test suite
      *
      * @return The created test case
      */
@@ -158,23 +163,23 @@ public class TestCases
     }
 
     /**
-     * Search or create a test case. When the test case is not found there will be a test case created.
+     * Find a test case using the provided keywords and test suite or create a new one.
      *
-     * @param search The search query
+     * @param keywords The search keywords
      *
-     * @return The first result or a fresh created test case
+     * @return A test case matching the keywords or a new test case.
      */
-    public TestCase findOrCreate(String search, TestSuite testSuite)
+    public TestCase findOrCreate(String keywords, TestSuite testSuite)
     {
-        return this.findOrCreate(search, testSuite.getId());
+        return this.findOrCreate(keywords, testSuite.getId());
     }
 
     /**
-     * Search or create a test case. When the test case is not found there will be a test case created.
+     * Find a test case using the provided test case object or create a new one.
      *
-     * @param testCase The search query
+     * @param testCase The test case
      *
-     * @return The first result or a fresh created test case
+     * @return A test case matching the test case object or a new test case.
      */
     public TestCase findOrCreate(TestCase testCase)
     {
@@ -182,29 +187,29 @@ public class TestCases
     }
 
     /**
-     * Search or create a test case. When the test case is not found there will be a test case created.
+     * Find a test case using the provided keywords and test suite ID or create a new one.
      *
-     * @param search The search query
+     * @param keywords The search keywords
      *
-     * @return The first result or a fresh created test case
+     * @return A test case matching the keywords and test suite ID or a new test case.
      */
-    public TestCase findOrCreate(String search, Integer testSuiteId)
+    public TestCase findOrCreate(String keywords, Integer testSuiteId)
     {
-        ArrayList<TestCase> testCases = this.search('"' + search + '"', testSuiteId);
+        ArrayList<TestCase> testCases = this.search('"' + keywords + '"', testSuiteId);
 
         if (testCases.size() > 0) {
             return testCases.get(0);
         }
 
-        return this.create(search, testSuiteId);
+        return this.create(keywords, testSuiteId);
     }
 
     /**
-     * Update a test case
+     * Update a test case.
      *
      * @param testCase The test case you want to update
      *
-     * @return A new instance of the project
+     * @return The updated test case
      */
     public TestCase update(TestCase testCase)
     {

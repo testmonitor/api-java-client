@@ -129,10 +129,10 @@ public class Connector {
     }
 
     /**
-     * Send am attachment.
+     * Send an attachment.
      *
      * @param uri A relative path
-     * @param file the file you want to send as an attachment
+     * @param file The file attachment
      *
      * @return The HTTP response as a JSONObject.
      */
