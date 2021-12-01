@@ -9,6 +9,8 @@ import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +34,7 @@ public class TestCases
     /**
      * @return A list of test cases
      */
-    public ArrayList<TestCase> list()
-    {
+    public ArrayList<TestCase> list() throws IOException, URISyntaxException {
         return this.list(1);
     }
 
@@ -42,8 +43,7 @@ public class TestCases
      *
      * @return A list of test cases
      */
-    public ArrayList<TestCase> list(Integer page)
-    {
+    public ArrayList<TestCase> list(Integer page) throws IOException, URISyntaxException {
         return this.list(page, 15);
     }
 
@@ -53,8 +53,7 @@ public class TestCases
      *
      * @return A list of test cases
      */
-    public ArrayList<TestCase> list(Integer page, Integer limit)
-    {
+    public ArrayList<TestCase> list(Integer page, Integer limit) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
@@ -69,8 +68,7 @@ public class TestCases
      *
      * @return The test case matching the ID
      */
-    public TestCase get(Integer id)
-    {
+    public TestCase get(Integer id) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
@@ -89,8 +87,7 @@ public class TestCases
      *
      * @return A list of results
      */
-    public ArrayList<TestCase> search(String query)
-    {
+    public ArrayList<TestCase> search(String query) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
@@ -108,8 +105,7 @@ public class TestCases
      *
      * @return A list of results
      */
-    public ArrayList<TestCase> search(String query, Integer testSuiteId)
-    {
+    public ArrayList<TestCase> search(String query, Integer testSuiteId) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
@@ -127,8 +123,7 @@ public class TestCases
      *
      * @return The created test case
      */
-    public TestCase create(TestCase testCase)
-    {
+    public TestCase create(TestCase testCase) throws IOException {
         JSONObject response = this.connector.post("test-cases", testCase.toHttpParams());
 
         testCase.setId(response.getJSONObject("data").get("id").toString());
@@ -144,8 +139,7 @@ public class TestCases
      *
      * @return The created test case
      */
-    public TestCase create(String name, Integer testSuiteId)
-    {
+    public TestCase create(String name, Integer testSuiteId) throws IOException {
         TestCase testCase = new TestCase();
 
         testCase.setName(name);
@@ -162,8 +156,7 @@ public class TestCases
      *
      * @return The created test case
      */
-    public TestCase create(String name, TestSuite testSuite)
-    {
+    public TestCase create(String name, TestSuite testSuite) throws IOException {
         return this.create(name, testSuite.getId());
     }
 
@@ -175,8 +168,7 @@ public class TestCases
      *
      * @return A test case matching the query or a new test case.
      */
-    public TestCase findOrCreate(String query, TestSuite testSuite)
-    {
+    public TestCase findOrCreate(String query, TestSuite testSuite) throws IOException, URISyntaxException {
         return this.findOrCreate(query, testSuite.getId());
     }
 
@@ -187,8 +179,7 @@ public class TestCases
      *
      * @return A test case matching the test case object or a new test case.
      */
-    public TestCase findOrCreate(TestCase testCase)
-    {
+    public TestCase findOrCreate(TestCase testCase) throws IOException, URISyntaxException {
         return this.findOrCreate(testCase.getName(), testCase.getTestSuiteId());
     }
 
@@ -200,8 +191,7 @@ public class TestCases
      *
      * @return A test case matching the query and test suite ID or a new test case.
      */
-    public TestCase findOrCreate(String query, Integer testSuiteId)
-    {
+    public TestCase findOrCreate(String query, Integer testSuiteId) throws IOException, URISyntaxException {
         ArrayList<TestCase> testCases = this.search('"' + query + '"', testSuiteId);
 
         if (testCases.size() > 0) {
@@ -218,8 +208,7 @@ public class TestCases
      *
      * @return The updated test case
      */
-    public TestCase update(TestCase testCase)
-    {
+    public TestCase update(TestCase testCase) throws IOException {
         JSONObject response = this.connector.put("test-cases/" + testCase.getId(), testCase.toHttpParams());
 
         HashMap<String, Object> updatedTestCase = (HashMap<String, Object>) response.getJSONObject("data").toMap();
