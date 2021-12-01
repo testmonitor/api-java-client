@@ -30,7 +30,7 @@ build/
 java/build/**
 
 # Test Files
-src/com/testmonitor/main/Main.java
+src/main/java/com/testmonitor/main/Main.java
 
 # Documentation
 javadoc/

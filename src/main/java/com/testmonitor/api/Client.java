@@ -2,6 +2,8 @@
 package com.testmonitor.api;
 
 import com.testmonitor.actions.*;
+import main.com.testmonitor.actions.*;
+import com.testmonitor.actions.*;
 import com.testmonitor.resources.Project;
 
 /**
