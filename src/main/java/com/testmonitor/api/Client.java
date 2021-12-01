@@ -2,7 +2,7 @@
 package com.testmonitor.api;
 
 import com.testmonitor.actions.*;
-import main.com.testmonitor.actions.*;
+import com.testmonitor.actions.*;
 import com.testmonitor.actions.*;
 import com.testmonitor.resources.Project;
 
@@ -11,6 +11,8 @@ import com.testmonitor.resources.Project;
  */
 public class Client
 {
+    final public static String VERSION = "0.2";
+
     private final Connector connector;
 
     /**
