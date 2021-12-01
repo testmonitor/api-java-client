@@ -20,7 +20,7 @@
     <scm>
         <connection>scm:git:https://github.com/testmonitor/api-java-client.git</connection>
         <developerConnection>scm:git:https://github.com/testmonitor/api-java-client.git</developerConnection>
-        <url>https://github.com/testmonitor/api-java-client/tree/${project.scm.tag}</url>
+        <url>https://github.com/testmonitor/api-java-client/tree/main</url>
         <tag>main</tag>
     </scm>
 
