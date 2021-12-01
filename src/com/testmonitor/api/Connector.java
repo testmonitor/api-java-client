@@ -8,6 +8,8 @@ import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.classic.methods.HttpPut;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.cookie.StandardCookieSpec;
 import org.apache.hc.client5.http.entity.UrlEncodedFormEntity;
 import org.apache.hc.client5.http.entity.mime.FileBody;
 
@@ -25,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Connector {
 
@@ -42,7 +45,17 @@ public class Connector {
         this.token = token;
         this.domain = domain;
 
-        this.httpClient = HttpClients.createDefault();
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setResponseTimeout(5000, TimeUnit.MILLISECONDS)
+                .setConnectTimeout(5000, TimeUnit.MILLISECONDS)
+                .setConnectionRequestTimeout(5000, TimeUnit.MILLISECONDS)
+                .setCookieSpec(StandardCookieSpec.IGNORE)
+                .build();
+
+        this.httpClient = HttpClients.custom()
+                .setDefaultRequestConfig(requestConfig)
+                .setUserAgent("TestMonitorJavaClient/" + Version.VALUE + "(https://www.testmonitor.com/)")
+                .build();
     }
 
     /**
