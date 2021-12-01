@@ -9,6 +9,8 @@ import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,8 +35,7 @@ public class TestRuns
     /**
      * @return A list of test runs
      */
-    public ArrayList<TestRun> list()
-    {
+    public ArrayList<TestRun> list() throws IOException, URISyntaxException {
         return this.list(1);
     }
 
@@ -43,8 +44,7 @@ public class TestRuns
      *
      * @return A list of test runs
      */
-    public ArrayList<TestRun> list(Integer page)
-    {
+    public ArrayList<TestRun> list(Integer page) throws IOException, URISyntaxException {
         return this.list(page, 15);
     }
 
@@ -54,8 +54,7 @@ public class TestRuns
      *
      * @return A list of test runs
      */
-    public ArrayList<TestRun> list(Integer page, Integer limit)
-    {
+    public ArrayList<TestRun> list(Integer page, Integer limit) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
@@ -70,8 +69,7 @@ public class TestRuns
      *
      * @return The test run that matches the ID
      */
-    public TestRun get(Integer id)
-    {
+    public TestRun get(Integer id) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
@@ -90,8 +88,7 @@ public class TestRuns
      *
      * @return A list of test runs
      */
-    public ArrayList<TestRun> search(String query)
-    {
+    public ArrayList<TestRun> search(String query) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
@@ -108,8 +105,7 @@ public class TestRuns
      *
      * @return A list of test runs
      */
-    public ArrayList<TestRun> search(String query, Integer milestoneId)
-    {
+    public ArrayList<TestRun> search(String query, Integer milestoneId) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
@@ -126,8 +122,7 @@ public class TestRuns
      *
      * @return The created test run
      */
-    public TestRun create(TestRun testRun)
-    {
+    public TestRun create(TestRun testRun) throws IOException {
         List<NameValuePair> params = testRun.toHttpParams();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
@@ -147,8 +142,7 @@ public class TestRuns
      *
      * @return The created test run
      */
-    public TestRun create(String name, Integer milestoneId)
-    {
+    public TestRun create(String name, Integer milestoneId) throws IOException {
         TestRun testRun = new TestRun();
 
         testRun.setName(name);
@@ -167,8 +161,7 @@ public class TestRuns
      *
      * @return The created test run
      */
-    public TestRun create(String name, Milestone milestone)
-    {
+    public TestRun create(String name, Milestone milestone) throws IOException {
         return this.create(name, milestone.getId());
     }
 
@@ -179,8 +172,7 @@ public class TestRuns
      *
      * @return A test run matching the test run or a new test run.
      */
-    public TestRun findOrCreate(TestRun testRun)
-    {
+    public TestRun findOrCreate(TestRun testRun) throws IOException, URISyntaxException {
         return this.findOrCreate(testRun.getName(), testRun.getMilestoneId());
     }
 
@@ -192,8 +184,7 @@ public class TestRuns
      *
      * @return A test run matching the query and milestone or a new test run.
      */
-    public TestRun findOrCreate(String query, Milestone milestone)
-    {
+    public TestRun findOrCreate(String query, Milestone milestone) throws IOException, URISyntaxException {
         return this.findOrCreate(query, milestone.getId());
     }
 
@@ -205,8 +196,7 @@ public class TestRuns
      *
      * @return A test run matching the query and milestone ID or a new test run.
      */
-    public TestRun findOrCreate(String query, Integer milestoneId)
-    {
+    public TestRun findOrCreate(String query, Integer milestoneId) throws IOException, URISyntaxException {
         ArrayList<TestRun> testRuns = this.search('"' + query + '"');
 
         if (testRuns.size() > 0) {
@@ -223,8 +213,7 @@ public class TestRuns
      *
      * @return The updated test run
      */
-    public TestRun update(TestRun testRun)
-    {
+    public TestRun update(TestRun testRun) throws IOException {
         JSONObject response = this.connector.put("test-runs/" + testRun.getId(), testRun.toHttpParams());
 
         HashMap<String, Object> updatedTestRun = (HashMap<String, Object>) response.getJSONObject("data").toMap();
@@ -240,8 +229,7 @@ public class TestRuns
      *
      * @return The updated test run
      */
-    public TestRun assignUsers(TestRun testRun, List<Integer> userIds)
-    {
+    public TestRun assignUsers(TestRun testRun, List<Integer> userIds) throws IOException {
         List<NameValuePair> params = new ArrayList<>();
 
         for (Integer userId : userIds) {
@@ -263,8 +251,29 @@ public class TestRuns
      *
      * @return The updated test run
      */
-    public TestRun assignTestCases(TestRun testRun, List<Integer> testCaseIds)
-    {
+    public TestRun assignTestCases(TestRun testRun, List<Integer> testCaseIds) throws IOException {
+        List<NameValuePair> params = new ArrayList<>();
+
+        for (Integer testCaseId : testCaseIds) {
+            params.add(new BasicNameValuePair("test_cases[]", testCaseId.toString()));
+        }
+
+        JSONObject response = this.connector.put("test-runs/" + testRun.getId(), params);
+
+        HashMap<String, Object> updatedTestRun = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return TestRunParser.parse(updatedTestRun);
+    }
+
+    /**
+     * Merge new test cases to a test run.
+     *
+     * @param testRun The test run you want to update
+     * @param testCaseIds A list of test case ID's
+     *
+     * @return The updated test run
+     */
+    public TestRun mergeTestCases(TestRun testRun, List<Integer> testCaseIds) throws IOException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("merge", "1"));

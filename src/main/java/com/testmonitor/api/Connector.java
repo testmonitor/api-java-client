@@ -8,6 +8,8 @@ import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.classic.methods.HttpPut;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.cookie.StandardCookieSpec;
 import org.apache.hc.client5.http.entity.UrlEncodedFormEntity;
 import org.apache.hc.client5.http.entity.mime.FileBody;
 
@@ -25,14 +27,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Connector {
 
     private final String token;
 
     private final String domain;
-
-    private final String baseUrl;
 
     private final CloseableHttpClient httpClient;
 
@@ -44,9 +45,17 @@ public class Connector {
         this.token = token;
         this.domain = domain;
 
-        this.baseUrl = this.baseUrl();
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setResponseTimeout(5000, TimeUnit.MILLISECONDS)
+                .setConnectTimeout(5000, TimeUnit.MILLISECONDS)
+                .setConnectionRequestTimeout(5000, TimeUnit.MILLISECONDS)
+                .setCookieSpec(StandardCookieSpec.IGNORE)
+                .build();
 
-        this.httpClient = HttpClients.createDefault();
+        this.httpClient = HttpClients.custom()
+                .setDefaultRequestConfig(requestConfig)
+                .setUserAgent("TestMonitorJavaClient/" + Client.VERSION + " (+https://www.testmonitor.com/)")
+                .build();
     }
 
     /**
@@ -74,8 +83,7 @@ public class Connector {
      *
      * @return The HTTP response as a JSONObject.
      */
-    public JSONObject get(String uri)
-    {
+    public JSONObject get(String uri) throws IOException {
         final HttpGet httpget = new HttpGet(this.baseUrl(uri));
 
         return this.request(httpget);
@@ -89,16 +97,11 @@ public class Connector {
      *
      * @return The HTTP response as a JSONObject.
      */
-    public JSONObject get(String uri, List<NameValuePair> params)
-    {
+    public JSONObject get(String uri, List<NameValuePair> params) throws IOException, URISyntaxException {
         URIBuilder uriBuilder = null;
 
-        try {
-            uriBuilder = new URIBuilder(this.baseUrl(uri));
-            uriBuilder.addParameters(params);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        uriBuilder = new URIBuilder(this.baseUrl(uri));
+        uriBuilder.addParameters(params);
 
         final HttpGet httpget = new HttpGet(uriBuilder.toString());
 
@@ -115,8 +118,7 @@ public class Connector {
      *
      * @return The HTTP response as a JSONObject.
      */
-    public JSONObject post(String uri, List<NameValuePair> params)
-    {
+    public JSONObject post(String uri, List<NameValuePair> params) throws IOException {
         final HttpPost httppost = new HttpPost(this.baseUrl(uri));
 
         httppost.setEntity(new UrlEncodedFormEntity(params));
@@ -132,8 +134,7 @@ public class Connector {
      *
      * @return The HTTP response as a JSONObject.
      */
-    public JSONObject put(String uri, List<NameValuePair> params)
-    {
+    public JSONObject put(String uri, List<NameValuePair> params) throws IOException {
         final HttpPut httpput = new HttpPut(this.baseUrl(uri));
 
         httpput.setEntity(new UrlEncodedFormEntity(params));
@@ -149,8 +150,7 @@ public class Connector {
      *
      * @return The HTTP response as a JSONObject.
      */
-    public JSONObject postAttachment(String uri, File file)
-    {
+    public JSONObject postAttachment(String uri, File file) throws IOException {
         HttpPost post = new HttpPost(this.baseUrl(uri));
         FileBody fileBody = new FileBody(file, ContentType.DEFAULT_BINARY);
 
@@ -172,7 +172,7 @@ public class Connector {
      *
      * @return HTTP response converted to JSON format
      */
-    public JSONObject request(HttpUriRequestBase httpUriRequestBase) {
+    public JSONObject request(HttpUriRequestBase httpUriRequestBase) throws IOException {
         httpUriRequestBase.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + this.token);
         httpUriRequestBase.setHeader(HttpHeaders.ACCEPT, "application/json");
 
@@ -204,18 +204,10 @@ public class Connector {
             }
         };
 
-        try {
-            final String responseBody;
+        final String responseBody;
 
-            responseBody = this.httpClient.execute(httpUriRequestBase, responseHandler);
+        responseBody = this.httpClient.execute(httpUriRequestBase, responseHandler);
 
-            return new JSONObject(responseBody);
-        } catch (IOException e) {
-            e.printStackTrace();
-
-            System.exit(1);
-        }
-
-        return new JSONObject();
+        return new JSONObject(responseBody);
     }
 }

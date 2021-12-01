@@ -35,6 +35,12 @@ public class Project {
         return id;
     }
 
+    /**
+     * Set the project name
+     * @param name The name
+     *
+     * @return
+     */
     public Project setName(String name) {
         this.name = name;
 
@@ -85,17 +91,5 @@ public class Project {
         params.add(new BasicNameValuePair("ends_at", DateParser.toDateString(this.endsAt)));
 
         return params;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String toString()
-    {
-        return "ID: " + this.id + "\n" +
-                "NAME: " + this.name + "\n" +
-                "DESCRIPTION: " + this.description + "\n" +
-                "STARTS_AT: " + DateParser.toDateString(this.startsAt) + "\n" +
-                "ENDS_AT: " + DateParser.toDateString(this.endsAt) + "\n";
     }
 }

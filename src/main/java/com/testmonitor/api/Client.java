@@ -4,8 +4,13 @@ package com.testmonitor.api;
 import com.testmonitor.actions.*;
 import com.testmonitor.resources.Project;
 
+/**
+ * TestMonitor Client
+ */
 public class Client
 {
+    final public static String VERSION = "0.2";
+
     private final Connector connector;
 
     /**

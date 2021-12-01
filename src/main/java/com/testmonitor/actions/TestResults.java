@@ -9,6 +9,8 @@ import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +34,7 @@ public class TestResults
     /**
      * @return A list of test results
      */
-    public ArrayList<TestResult> list()
-    {
+    public ArrayList<TestResult> list() throws IOException, URISyntaxException {
         return this.list(1);
     }
 
@@ -42,8 +43,7 @@ public class TestResults
      *
      * @return A list of test results
      */
-    public ArrayList<TestResult> list(Integer page)
-    {
+    public ArrayList<TestResult> list(Integer page) throws IOException, URISyntaxException {
         return this.list(page, 15);
     }
 
@@ -53,8 +53,7 @@ public class TestResults
      *
      * @return A list of test results
      */
-    public ArrayList<TestResult> list(Integer page, Integer limit)
-    {
+    public ArrayList<TestResult> list(Integer page, Integer limit) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
@@ -69,8 +68,7 @@ public class TestResults
      *
      * @return The test result that matches the ID
      */
-    public TestResult get(Integer id)
-    {
+    public TestResult get(Integer id) throws IOException {
         JSONObject response = this.connector.get("test-results/" + id);
 
         HashMap<String, Object> testResult = (HashMap<String, Object>) response.getJSONObject("data").toMap();
@@ -85,8 +83,7 @@ public class TestResults
      *
      * @return A list of results
      */
-    public ArrayList<TestResult> search(String query)
-    {
+    public ArrayList<TestResult> search(String query) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
@@ -102,8 +99,7 @@ public class TestResults
      *
      * @return The created test result
      */
-    public TestResult create(TestResult testResult)
-    {
+    public TestResult create(TestResult testResult) throws IOException {
         JSONObject response = this.connector.post("test-results", testResult.toHttpParams());
 
         HashMap<String, Object> newTestResult = (HashMap<String, Object>) response.getJSONObject("data").toMap();
@@ -118,8 +114,7 @@ public class TestResults
      *
      * @return The updated test result
      */
-    public TestResult update(TestResult testResult)
-    {
+    public TestResult update(TestResult testResult) throws IOException {
         JSONObject response = this.connector.put("test-results/" + testResult.getId(), testResult.toHttpParams());
 
         HashMap<String, Object> updatedTestResult = (HashMap<String, Object>) response.getJSONObject("data").toMap();
@@ -135,8 +130,7 @@ public class TestResults
      *
      * @return The test result
      */
-    public TestResult addAttachment(TestResult testResult, File attachment)
-    {
+    public TestResult addAttachment(TestResult testResult, File attachment) throws IOException {
         this.connector.postAttachment("test-result/" + testResult.getId()  + "/attachments", attachment);
 
         return testResult;

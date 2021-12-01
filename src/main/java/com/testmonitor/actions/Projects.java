@@ -7,6 +7,8 @@ import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,8 +29,7 @@ public class Projects
     /**
      * @return A list of projects
      */
-    public ArrayList<Project> list()
-    {
+    public ArrayList<Project> list() throws IOException, URISyntaxException {
         return this.list(1);
     }
 
@@ -37,8 +38,7 @@ public class Projects
      *
      * @return A list of projects
      */
-    public ArrayList<Project> list(Integer page)
-    {
+    public ArrayList<Project> list(Integer page) throws IOException, URISyntaxException {
         return this.list(page, 15);
     }
 
@@ -48,8 +48,7 @@ public class Projects
      *
      * @return A list of projects
      */
-    public ArrayList<Project> list(Integer page, Integer limit)
-    {
+    public ArrayList<Project> list(Integer page, Integer limit) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("page", page.toString()));
@@ -65,8 +64,7 @@ public class Projects
      *
      * @return The project
      */
-    public Project get(Integer id)
-    {
+    public Project get(Integer id) throws IOException {
         JSONObject response = this.connector.get("projects/" + id);
 
         HashMap<String, Object> project = (HashMap<String, Object>) response.getJSONObject("data").toMap();
@@ -81,8 +79,7 @@ public class Projects
      *
      * @return The updated project
      */
-    public Project update(Project project)
-    {
+    public Project update(Project project) throws IOException {
         JSONObject response = this.connector.put( "projects/" + project.getId(), project.toHttpParams());
 
         HashMap<String, Object> updatedProject = (HashMap<String, Object>) response.getJSONObject("data").toMap();

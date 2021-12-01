@@ -7,6 +7,8 @@ import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,8 +28,7 @@ public class Users
     /**
      * @return A list of users
      */
-    public ArrayList<User> list()
-    {
+    public ArrayList<User> list() throws IOException, URISyntaxException {
         return this.list(1);
     }
 
@@ -36,8 +37,7 @@ public class Users
      *
      * @return A list of users
      */
-    public ArrayList<User> list(Integer page)
-    {
+    public ArrayList<User> list(Integer page) throws IOException, URISyntaxException {
         return this.list(page, 15);
     }
 
@@ -47,8 +47,7 @@ public class Users
      *
      * @return A list of users
      */
-    public ArrayList<User> list(Integer page, Integer limit)
-    {
+    public ArrayList<User> list(Integer page, Integer limit) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("page", page.toString()));
@@ -62,8 +61,7 @@ public class Users
      *
      * @return Current user
      */
-    public User authenticatedUser()
-    {
+    public User authenticatedUser() throws IOException {
         JSONObject response = this.connector.get("my-account");
 
         HashMap<String, Object> user = (HashMap<String, Object>) response.getJSONObject("data").toMap();

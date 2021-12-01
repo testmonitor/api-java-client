@@ -8,6 +8,8 @@ import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,8 +34,7 @@ public class Milestones
     /**
      * @return A list of milestones
      */
-    public ArrayList<Milestone> list()
-    {
+    public ArrayList<Milestone> list() throws IOException, URISyntaxException {
         return this.list(1);
     }
 
@@ -42,8 +43,7 @@ public class Milestones
      *
      * @return A list of milestones
      */
-    public ArrayList<Milestone> list(Integer page)
-    {
+    public ArrayList<Milestone> list(Integer page) throws IOException, URISyntaxException {
         return this.list(page, 15);
     }
 
@@ -53,8 +53,7 @@ public class Milestones
      *
      * @return A list of milestones
      */
-    public ArrayList<Milestone> list(Integer page, Integer limit)
-    {
+    public ArrayList<Milestone> list(Integer page, Integer limit) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
@@ -69,8 +68,7 @@ public class Milestones
      *
      * @return The milestone matching the ID
      */
-    public Milestone get(Integer id)
-    {
+    public Milestone get(Integer id) throws IOException {
         JSONObject response = this.connector.get("milestones/" + id);
 
         HashMap<String, Object> milestone = (HashMap<String, Object>) response.getJSONObject("data").toMap();
@@ -85,8 +83,7 @@ public class Milestones
      *
      * @return A list of search results
      */
-    public ArrayList<Milestone> search(String query)
-    {
+    public ArrayList<Milestone> search(String query) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
@@ -102,8 +99,7 @@ public class Milestones
      *
      * @return The created milestone
      */
-    public Milestone create(String name)
-    {
+    public Milestone create(String name) throws IOException {
         Milestone milestone = new Milestone();
 
         milestone.setName(name);
@@ -120,8 +116,7 @@ public class Milestones
      *
      * @return The created milestone
      */
-    public Milestone create(Milestone milestone)
-    {
+    public Milestone create(Milestone milestone) throws IOException {
         JSONObject response = this.connector.post("milestones", milestone.toHttpParams());
 
         milestone.setId(response.getJSONObject("data").get("id").toString());
@@ -136,8 +131,7 @@ public class Milestones
      *
      * @return A milestone matching the query or a new milestone.
      */
-    public Milestone findOrCreate(String query)
-    {
+    public Milestone findOrCreate(String query) throws IOException, URISyntaxException {
         ArrayList<Milestone> milestones = this.search('"' + query + '"');
 
         if (milestones.size() > 0) {
@@ -154,8 +148,7 @@ public class Milestones
      *
      * @return The updated milestone
      */
-    public Milestone update(Milestone milestone)
-    {
+    public Milestone update(Milestone milestone) throws IOException {
         JSONObject response = this.connector.put("milestones/" + milestone.getId(), milestone.toHttpParams());
 
         HashMap<String, Object> updatedMilestone = (HashMap<String, Object>) response.getJSONObject("data").toMap();

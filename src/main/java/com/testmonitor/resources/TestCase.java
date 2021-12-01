@@ -76,11 +76,4 @@ public class TestCase {
 
         return params;
     }
-
-    public String toString()
-    {
-        return "ID: " + this.id + "\n" +
-                "NAME: " + this.name + "\n" +
-                "TEST_SUITE_ID: " + this.testSuiteId + "\n";
-    }
 }

@@ -91,16 +91,4 @@ public class Milestone {
 
         return params;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String toString()
-    {
-        return "ID: " + this.id + "\n" +
-                "NAME: " + this.name + "\n" +
-                "DESCRIPTION: " + this.description + "\n" +
-                "PROJECT_ID: " + this.projectId + "\n" +
-                "ENDS_AT: " + DateParser.toDateString(this.endsAt) + "\n";
-    }
 }

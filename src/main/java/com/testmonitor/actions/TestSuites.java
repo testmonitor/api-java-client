@@ -8,6 +8,8 @@ import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,8 +33,7 @@ public class TestSuites
     /**
      * @return A list of test suites
      */
-    public ArrayList<TestSuite> list()
-    {
+    public ArrayList<TestSuite> list() throws IOException, URISyntaxException {
         return this.list(1);
     }
 
@@ -41,8 +42,7 @@ public class TestSuites
      *
      * @return A list of test suites
      */
-    public ArrayList<TestSuite> list(Integer page)
-    {
+    public ArrayList<TestSuite> list(Integer page) throws IOException, URISyntaxException {
         return this.list(page, 15);
     }
 
@@ -52,8 +52,7 @@ public class TestSuites
      *
      * @return A list of test suites
      */
-    public ArrayList<TestSuite> list(Integer page, Integer limit)
-    {
+    public ArrayList<TestSuite> list(Integer page, Integer limit) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("page", page.toString()));
@@ -68,8 +67,7 @@ public class TestSuites
      *
      * @return The test suite matching the ID
      */
-    public TestSuite get(Integer id)
-    {
+    public TestSuite get(Integer id) throws IOException {
         JSONObject response = this.connector.get("test-suites/" + id);
 
         HashMap<String, Object> testSuite = (HashMap<String, Object>) response.getJSONObject("data").toMap();
@@ -84,8 +82,7 @@ public class TestSuites
      *
      * @return A list of results
      */
-    public ArrayList<TestSuite> search(String query)
-    {
+    public ArrayList<TestSuite> search(String query) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
@@ -101,8 +98,7 @@ public class TestSuites
      *
      * @return The created test suite
      */
-    public TestSuite create(String name)
-    {
+    public TestSuite create(String name) throws IOException {
         TestSuite testSuite = new TestSuite();
 
         testSuite.setName(name);
@@ -118,8 +114,7 @@ public class TestSuites
      *
      * @return The created test suite
      */
-    public TestSuite create(TestSuite testSuite)
-    {
+    public TestSuite create(TestSuite testSuite) throws IOException {
         JSONObject response = this.connector.post("test-suites", testSuite.toHttpParams());
 
         HashMap<String, Object> updatedTestSuite = (HashMap<String, Object>) response.getJSONObject("data").toMap();
@@ -134,8 +129,7 @@ public class TestSuites
      *
      * @return A test suite matching the query or a new test suite.
      */
-    public TestSuite findOrCreate(String query)
-    {
+    public TestSuite findOrCreate(String query) throws IOException, URISyntaxException {
         ArrayList<TestSuite> testSuites = this.search(query);
 
         if (testSuites.size() > 0) {
@@ -152,8 +146,7 @@ public class TestSuites
      *
      * @return The updated test suite
      */
-    public TestSuite update(TestSuite testSuite)
-    {
+    public TestSuite update(TestSuite testSuite) throws IOException {
         JSONObject response = this.connector.put("test-suites/" + testSuite.getId(), testSuite.toHttpParams());
 
         HashMap<String, Object> updatedTestSuite = (HashMap<String, Object>) response.getJSONObject("data").toMap();
