@@ -172,7 +172,7 @@ public class Connector {
      *
      * @return HTTP response converted to JSON format
      */
-    public JSONObject request(HttpUriRequestBase httpUriRequestBase) {
+    public JSONObject request(HttpUriRequestBase httpUriRequestBase) throws IOException {
         httpUriRequestBase.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + this.token);
         httpUriRequestBase.setHeader(HttpHeaders.ACCEPT, "application/json");
 
@@ -203,19 +203,10 @@ public class Connector {
                 }
             }
         };
+        final String responseBody;
 
-        try {
-            final String responseBody;
+        responseBody = this.httpClient.execute(httpUriRequestBase, responseHandler);
 
-            responseBody = this.httpClient.execute(httpUriRequestBase, responseHandler);
-
-            return new JSONObject(responseBody);
-        } catch (IOException e) {
-            e.printStackTrace();
-
-            System.exit(1);
-        }
-
-        return new JSONObject();
+        return new JSONObject(responseBody);
     }
 }

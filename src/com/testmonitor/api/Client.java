@@ -4,6 +4,9 @@ package com.testmonitor.api;
 import com.testmonitor.actions.*;
 import com.testmonitor.resources.Project;
 
+/**
+ * TestMonitor Client
+ */
 public class Client
 {
     private final Connector connector;

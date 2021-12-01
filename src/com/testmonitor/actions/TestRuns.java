@@ -267,6 +267,29 @@ public class TestRuns
     {
         List<NameValuePair> params = new ArrayList<>();
 
+        for (Integer testCaseId : testCaseIds) {
+            params.add(new BasicNameValuePair("test_cases[]", testCaseId.toString()));
+        }
+
+        JSONObject response = this.connector.put("test-runs/" + testRun.getId(), params);
+
+        HashMap<String, Object> updatedTestRun = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return TestRunParser.parse(updatedTestRun);
+    }
+
+    /**
+     * Assign new test cases to a test run.
+     *
+     * @param testRun The test run you want to update
+     * @param testCaseIds A list of test case ID's
+     *
+     * @return The updated test run
+     */
+    public TestRun mergeTestCases(TestRun testRun, List<Integer> testCaseIds)
+    {
+        List<NameValuePair> params = new ArrayList<>();
+
         params.add(new BasicNameValuePair("merge", "1"));
 
         for (Integer testCaseId : testCaseIds) {

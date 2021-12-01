@@ -35,6 +35,12 @@ public class Project {
         return id;
     }
 
+    /**
+     * Set the project name
+     * @param name The name
+     *
+     * @return
+     */
     public Project setName(String name) {
         this.name = name;
 

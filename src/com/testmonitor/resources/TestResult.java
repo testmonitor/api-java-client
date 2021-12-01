@@ -112,18 +112,10 @@ public class TestResult {
     public List<NameValuePair> toHttpParams() {
         List<NameValuePair> params = new ArrayList<>();
 
-        String draft;
-
-        if (this.draft) {
-            draft = "1";
-        } else {
-            draft = "0";
-        }
-
         params.add(new BasicNameValuePair("description", this.description));
         params.add(new BasicNameValuePair("test_case_id", this.testCaseId.toString()));
         params.add(new BasicNameValuePair("test_run_id", this.testRunId.toString()));
-        params.add(new BasicNameValuePair("draft", draft));
+        params.add(new BasicNameValuePair("draft", this.draft ? "1" : "0"));
         params.add(new BasicNameValuePair("test_result_category_id", this.testResultCategoryId.toString()));
 
         return params;
