@@ -38,6 +38,8 @@ public class TestResults
     }
 
     /**
+     * @param page Page number
+     *
      * @return A list of test results
      */
     public ArrayList<TestResult> list(Integer page)
@@ -46,6 +48,9 @@ public class TestResults
     }
 
     /**
+     * @param page Page number
+     * @param limit Paging limit
+     *
      * @return A list of test results
      */
     public ArrayList<TestResult> list(Integer page, Integer limit)
@@ -76,7 +81,7 @@ public class TestResults
     /**
      * Search through test results.
      *
-     * @param search The search query
+     * @param query The search query
      *
      * @return A list of results
      */
@@ -85,7 +90,6 @@ public class TestResults
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
-
         params.add(new BasicNameValuePair("query", this.projectId.toString()));
 
         return TestResultParser.parse(this.connector.get("test-results", params));
@@ -127,6 +131,7 @@ public class TestResults
      * Add an attachment to a test result.
      *
      * @param testResult The test result you want to add an attachment to
+     * @param attachment The file attachment
      *
      * @return The test result
      */

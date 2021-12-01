@@ -38,6 +38,8 @@ public class Milestones
     }
 
     /**
+     * @param page Page number
+     *
      * @return A list of milestones
      */
     public ArrayList<Milestone> list(Integer page)
@@ -46,6 +48,9 @@ public class Milestones
     }
 
     /**
+     * @param page Page number
+     * @param limit Paging limit
+     *
      * @return A list of milestones
      */
     public ArrayList<Milestone> list(Integer page, Integer limit)
@@ -127,7 +132,7 @@ public class Milestones
     /**
      * Find a milestone using the provided query or create a new one.
      *
-     * @param search The search query
+     * @param query The search query
      *
      * @return A milestone matching the query or a new milestone.
      */

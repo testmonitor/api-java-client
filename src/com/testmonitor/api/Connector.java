@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
-
 public class Connector {
 
     private final String token;
@@ -37,6 +36,10 @@ public class Connector {
 
     private final CloseableHttpClient httpClient;
 
+    /**
+     * @param domain The TestMonitor domain
+     * @param token The auth token
+     */
     public Connector(String domain, String token) {
         this.token = token;
         this.domain = domain;
@@ -55,6 +58,16 @@ public class Connector {
     }
 
     /**
+     * @param path The path to concatenate
+     *
+     * @return The TestMonitor API base url.
+     */
+    protected String baseUrl(String path)
+    {
+        return this.baseUrl() + path;
+    }
+
+    /**
      * Perform a GET request.
      *
      * @param uri A relative path
@@ -63,7 +76,7 @@ public class Connector {
      */
     public JSONObject get(String uri)
     {
-        final HttpGet httpget = new HttpGet(this.baseUrl + uri.replace(" ", "%20"));
+        final HttpGet httpget = new HttpGet(this.baseUrl(uri));
 
         return this.request(httpget);
     }
@@ -81,7 +94,7 @@ public class Connector {
         URIBuilder uriBuilder = null;
 
         try {
-            uriBuilder = new URIBuilder(this.baseUrl + uri);
+            uriBuilder = new URIBuilder(this.baseUrl(uri));
             uriBuilder.addParameters(params);
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -104,7 +117,7 @@ public class Connector {
      */
     public JSONObject post(String uri, List<NameValuePair> params)
     {
-        final HttpPost httppost = new HttpPost(this.baseUrl + uri);
+        final HttpPost httppost = new HttpPost(this.baseUrl(uri));
 
         httppost.setEntity(new UrlEncodedFormEntity(params));
 
@@ -121,7 +134,7 @@ public class Connector {
      */
     public JSONObject put(String uri, List<NameValuePair> params)
     {
-        final HttpPut httpput = new HttpPut(this.baseUrl + uri);
+        final HttpPut httpput = new HttpPut(this.baseUrl(uri));
 
         httpput.setEntity(new UrlEncodedFormEntity(params));
 
@@ -138,7 +151,7 @@ public class Connector {
      */
     public JSONObject postAttachment(String uri, File file)
     {
-        HttpPost post = new HttpPost(this.baseUrl + uri);
+        HttpPost post = new HttpPost(this.baseUrl(uri));
         FileBody fileBody = new FileBody(file, ContentType.DEFAULT_BINARY);
 
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
@@ -155,7 +168,7 @@ public class Connector {
     /**
      * Perform a request on teh TestMonitor API
      *
-     * @param httpUriRequestBase
+     * @param httpUriRequestBase The HTTP request
      *
      * @return HTTP response converted to JSON format
      */

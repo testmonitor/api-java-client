@@ -38,6 +38,8 @@ public class TestCases
     }
 
     /**
+     * @param page Page number
+     *
      * @return A list of test cases
      */
     public ArrayList<TestCase> list(Integer page)
@@ -46,6 +48,9 @@ public class TestCases
     }
 
     /**
+     * @param page Page number
+     * @param limit Paging limit
+     *
      * @return A list of test cases
      */
     public ArrayList<TestCase> list(Integer page, Integer limit)
@@ -53,7 +58,6 @@ public class TestCases
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
-
         params.add(new BasicNameValuePair("page", page.toString()));
         params.add(new BasicNameValuePair("limit", limit.toString()));
 
@@ -81,7 +85,7 @@ public class TestCases
     /**
      * Search through test cases.
      *
-     * @param search The search query
+     * @param query The search query
      *
      * @return A list of results
      */
@@ -99,7 +103,8 @@ public class TestCases
     /**
      * Search though test cases in a test suite.
      *
-     * @param search The search query
+     * @param query The search query
+     * @param testSuiteId The test suite ID
      *
      * @return A list of results
      */
@@ -135,7 +140,7 @@ public class TestCases
      * Create a test case using the provided name and test suite ID.
      *
      * @param name The name of the test case
-     * @param testSuiteId The ID of the test suite
+     * @param testSuiteId The test suite ID
      *
      * @return The created test case
      */
@@ -166,6 +171,7 @@ public class TestCases
      * Find a test case using the provided query and test suite or create a new one.
      *
      * @param query The search query
+     * @param testSuite The test suite
      *
      * @return A test case matching the query or a new test case.
      */
@@ -190,6 +196,7 @@ public class TestCases
      * Find a test case using the provided query and test suite ID or create a new one.
      *
      * @param query The search query
+     * @param testSuiteId The test suite ID
      *
      * @return A test case matching the query and test suite ID or a new test case.
      */
