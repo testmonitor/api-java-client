@@ -17,8 +17,6 @@ public class TestResult {
 
     private Integer testCaseId;
 
-    private Integer createdByUserId;
-
     private Integer testResultCategoryId;
 
     public TestResult setId(Integer id) {

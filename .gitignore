@@ -1,4 +1,4 @@
-# Package Files #
+# Package Files
 *.jar
 *.war
 *.ear
@@ -13,15 +13,15 @@
 *.iml
 *.iws
 
+# VSCode
+.vscode/
+
 # Mac
 .DS_Store
 
 # Maven
 log/
 target/
-
-# Inclusions
-# !lib/**
 
 # Compiled Files
 *.class
@@ -30,10 +30,7 @@ build/
 java/build/**
 
 # Test Files
-src/com/testmonitor/Main.java
+src/com/testmonitor/main/Main.java
 
 # Documentation
 javadoc/
-
-/src/com/testmonitor/main/Main.java
-/src/com/testmonitor/main/Main.java
