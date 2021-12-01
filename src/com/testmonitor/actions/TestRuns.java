@@ -266,7 +266,7 @@ public class TestRuns
     }
 
     /**
-     * Assign new test cases to a test run.
+     * Merge new test cases to a test run.
      *
      * @param testRun The test run you want to update
      * @param testCaseIds A list of test case ID's

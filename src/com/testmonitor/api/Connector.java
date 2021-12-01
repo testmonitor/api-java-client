@@ -54,7 +54,7 @@ public class Connector {
 
         this.httpClient = HttpClients.custom()
                 .setDefaultRequestConfig(requestConfig)
-                .setUserAgent("TestMonitorJavaClient/" + Version.VALUE + "(https://www.testmonitor.com/)")
+                .setUserAgent("TestMonitorJavaClient/" + Version.VALUE + "(+https://www.testmonitor.com/)")
                 .build();
     }
 
