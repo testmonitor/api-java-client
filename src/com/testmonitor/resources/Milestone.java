@@ -4,8 +4,8 @@ import com.testmonitor.parsers.DateParser;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Milestone {
@@ -15,7 +15,7 @@ public class Milestone {
 
     private String description;
 
-    private Date endsAt;
+    private LocalDate endsAt;
 
     private Integer projectId;
 
@@ -55,13 +55,13 @@ public class Milestone {
         return this.description;
     }
 
-    public Milestone setEndsAt(Date endsAt) {
+    public Milestone setEndsAt(LocalDate endsAt) {
         this.endsAt = endsAt;
 
         return this;
     }
 
-    public Date getEndsAt() {
+    public LocalDate getEndsAt() {
         return this.endsAt;
     }
 

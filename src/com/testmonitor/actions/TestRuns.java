@@ -9,8 +9,8 @@ import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -54,7 +54,6 @@ public class TestRuns
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
-
         params.add(new BasicNameValuePair("page", page.toString()));
         params.add(new BasicNameValuePair("limit", limit.toString()));
 
@@ -110,7 +109,6 @@ public class TestRuns
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
         params.add(new BasicNameValuePair("milestone", milestoneId.toString()));
-
         params.add(new BasicNameValuePair("query", query));
 
         return TestRunParser.parse(this.connector.get("test-runs", params));
@@ -149,8 +147,8 @@ public class TestRuns
         TestRun testRun = new TestRun();
 
         testRun.setName(name);
-        testRun.setStartsAt(new Date());
-        testRun.setEndsAt(new Date());
+        testRun.setStartsAt(LocalDate.now());
+        testRun.setEndsAt(LocalDate.now());
         testRun.setMilestoneId(milestoneId);
 
         return this.create(testRun);

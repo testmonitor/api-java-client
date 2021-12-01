@@ -4,8 +4,8 @@ import com.testmonitor.parsers.DateParser;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Project {
@@ -15,9 +15,9 @@ public class Project {
 
     private String description;
 
-    private Date startsAt;
+    private LocalDate startsAt;
 
-    private Date endsAt;
+    private LocalDate endsAt;
 
     public Project setId(Integer id) {
         this.id = id;
@@ -55,23 +55,23 @@ public class Project {
         return name;
     }
 
-    public Project setStartsAt(Date startsAt) {
+    public Project setStartsAt(LocalDate startsAt) {
         this.startsAt = startsAt;
 
         return this;
     }
 
-    public Date getStartsAt() {
+    public LocalDate getStartsAt() {
         return this.startsAt;
     }
 
-    public Project setEndsAt(Date endsAt) {
+    public Project setEndsAt(LocalDate endsAt) {
         this.endsAt = endsAt;
 
         return this;
     }
 
-    public Date getEndsAt() {
+    public LocalDate getEndsAt() {
         return this.endsAt;
     }
 
