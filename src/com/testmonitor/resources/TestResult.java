@@ -119,7 +119,7 @@ public class TestResult {
         } else {
             draft = "0";
         }
-        params.add(new BasicNameValuePair("project_id", "22"));
+
         params.add(new BasicNameValuePair("description", this.description));
         params.add(new BasicNameValuePair("test_case_id", this.testCaseId.toString()));
         params.add(new BasicNameValuePair("test_run_id", this.testRunId.toString()));
@@ -127,15 +127,5 @@ public class TestResult {
         params.add(new BasicNameValuePair("test_result_category_id", this.testResultCategoryId.toString()));
 
         return params;
-    }
-
-    public String toString()
-    {
-        return "ID: " + this.id + "\n" +
-                "DESCRIPTION: " + this.description + "\n" +
-                "TEST_CASE_ID: " + this.testCaseId + "\n" +
-                "TEST_RUN_ID: " + this.testRunId + "\n" +
-                "TEST_RESULT_CATEGORY_ID: " + this.testResultCategoryId + "\n" +
-                "DRAFT: " + this.draft + "\n";
     }
 }

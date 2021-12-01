@@ -86,16 +86,4 @@ public class Project {
 
         return params;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String toString()
-    {
-        return "ID: " + this.id + "\n" +
-                "NAME: " + this.name + "\n" +
-                "DESCRIPTION: " + this.description + "\n" +
-                "STARTS_AT: " + DateParser.toDateString(this.startsAt) + "\n" +
-                "ENDS_AT: " + DateParser.toDateString(this.endsAt) + "\n";
-    }
 }
