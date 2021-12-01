@@ -4,8 +4,8 @@ import com.testmonitor.parsers.DateParser;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class TestRun {
@@ -15,9 +15,9 @@ public class TestRun {
 
     private String description;
 
-    private Date startsAt;
+    private LocalDate startsAt;
 
-    private Date endsAt;
+    private LocalDate endsAt;
 
     private Integer milestoneId;
 
@@ -73,21 +73,21 @@ public class TestRun {
         return this;
     }
 
-    public Date getStartsAt() {
-        return startsAt;
+    public LocalDate getStartsAt() {
+        return this.startsAt;
     }
 
-    public TestRun setStartsAt(Date startsAt) {
+    public TestRun setStartsAt(LocalDate startsAt) {
         this.startsAt = startsAt;
 
         return this;
     }
 
-    public Date getEndsAt() {
-        return endsAt;
+    public LocalDate getEndsAt() {
+        return this.endsAt;
     }
 
-    public TestRun setEndsAt(Date endsAt) {
+    public TestRun setEndsAt(LocalDate endsAt) {
         this.endsAt = endsAt;
 
         return this;

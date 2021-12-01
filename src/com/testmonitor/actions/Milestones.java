@@ -8,8 +8,8 @@ import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -102,7 +102,7 @@ public class Milestones
         Milestone milestone = new Milestone();
 
         milestone.setName(name);
-        milestone.setEndsAt(new Date());
+        milestone.setEndsAt(LocalDate.now().plusMonths(1));
         milestone.setProjectId(this.projectId);
 
         return this.create(milestone);
