@@ -32,8 +32,6 @@ public class Connector {
 
     private final String domain;
 
-    private final String baseUrl;
-
     private final CloseableHttpClient httpClient;
 
     /**
@@ -43,8 +41,6 @@ public class Connector {
     public Connector(String domain, String token) {
         this.token = token;
         this.domain = domain;
-
-        this.baseUrl = this.baseUrl();
 
         this.httpClient = HttpClients.createDefault();
     }
@@ -74,8 +70,7 @@ public class Connector {
      *
      * @return The HTTP response as a JSONObject.
      */
-    public JSONObject get(String uri)
-    {
+    public JSONObject get(String uri) throws IOException {
         final HttpGet httpget = new HttpGet(this.baseUrl(uri));
 
         return this.request(httpget);
@@ -89,16 +84,11 @@ public class Connector {
      *
      * @return The HTTP response as a JSONObject.
      */
-    public JSONObject get(String uri, List<NameValuePair> params)
-    {
+    public JSONObject get(String uri, List<NameValuePair> params) throws IOException, URISyntaxException {
         URIBuilder uriBuilder = null;
 
-        try {
-            uriBuilder = new URIBuilder(this.baseUrl(uri));
-            uriBuilder.addParameters(params);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        uriBuilder = new URIBuilder(this.baseUrl(uri));
+        uriBuilder.addParameters(params);
 
         final HttpGet httpget = new HttpGet(uriBuilder.toString());
 
@@ -115,8 +105,7 @@ public class Connector {
      *
      * @return The HTTP response as a JSONObject.
      */
-    public JSONObject post(String uri, List<NameValuePair> params)
-    {
+    public JSONObject post(String uri, List<NameValuePair> params) throws IOException {
         final HttpPost httppost = new HttpPost(this.baseUrl(uri));
 
         httppost.setEntity(new UrlEncodedFormEntity(params));
@@ -132,8 +121,7 @@ public class Connector {
      *
      * @return The HTTP response as a JSONObject.
      */
-    public JSONObject put(String uri, List<NameValuePair> params)
-    {
+    public JSONObject put(String uri, List<NameValuePair> params) throws IOException {
         final HttpPut httpput = new HttpPut(this.baseUrl(uri));
 
         httpput.setEntity(new UrlEncodedFormEntity(params));
@@ -149,8 +137,7 @@ public class Connector {
      *
      * @return The HTTP response as a JSONObject.
      */
-    public JSONObject postAttachment(String uri, File file)
-    {
+    public JSONObject postAttachment(String uri, File file) throws IOException {
         HttpPost post = new HttpPost(this.baseUrl(uri));
         FileBody fileBody = new FileBody(file, ContentType.DEFAULT_BINARY);
 
@@ -203,6 +190,7 @@ public class Connector {
                 }
             }
         };
+
         final String responseBody;
 
         responseBody = this.httpClient.execute(httpUriRequestBase, responseHandler);
