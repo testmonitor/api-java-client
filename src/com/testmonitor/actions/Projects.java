@@ -33,6 +33,8 @@ public class Projects
     }
 
     /**
+     * @param page Page number
+     *
      * @return A list of projects
      */
     public ArrayList<Project> list(Integer page)
@@ -41,6 +43,9 @@ public class Projects
     }
 
     /**
+     * @param page Page number
+     * @param limit Paging limit
+     *
      * @return A list of projects
      */
     public ArrayList<Project> list(Integer page, Integer limit)

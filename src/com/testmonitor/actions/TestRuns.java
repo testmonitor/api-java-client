@@ -39,6 +39,8 @@ public class TestRuns
     }
 
     /**
+     * @param page Page number
+     *
      * @return A list of test runs
      */
     public ArrayList<TestRun> list(Integer page)
@@ -47,6 +49,9 @@ public class TestRuns
     }
 
     /**
+     * @param page Page number
+     * @param limit Paging limit
+     *
      * @return A list of test runs
      */
     public ArrayList<TestRun> list(Integer page, Integer limit)
@@ -182,7 +187,7 @@ public class TestRuns
     /**
      * Find a test run using the provided query and milestone or create a new one.
      *
-     * @param search The search query
+     * @param query The search query
      * @param milestone The milestone
      *
      * @return A test run matching the query and milestone or a new test run.
@@ -195,7 +200,7 @@ public class TestRuns
     /**
      * Find a test run using the provided query and milestone ID or create a new one.
      *
-     * @param search The search query
+     * @param query The search query
      * @param milestoneId The milestone ID
      *
      * @return A test run matching the query and milestone ID or a new test run.

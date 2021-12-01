@@ -37,6 +37,8 @@ public class TestSuites
     }
 
     /**
+     * @param page Page number
+     *
      * @return A list of test suites
      */
     public ArrayList<TestSuite> list(Integer page)
@@ -45,6 +47,9 @@ public class TestSuites
     }
 
     /**
+     * @param page Page number
+     * @param limit Paging limit
+     *
      * @return A list of test suites
      */
     public ArrayList<TestSuite> list(Integer page, Integer limit)

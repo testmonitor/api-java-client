@@ -32,6 +32,8 @@ public class Users
     }
 
     /**
+     * @param page Page number
+     *
      * @return A list of users
      */
     public ArrayList<User> list(Integer page)
@@ -40,6 +42,9 @@ public class Users
     }
 
     /**
+     * @param page Page number
+     * @param limit Paging limit
+     *
      * @return A list of users
      */
     public ArrayList<User> list(Integer page, Integer limit)
