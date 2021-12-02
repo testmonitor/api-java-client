@@ -26,6 +26,7 @@ import org.json.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -143,20 +144,48 @@ public class Connector {
     }
 
     /**
+     * Send a post request using multipart.
+     *
+     * @param uri A relative path
+     * @param params The arguments to post
+     * @param files The files to post
+     *
+     * @return The HTTP response as a JSONObject.
+     */
+    public JSONObject multiPartPost(String uri, List<NameValuePair> params, HashMap<String, File> files) throws IOException {
+        HttpPost httppost = new HttpPost(this.baseUrl(uri));
+
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        builder.setMode(HttpMultipartMode.EXTENDED);
+
+        // Handle plain post parameters
+        params.forEach((pair -> builder.addTextBody(pair.getName(), pair.getValue())));
+
+        // Handle file attachments
+        files.forEach((name, file) -> builder.addPart(name, new FileBody(file, ContentType.DEFAULT_BINARY)));
+
+        HttpEntity entity = builder.build();
+
+        httppost.setEntity(entity);
+
+        return this.request(httppost);
+    }
+
+    /**
      * Send an attachment.
      *
      * @param uri A relative path
+     * @param name Field name
      * @param file The file attachment
      *
      * @return The HTTP response as a JSONObject.
      */
-    public JSONObject postAttachment(String uri, File file) throws IOException {
+    public JSONObject postFile(String uri, String name, File file) throws IOException {
         HttpPost post = new HttpPost(this.baseUrl(uri));
-        FileBody fileBody = new FileBody(file, ContentType.DEFAULT_BINARY);
 
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.setMode(HttpMultipartMode.EXTENDED);
-        builder.addPart("file", fileBody);
+        builder.addPart(name, new FileBody(file, ContentType.DEFAULT_BINARY));
 
         HttpEntity entity = builder.build();
 

@@ -3,7 +3,9 @@ package com.testmonitor.resources;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class TestResult {
@@ -18,6 +20,8 @@ public class TestResult {
     private Integer testCaseId;
 
     private Integer testResultCategoryId;
+
+    private ArrayList<File> attachments = new ArrayList<File>();
 
     public TestResult setId(Integer id) {
         this.id = id;
@@ -107,6 +111,20 @@ public class TestResult {
         this.draft = draft.equals("true") || draft.equals("1");
 
         return this;
+    }
+
+    public void addAttachment(File attachment) {
+        this.attachments.add(attachment);
+    }
+
+    public HashMap<String, File> getAttachments() {
+        return new HashMap<String, File>() {{
+            attachments.forEach((file) -> put("file", file));
+        }};
+    }
+
+    public void clearAttachments() {
+        this.attachments.clear();
     }
 
     public List<NameValuePair> toHttpParams() {

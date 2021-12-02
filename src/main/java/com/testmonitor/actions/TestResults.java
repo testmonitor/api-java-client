@@ -100,7 +100,7 @@ public class TestResults
      * @return The created test result
      */
     public TestResult create(TestResult testResult) throws IOException {
-        JSONObject response = this.connector.post("test-results", testResult.toHttpParams());
+        JSONObject response = this.connector.multiPartPost("test-results", testResult.toHttpParams(), testResult.getAttachments());
 
         HashMap<String, Object> newTestResult = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
@@ -131,7 +131,7 @@ public class TestResults
      * @return The test result
      */
     public TestResult addAttachment(TestResult testResult, File attachment) throws IOException {
-        this.connector.postAttachment("test-result/" + testResult.getId()  + "/attachments", attachment);
+        this.connector.postFile("test-result/" + testResult.getId()  + "/attachments", "file", attachment);
 
         return testResult;
     }
