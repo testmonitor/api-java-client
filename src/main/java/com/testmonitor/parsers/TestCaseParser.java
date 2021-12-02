@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 public class TestCaseParser {
     /**
-     * Parse a JSONObject in a list of milestones
+     * Parse a JSONObject in a list of test cases
      *
      * @param response The JSON response of a request
      *
@@ -28,7 +28,7 @@ public class TestCaseParser {
     }
 
     /**
-     * Parse a hashmap into a milestone.
+     * Parse a hashmap into a test case.
      *
      * @param item the hashmap that contains the milestone data.
      *
