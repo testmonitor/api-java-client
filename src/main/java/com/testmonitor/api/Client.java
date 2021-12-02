@@ -9,7 +9,7 @@ import com.testmonitor.resources.Project;
  */
 public class Client
 {
-    final public static String VERSION = "0.2";
+    final public static String VERSION = "0.3";
 
     private final Connector connector;
 
