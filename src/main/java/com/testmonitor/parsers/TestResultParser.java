@@ -7,9 +7,9 @@ import java.util.HashMap;
 
 public class TestResultParser {
     /**
-     * Parse a JSONObject in a list of milestones
+     * Parse a JSONObject in a list of test results
      *
-     * @param response The JSON response of a request
+     * @param response The JSON response of a reqsuest
      *
      * @return A parsed list of test results
      */
@@ -27,11 +27,11 @@ public class TestResultParser {
     }
 
     /**
-     * Parse a hashmap into a milestone.
+     * Parse a hashmap into a test result.
      *
-     * @param item the hashmap that contains the milestone data.
+     * @param item the hashmap that contains the test result data.
      *
-     * @return The parsed milestone
+     * @return The parsed test result
      */
     public static TestResult parse(HashMap<String, Object> item)
     {
