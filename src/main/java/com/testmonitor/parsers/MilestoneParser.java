@@ -12,7 +12,7 @@ public class MilestoneParser {
      *
      * @param response The JSON response of a request
      *
-     * @return A parsed list of projects
+     * @return A parsed list of milestones
      */
     public static ArrayList<Milestone> parse(JSONObject response)
     {
