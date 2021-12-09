@@ -12,7 +12,7 @@ public class TestCaseParser {
      *
      * @param response The JSON response of a request
      *
-     * @return A parsed list of projects
+     * @return A parsed list of test cases
      */
     public static ArrayList<TestCase> parse(JSONObject response)
     {
