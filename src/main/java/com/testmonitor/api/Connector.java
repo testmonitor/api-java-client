@@ -205,7 +205,7 @@ public class Connector {
         httpUriRequestBase.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + this.token);
         httpUriRequestBase.setHeader(HttpHeaders.ACCEPT, "application/json");
 
-        final HttpClientResponseHandler<String> responseHandler = new HttpClientResponseHandler<>() {
+        final HttpClientResponseHandler<String> responseHandler = new HttpClientResponseHandler<String>() {
             @Override
             public String handleResponse(
                     final ClassicHttpResponse response) throws IOException, ParseException {
