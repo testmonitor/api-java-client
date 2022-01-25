@@ -23,7 +23,7 @@ We recommend installing the API client in your Java project using Maven. Add it 
 <dependency>
     <groupId>com.testmonitor</groupId>
     <artifactId>api-java-client</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 </dependency>
 ```
 
