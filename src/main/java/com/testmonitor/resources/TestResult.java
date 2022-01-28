@@ -119,7 +119,7 @@ public class TestResult {
 
     public HashMap<String, File> getAttachments() {
         return new HashMap<String, File>() {{
-            attachments.forEach((file) -> put("attachments[]", file));
+            attachments.forEach((file) -> put(file.getName(), file));
         }};
     }
 
