@@ -13,7 +13,6 @@ public class TestResult {
 
     private String description = "";
 
-
     private Boolean draft = false;
 
     private Integer testRunId;
