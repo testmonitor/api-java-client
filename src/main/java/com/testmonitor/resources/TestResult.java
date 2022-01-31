@@ -11,7 +11,7 @@ import java.util.List;
 public class TestResult {
     private Integer id;
 
-    private String description;
+    private String description = "";
 
     private Boolean draft = false;
 
