@@ -2,6 +2,7 @@ package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
 import com.testmonitor.parsers.TestCaseParser;
+import com.testmonitor.parsers.TestSuiteParser;
 import com.testmonitor.resources.Project;
 import com.testmonitor.resources.TestCase;
 import com.testmonitor.resources.TestSuite;
@@ -192,7 +193,13 @@ public class TestCases
      * @return A test case matching the query and test suite ID or a new test case.
      */
     public TestCase findOrCreate(String query, Integer testSuiteId) throws IOException, URISyntaxException {
-        ArrayList<TestCase> testCases = this.search('"' + query + '"', testSuiteId);
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+        params.add(new BasicNameValuePair("test_suite", testSuiteId.toString()));
+        params.add(new BasicNameValuePair("filter[name]", query));
+
+        ArrayList<TestCase> testCases = TestCaseParser.parse(this.connector.get("test-cases", params));
 
         if (testCases.size() > 0) {
             return testCases.get(0);

@@ -1,9 +1,11 @@
 package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
+import com.testmonitor.parsers.TestCaseParser;
 import com.testmonitor.parsers.TestRunParser;
 import com.testmonitor.resources.Milestone;
 import com.testmonitor.resources.Project;
+import com.testmonitor.resources.TestCase;
 import com.testmonitor.resources.TestRun;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
@@ -197,7 +199,13 @@ public class TestRuns
      * @return A test run matching the query and milestone ID or a new test run.
      */
     public TestRun findOrCreate(String query, Integer milestoneId) throws IOException, URISyntaxException {
-        ArrayList<TestRun> testRuns = this.search('"' + query + '"');
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+        params.add(new BasicNameValuePair("milestone", milestoneId.toString()));
+        params.add(new BasicNameValuePair("filter[name]", query));
+
+        ArrayList<TestRun> testRuns = TestRunParser.parse(this.connector.get("test-runs", params));
 
         if (testRuns.size() > 0) {
             return testRuns.get(0);

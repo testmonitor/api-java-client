@@ -130,7 +130,12 @@ public class TestSuites
      * @return A test suite matching the query or a new test suite.
      */
     public TestSuite findOrCreate(String query) throws IOException, URISyntaxException {
-        ArrayList<TestSuite> testSuites = this.search(query);
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+        params.add(new BasicNameValuePair("filter[name]", query));
+
+        ArrayList<TestSuite> testSuites = TestSuiteParser.parse(this.connector.get("test-suites", params));
 
         if (testSuites.size() > 0) {
             return testSuites.get(0);

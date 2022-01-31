@@ -2,8 +2,10 @@ package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
 import com.testmonitor.parsers.MilestoneParser;
+import com.testmonitor.parsers.TestCaseParser;
 import com.testmonitor.resources.Project;
 import com.testmonitor.resources.Milestone;
+import com.testmonitor.resources.TestCase;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -132,7 +134,12 @@ public class Milestones
      * @return A milestone matching the query or a new milestone.
      */
     public Milestone findOrCreate(String query) throws IOException, URISyntaxException {
-        ArrayList<Milestone> milestones = this.search('"' + query + '"');
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+        params.add(new BasicNameValuePair("filter[name]", query));
+
+        ArrayList<Milestone> milestones = MilestoneParser.parse(this.connector.get("milestones", params));
 
         if (milestones.size() > 0) {
             return milestones.get(0);
