@@ -193,17 +193,17 @@ public class TestRuns
     /**
      * Find a test run using the provided query and milestone ID or create a new one.
      *
-     * @param query The search query
+     * @param name The search query
      * @param milestoneId The milestone ID
      *
      * @return A test run matching the query and milestone ID or a new test run.
      */
-    public TestRun findOrCreate(String query, Integer milestoneId) throws IOException, URISyntaxException {
+    public TestRun findOrCreate(String name, Integer milestoneId) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
         params.add(new BasicNameValuePair("milestone", milestoneId.toString()));
-        params.add(new BasicNameValuePair("filter[name]", query));
+        params.add(new BasicNameValuePair("filter[name]", name));
 
         ArrayList<TestRun> testRuns = TestRunParser.parse(this.connector.get("test-runs", params));
 
@@ -211,7 +211,7 @@ public class TestRuns
             return testRuns.get(0);
         }
 
-        return this.create(query, milestoneId);
+        return this.create(name, milestoneId);
     }
 
     /**

@@ -125,15 +125,15 @@ public class TestSuites
     /**
      * Find a test suite using the provided query or create a new one.
      *
-     * @param query The search query
+     * @param name The search query
      *
      * @return A test suite matching the query or a new test suite.
      */
-    public TestSuite findOrCreate(String query) throws IOException, URISyntaxException {
+    public TestSuite findOrCreate(String name) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
-        params.add(new BasicNameValuePair("filter[name]", query));
+        params.add(new BasicNameValuePair("filter[name]", name));
 
         ArrayList<TestSuite> testSuites = TestSuiteParser.parse(this.connector.get("test-suites", params));
 
@@ -141,7 +141,7 @@ public class TestSuites
             return testSuites.get(0);
         }
 
-        return this.create(query);
+        return this.create(name);
     }
 
     /**

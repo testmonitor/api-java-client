@@ -129,15 +129,15 @@ public class Milestones
     /**
      * Find a milestone using the provided query or create a new one.
      *
-     * @param query The search query
+     * @param name The search query
      *
      * @return A milestone matching the query or a new milestone.
      */
-    public Milestone findOrCreate(String query) throws IOException, URISyntaxException {
+    public Milestone findOrCreate(String name) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
-        params.add(new BasicNameValuePair("filter[name]", query));
+        params.add(new BasicNameValuePair("filter[name]", name));
 
         ArrayList<Milestone> milestones = MilestoneParser.parse(this.connector.get("milestones", params));
 
@@ -145,7 +145,7 @@ public class Milestones
             return milestones.get(0);
         }
 
-        return this.create(query);
+        return this.create(name);
     }
 
     /**
