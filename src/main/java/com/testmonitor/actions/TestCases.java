@@ -208,7 +208,7 @@ public class TestCases
      * @param name The name of the test case
      * @param testSuiteId The test suite ID
      *
-     * @return A test case matching the nsmr and test suite ID or a new test case.
+     * @return A test case matching the name and test suite ID or a new test case.
      */
     public TestCase findOrCreate(String name, Integer testSuiteId) throws IOException, URISyntaxException {
         ArrayList<TestCase> testCases = this.findByName(name, testSuiteId);
