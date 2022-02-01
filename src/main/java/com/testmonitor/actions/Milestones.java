@@ -144,11 +144,11 @@ public class Milestones
     }
 
     /**
-     * Find a milestone using the provided query or create a new one.
+     * Find a milestone using the provided name or create a new one.
      *
-     * @param name The search query
+     * @param name The milestone name
      *
-     * @return A milestone matching the query or a new milestone.
+     * @return A milestone matching the name or a new milestone.
      */
     public Milestone findOrCreate(String name) throws IOException, URISyntaxException {
         ArrayList<Milestone> milestones = this.findByName(name);
