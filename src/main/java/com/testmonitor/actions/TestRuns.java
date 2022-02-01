@@ -182,7 +182,7 @@ public class TestRuns
      * Find a test run using the provided name and milestone or create a new one.
      *
      * @param name The name of the test run
-     * @param milestone The test run
+     * @param milestone The milestone
      *
      * @return A test run matching the query and milestone or a new test run.
      */
