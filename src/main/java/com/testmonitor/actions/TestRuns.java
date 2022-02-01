@@ -184,7 +184,7 @@ public class TestRuns
      * @param name The name of the test run
      * @param milestone The milestone
      *
-     * @return A test run matching the query and milestone or a new test run.
+     * @return A test run matching the provided name and milestone or a new test run.
      */
     public TestRun findOrCreate(String name, Milestone milestone) throws IOException, URISyntaxException {
         return this.findOrCreate(name, milestone.getId());
@@ -193,10 +193,10 @@ public class TestRuns
     /**
      * Find a test run using the provided name and milestone ID.
      *
-     * @param name The name of thje test run
+     * @param name The name of the test run
      * @param milestoneId The milestone ID
      *
-     * @return A test run matching the name and milestone ID or a new test run.
+     * @return A test run matching the name and milestone ID.
      */
     public ArrayList<TestRun> findByName(String name, Integer milestoneId) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
