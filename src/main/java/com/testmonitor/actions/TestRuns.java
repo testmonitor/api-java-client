@@ -179,15 +179,15 @@ public class TestRuns
     }
 
     /**
-     * Find a test run using the provided query and milestone or create a new one.
+     * Find a test run using the provided name and milestone or create a new one.
      *
-     * @param query The search query
-     * @param milestone The milestone
+     * @param name The name of the test run
+     * @param milestone The test run
      *
      * @return A test run matching the query and milestone or a new test run.
      */
-    public TestRun findOrCreate(String query, Milestone milestone) throws IOException, URISyntaxException {
-        return this.findOrCreate(query, milestone.getId());
+    public TestRun findOrCreate(String name, Milestone milestone) throws IOException, URISyntaxException {
+        return this.findOrCreate(name, milestone.getId());
     }
 
     /**

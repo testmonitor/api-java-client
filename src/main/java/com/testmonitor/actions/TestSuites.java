@@ -125,9 +125,9 @@ public class TestSuites
     /**
      * Find a test suite using the provided name.
      *
-     * @param name The search query
+     * @param name The name of the test suite
      *
-     * @return A test suite matching the query or a new test suite.
+     * @return Test suites that matches the name
      */
     public ArrayList<TestSuite> findByName(String name) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
@@ -139,11 +139,11 @@ public class TestSuites
     }
 
     /**
-     * Find a test suite using the provided query or create a new one.
+     * Find a test suite using the provided name or create a new one.
      *
-     * @param name The search query
+     * @param name The name of the test suite
      *
-     * @return A test suite matching the query or a new test suite.
+     * @return A test suite matching the name or a new test suite.
      */
     public TestSuite findOrCreate(String name) throws IOException, URISyntaxException {
         ArrayList<TestSuite> testSuites = this.findByName(name);
