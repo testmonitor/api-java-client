@@ -209,12 +209,12 @@ public class TestRuns
     }
 
     /**
-     * Find a test run using the provided query and milestone ID or create a new one.
+     * Find a test run using the provided name and milestone ID or create a new one.
      *
-     * @param name The search query
+     * @param name The name
      * @param milestoneId The milestone ID
      *
-     * @return A test run matching the query and milestone ID or a new test run.
+     * @return A test run matching the name and milestone ID or a new test run.
      */
     public TestRun findOrCreate(String name, Integer milestoneId) throws IOException, URISyntaxException {
         ArrayList<TestRun> testRuns = findByName(name, milestoneId);
