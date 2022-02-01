@@ -131,7 +131,7 @@ public class Milestones
      *
      * @param name exactly matches the name
      *
-     * @return Milestones exactly matches the name.
+     * @return Milestones exactly matching the provided name.
      */
     public ArrayList<Milestone> findByName(String name) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
