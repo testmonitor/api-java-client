@@ -217,7 +217,7 @@ public class TestRuns
      * @return A test run matching the name and milestone ID or a new test run.
      */
     public TestRun findOrCreate(String name, Integer milestoneId) throws IOException, URISyntaxException {
-        ArrayList<TestRun> testRuns = findByName(name, milestoneId);
+        ArrayList<TestRun> testRuns = this.findByName(name, milestoneId);
 
         if (testRuns.size() > 0) {
             return testRuns.get(0);
