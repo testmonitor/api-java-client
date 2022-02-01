@@ -162,15 +162,15 @@ public class TestCases
     }
 
     /**
-     * Find a test case using the provided query and test suite or create a new one.
+     * Find a test case using the provided name and test suite or create a new one.
      *
-     * @param query The search query
+     * @param name The test case name
      * @param testSuite The test suite
      *
-     * @return A test case matching the query or a new test case.
+     * @return A test case matching the provided name or a new test case.
      */
-    public TestCase findOrCreate(String query, TestSuite testSuite) throws IOException, URISyntaxException {
-        return this.findOrCreate(query, testSuite.getId());
+    public TestCase findOrCreate(String name, TestSuite testSuite) throws IOException, URISyntaxException {
+        return this.findOrCreate(name, testSuite.getId());
     }
 
     /**
@@ -190,7 +190,7 @@ public class TestCases
      * @param name The name of the test case
      * @param testSuiteId The test suite ID
      *
-     * @return Test cases matching the name.
+     * @return Test cases matching the provided name.
      */
     public ArrayList<TestCase> findByName(String name, Integer testSuiteId) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
