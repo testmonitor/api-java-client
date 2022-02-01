@@ -162,7 +162,7 @@ public class Connector {
         params.forEach((pair -> builder.addTextBody(pair.getName(), pair.getValue())));
 
         // Handle file attachments
-        files.forEach((name, file) -> builder.addPart(name, new FileBody(file, ContentType.DEFAULT_BINARY)));
+        files.forEach((name, file) -> builder.addPart("attachments[]", new FileBody(file, ContentType.DEFAULT_BINARY)));
 
         HttpEntity entity = builder.build();
 
