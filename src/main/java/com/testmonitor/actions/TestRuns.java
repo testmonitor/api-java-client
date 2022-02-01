@@ -191,6 +191,24 @@ public class TestRuns
     }
 
     /**
+     * Find a test run using the provided query and milestone ID.
+     *
+     * @param name The search query
+     * @param milestoneId The milestone ID
+     *
+     * @return A test run matching the query and milestone ID or a new test run.
+     */
+    public ArrayList<TestRun> findByName(String name, Integer milestoneId) throws IOException, URISyntaxException {
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+        params.add(new BasicNameValuePair("milestone", milestoneId.toString()));
+        params.add(new BasicNameValuePair("filter[name]", name));
+
+        return TestRunParser.parse(this.connector.get("test-runs", params));
+    }
+
+    /**
      * Find a test run using the provided query and milestone ID or create a new one.
      *
      * @param name The search query
@@ -199,13 +217,7 @@ public class TestRuns
      * @return A test run matching the query and milestone ID or a new test run.
      */
     public TestRun findOrCreate(String name, Integer milestoneId) throws IOException, URISyntaxException {
-        List<NameValuePair> params = new ArrayList<>();
-
-        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
-        params.add(new BasicNameValuePair("milestone", milestoneId.toString()));
-        params.add(new BasicNameValuePair("filter[name]", name));
-
-        ArrayList<TestRun> testRuns = TestRunParser.parse(this.connector.get("test-runs", params));
+        ArrayList<TestRun> testRuns = findByName(name, milestoneId);
 
         if (testRuns.size() > 0) {
             return testRuns.get(0);

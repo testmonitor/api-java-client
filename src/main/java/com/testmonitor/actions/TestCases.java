@@ -192,14 +192,26 @@ public class TestCases
      *
      * @return A test case matching the query and test suite ID or a new test case.
      */
-    public TestCase findOrCreate(String name, Integer testSuiteId) throws IOException, URISyntaxException {
+    public ArrayList<TestCase> findByName(String name, Integer testSuiteId) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
         params.add(new BasicNameValuePair("test_suite", testSuiteId.toString()));
         params.add(new BasicNameValuePair("filter[name]", name));
 
-        ArrayList<TestCase> testCases = TestCaseParser.parse(this.connector.get("test-cases", params));
+        return TestCaseParser.parse(this.connector.get("test-cases", params));
+    }
+
+    /**
+     * Find a test case using the provided query and test suite ID or create a new one.
+     *
+     * @param name The search query
+     * @param testSuiteId The test suite ID
+     *
+     * @return A test case matching the query and test suite ID or a new test case.
+     */
+    public TestCase findOrCreate(String name, Integer testSuiteId) throws IOException, URISyntaxException {
+        ArrayList<TestCase> testCases = this.findByName(name, testSuiteId);
 
         if (testCases.size() > 0) {
             return testCases.get(0);
