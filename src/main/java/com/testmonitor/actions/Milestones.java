@@ -127,9 +127,9 @@ public class Milestones
     }
 
     /**
-     * Find a milestone using the provided query or create a new one.
+     * Find a milestone using the provided name.
      *
-     * @param name The name
+     * @param name exactly matches the name
      *
      * @return Milestones that matches the filter.
      */
