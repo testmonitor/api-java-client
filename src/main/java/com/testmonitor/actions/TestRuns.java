@@ -148,8 +148,6 @@ public class TestRuns
         TestRun testRun = new TestRun();
 
         testRun.setName(name);
-        testRun.setStartsAt(LocalDate.now());
-        testRun.setEndsAt(LocalDate.now());
         testRun.setMilestoneId(milestoneId);
 
         return this.create(testRun);

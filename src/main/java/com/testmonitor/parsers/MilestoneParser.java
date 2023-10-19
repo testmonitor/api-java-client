@@ -40,11 +40,14 @@ public class MilestoneParser {
 
         milestone.setId(item.get("id").toString())
                 .setName(item.get("name").toString())
-                .setProjectId(item.get("project_id").toString())
-                .setEndsAt(DateParser.toDateObject(item.get("ends_at").toString()));
+                .setProjectId(item.get("project_id").toString());
 
         if (item.get("description") != null) {
             milestone.setDescription(item.get("description").toString());
+        }
+
+        if (item.get("ends_at") != null) {
+            milestone.setEndsAt(DateParser.toDateObject(item.get("ends_at").toString()));
         }
 
         return milestone;
