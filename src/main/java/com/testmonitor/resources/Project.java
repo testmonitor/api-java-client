@@ -32,11 +32,12 @@ public class Project {
     }
 
     public Integer getId() {
-        return id;
+        return this.id;
     }
 
     /**
-     * Set the project name
+     * Set the project name.
+     *
      * @param name The name
      *
      * @return
@@ -80,7 +81,6 @@ public class Project {
     public LocalDate getEndsAt() {
         return this.endsAt;
     }
-
 
     public List<NameValuePair> toHttpParams() {
         List<NameValuePair> params = new ArrayList<>();

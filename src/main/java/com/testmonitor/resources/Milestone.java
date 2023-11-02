@@ -86,8 +86,11 @@ public class Milestone {
 
         params.add(new BasicNameValuePair("name", this.name));
         params.add(new BasicNameValuePair("description", this.description));
-        params.add(new BasicNameValuePair("ends_at", DateParser.toDateString(this.endsAt)));
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        if (this.endsAt != null) {
+            params.add(new BasicNameValuePair("ends_at", DateParser.toDateString(this.endsAt)));
+        }
 
         return params;
     }

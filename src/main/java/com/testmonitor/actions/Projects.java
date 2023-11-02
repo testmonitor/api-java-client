@@ -18,7 +18,6 @@ public class Projects
     private final Connector connector;
 
     /**
-     *
      * @param connector The TestMonitor connector
      */
     public Projects(Connector connector)

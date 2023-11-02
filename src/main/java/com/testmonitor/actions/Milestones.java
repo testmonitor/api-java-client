@@ -105,7 +105,6 @@ public class Milestones
         Milestone milestone = new Milestone();
 
         milestone.setName(name);
-        milestone.setEndsAt(LocalDate.now().plusMonths(1));
         milestone.setProjectId(this.projectId);
 
         return this.create(milestone);

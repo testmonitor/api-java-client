@@ -3,6 +3,7 @@ package com.testmonitor.parsers;
 import com.testmonitor.resources.TestRun;
 import org.json.JSONObject;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -40,14 +41,19 @@ public class TestRunParser {
 
         testRun.setId(item.get("id").toString())
                 .setName(item.get("name").toString())
-                .setMilestoneId(item.get("milestone_id").toString())
-                .setStartsAt(DateParser.toDateObject(item.get("starts_at").toString()))
-                .setEndsAt(DateParser.toDateObject(item.get("ends_at").toString()));
+                .setMilestoneId(item.get("milestone_id").toString());
 
         if (item.get("description") != null) {
             testRun.setDescription(item.get("description").toString());
         }
 
+        if (item.get("starts_at") != null) {
+            testRun.setStartsAt(LocalDateTime.parse(item.get("starts_at").toString()));
+        }
+
+        if (item.get("ends_at") != null) {
+            testRun.setEndsAt(LocalDateTime.parse(item.get("ends_at").toString()));
+        }
         return testRun;
     }
 }

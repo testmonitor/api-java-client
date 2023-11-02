@@ -5,6 +5,8 @@ import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +17,9 @@ public class TestRun {
 
     private String description;
 
-    private LocalDate startsAt;
+    private LocalDateTime startsAt;
 
-    private LocalDate endsAt;
+    private LocalDateTime endsAt;
 
     private Integer milestoneId;
 
@@ -73,21 +75,21 @@ public class TestRun {
         return this;
     }
 
-    public LocalDate getStartsAt() {
+    public LocalDateTime getStartsAt() {
         return this.startsAt;
     }
 
-    public TestRun setStartsAt(LocalDate startsAt) {
+    public TestRun setStartsAt(LocalDateTime startsAt) {
         this.startsAt = startsAt;
 
         return this;
     }
 
-    public LocalDate getEndsAt() {
+    public LocalDateTime getEndsAt() {
         return this.endsAt;
     }
 
-    public TestRun setEndsAt(LocalDate endsAt) {
+    public TestRun setEndsAt(LocalDateTime endsAt) {
         this.endsAt = endsAt;
 
         return this;
@@ -95,12 +97,19 @@ public class TestRun {
 
     public List<NameValuePair> toHttpParams() {
         List<NameValuePair> params = new ArrayList<>();
+        DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'.000000+00:00'");
 
         params.add(new BasicNameValuePair("name", this.name));
         params.add(new BasicNameValuePair("description", this.description));
-        params.add(new BasicNameValuePair("starts_at", DateParser.toDateString(this.startsAt)));
-        params.add(new BasicNameValuePair("ends_at", DateParser.toDateString(this.endsAt)));
         params.add(new BasicNameValuePair("milestone_id", this.milestoneId.toString()));
+
+        if (this.startsAt != null) {
+            params.add(new BasicNameValuePair("starts_at", dateTimeFormat.format(this.startsAt)));
+        }
+
+        if (this.endsAt != null) {
+            params.add(new BasicNameValuePair("ends_at", dateTimeFormat.format(this.endsAt)));
+        }
 
         return params;
     }

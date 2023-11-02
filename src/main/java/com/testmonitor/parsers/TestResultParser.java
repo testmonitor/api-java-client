@@ -46,8 +46,8 @@ public class TestResultParser {
             testResult.setDescription(item.get("description").toString());
         }
 
-        if (item.get("test_result_category_id") != null) {
-            testResult.setTestResultCategoryId(item.get("test_result_category_id").toString());
+        if (item.get("test_result_status_id") != null) {
+            testResult.setTestResultStatusId(item.get("test_result_status_id").toString());
         }
 
         return testResult;
