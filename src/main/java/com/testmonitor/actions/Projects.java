@@ -13,12 +13,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ *
+ */
 public class Projects
 {
     private final Connector connector;
 
     /**
-     *
      * @param connector The TestMonitor connector
      */
     public Projects(Connector connector)

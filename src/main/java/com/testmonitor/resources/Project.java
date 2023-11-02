@@ -25,18 +25,27 @@ public class Project {
         return this;
     }
 
+    /**
+     * @param id
+     *
+     * @return
+     */
     public Project setId(String id) {
         this.id = Integer.parseInt(id);
 
         return this;
     }
 
+    /**
+     * @return Integer
+     */
     public Integer getId() {
-        return id;
+        return this.id;
     }
 
     /**
-     * Set the project name
+     * Set the project name.
+     *
      * @param name The name
      *
      * @return
@@ -47,41 +56,70 @@ public class Project {
         return this;
     }
 
+    /**
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @param description
+     *
+     * @return
+     */
     public Project setDescription(String description) {
         this.description = description;
 
         return this;
     }
 
+    /**
+     * @return
+     */
     public String getDescription() {
         return name;
     }
 
+    /**
+     * @param startsAt
+     *
+     * @return
+     */
     public Project setStartsAt(LocalDate startsAt) {
         this.startsAt = startsAt;
 
         return this;
     }
 
+    /**
+     * @return
+     */
     public LocalDate getStartsAt() {
         return this.startsAt;
     }
 
+    /**
+     * @param endsAt
+     *
+     * @return
+     */
     public Project setEndsAt(LocalDate endsAt) {
         this.endsAt = endsAt;
 
         return this;
     }
 
+    /**
+     * @return
+     */
     public LocalDate getEndsAt() {
         return this.endsAt;
     }
 
-
+    /**
+     * @return
+     */
     public List<NameValuePair> toHttpParams() {
         List<NameValuePair> params = new ArrayList<>();
 
