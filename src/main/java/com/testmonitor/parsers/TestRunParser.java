@@ -3,6 +3,7 @@ package com.testmonitor.parsers;
 import com.testmonitor.resources.TestRun;
 import org.json.JSONObject;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -47,11 +48,11 @@ public class TestRunParser {
         }
 
         if (item.get("starts_at") != null) {
-            testRun.setStartsAt(DateParser.toDateObject(item.get("starts_at").toString()));
+            testRun.setStartsAt(LocalDateTime.parse(item.get("starts_at").toString()));
         }
 
         if (item.get("ends_at") != null) {
-            testRun.setEndsAt(DateParser.toDateObject(item.get("ends_at").toString()));
+            testRun.setEndsAt(LocalDateTime.parse(item.get("ends_at").toString()));
         }
         return testRun;
     }
