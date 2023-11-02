@@ -5,7 +5,6 @@ import com.testmonitor.parsers.TestCaseParser;
 import com.testmonitor.parsers.TestRunParser;
 import com.testmonitor.resources.Milestone;
 import com.testmonitor.resources.Project;
-import com.testmonitor.resources.TestCase;
 import com.testmonitor.resources.TestRun;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
@@ -13,7 +12,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
