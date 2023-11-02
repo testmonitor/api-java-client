@@ -98,9 +98,15 @@ public class TestRun {
 
         params.add(new BasicNameValuePair("name", this.name));
         params.add(new BasicNameValuePair("description", this.description));
-        params.add(new BasicNameValuePair("starts_at", DateParser.toDateString(this.startsAt)));
-        params.add(new BasicNameValuePair("ends_at", DateParser.toDateString(this.endsAt)));
         params.add(new BasicNameValuePair("milestone_id", this.milestoneId.toString()));
+
+        if (this.startsAt != null) {
+            params.add(new BasicNameValuePair("starts_at", DateParser.toDateString(this.startsAt)));
+        }
+
+        if (this.endsAt != null) {
+            params.add(new BasicNameValuePair("ends_at", DateParser.toDateString(this.endsAt)));
+        }
 
         return params;
     }

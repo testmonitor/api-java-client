@@ -6,7 +6,7 @@
     <groupId>com.testmonitor</groupId>
     <artifactId>api-java-client</artifactId>
     <packaging>jar</packaging>
-    <version>1.3</version>
+    <version>1.4.1</version>
 
     <name>TestMonitorClient</name>
     <description>TestMonitor API client</description>
