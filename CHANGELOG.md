@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.3] - 2023-11-02
+* Update org.json:json to 20231013 by @dependabot in https://github.com/testmonitor/api-java-client/pull/28
+
 ## [1.4.2] - 2023-11-02
 * Allow empty start- and end dates on test runs by @stefanius in https://github.com/testmonitor/api-java-client/pull/26
 * Allow empty end dates on milestones by @stefanius in https://github.com/testmonitor/api-java-client/pull/26
