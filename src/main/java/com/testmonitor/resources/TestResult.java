@@ -19,7 +19,7 @@ public class TestResult {
 
     private Integer testCaseId;
 
-    private Integer testResultCategoryId;
+    private Integer testResultStatusId;
 
     private ArrayList<File> attachments = new ArrayList<File>();
 
@@ -49,18 +49,18 @@ public class TestResult {
         return this;
     }
 
-    public Integer getTestResultCategoryId() {
-        return this.testResultCategoryId;
+    public Integer getTestResultStatusId() {
+        return this.testResultStatusId;
     }
 
-    public TestResult setTestResultCategoryId(Integer testResultCategoryId) {
-        this.testResultCategoryId = testResultCategoryId;
+    public TestResult setTestResultStatusId(Integer testResultStatusId) {
+        this.testResultStatusId = testResultStatusId;
 
         return this;
     }
 
-    public TestResult setTestResultCategoryId(String testResultCategoryId) {
-        this.testResultCategoryId = Integer.parseInt(testResultCategoryId);
+    public TestResult setTestResultStatusId(String testResultStatusId) {
+        this.testResultStatusId = Integer.parseInt(testResultStatusId);
 
         return this;
     }
@@ -134,7 +134,7 @@ public class TestResult {
         params.add(new BasicNameValuePair("test_case_id", this.testCaseId.toString()));
         params.add(new BasicNameValuePair("test_run_id", this.testRunId.toString()));
         params.add(new BasicNameValuePair("draft", this.draft ? "1" : "0"));
-        params.add(new BasicNameValuePair("test_result_category_id", this.testResultCategoryId.toString()));
+        params.add(new BasicNameValuePair("test_result_status_id", this.testResultStatusId.toString()));
 
         return params;
     }
