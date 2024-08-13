@@ -41,21 +41,21 @@ public class Client
     /**
      * @param project Project
      *
-     * @return Test Suite actions
-     */
-    public TestSuites testSuites(Project project)
-    {
-        return new TestSuites(this.connector, project);
-    }
-
-    /**
-     * @param project Project
-     *
      * @return Test Case actions
      */
     public TestCases testCases(Project project)
     {
         return new TestCases(this.connector, project);
+    }
+
+    /**
+     * @param project Project
+     *
+     * @return Test Case Folder actions
+     */
+    public TestCaseFolders testCaseFolders(Project project)
+    {
+        return new TestCaseFolders(this.connector, project);
     }
 
     /**

@@ -6,22 +6,28 @@ import org.apache.hc.core5.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestSuite {
+public class TestCaseFolder {
     private Integer id;
 
     private String name;
 
     private String description;
 
+    private String path;
+
+    private Integer childrenCount;
+
+    private Integer testCasesCount;
+
     private Integer projectId;
 
-    public TestSuite setId(Integer id) {
+    public TestCaseFolder setId(Integer id) {
         this.id = id;
 
         return this;
     }
 
-    public TestSuite setId(String id) {
+    public TestCaseFolder setId(String id) {
         this.id = Integer.parseInt(id);
 
         return this;
@@ -31,7 +37,7 @@ public class TestSuite {
         return id;
     }
 
-    public TestSuite setName(String name) {
+    public TestCaseFolder setName(String name) {
         this.name = name;
 
         return this;
@@ -41,7 +47,7 @@ public class TestSuite {
         return this.name;
     }
 
-    public TestSuite setDescription(String description) {
+    public TestCaseFolder setDescription(String description) {
         this.description = description;
 
         return this;
@@ -51,20 +57,36 @@ public class TestSuite {
         return this.description;
     }
 
-    public TestSuite setProjectId(Integer projectId) {
-        this.projectId = projectId;
-
-        return this;
+    public String getPath() {
+        return path;
     }
 
-    public TestSuite setProjectId(String projectId) {
-        this.projectId = Integer.parseInt(projectId);
+    public TestCaseFolder setPath(String path) {
+        this.path = path;
 
         return this;
     }
 
     public Integer getProjectId() {
-        return this.projectId;
+        return projectId;
+    }
+
+    public TestCaseFolder setProjectId(Integer projectId) {
+        this.projectId = projectId;
+
+        return this;
+    }
+
+    public TestCaseFolder setProjectId(String projectId) {
+        return this.setProjectId(Integer.parseInt(projectId));
+    }
+
+    public Integer getChildrenCount() {
+        return childrenCount;
+    }
+
+    public Integer getTestCasesCount() {
+        return testCasesCount;
     }
 
     public List<NameValuePair> toHttpParams() {
@@ -72,6 +94,7 @@ public class TestSuite {
 
         params.add(new BasicNameValuePair("name", this.name));
         params.add(new BasicNameValuePair("description", this.description));
+        params.add(new BasicNameValuePair("path", this.path));
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
 
         return params;

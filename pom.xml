@@ -6,7 +6,7 @@
     <groupId>com.testmonitor</groupId>
     <artifactId>api-java-client</artifactId>
     <packaging>jar</packaging>
-    <version>1.4.3</version>
+    <version>1.5.0</version>
 
     <name>TestMonitorClient</name>
     <description>TestMonitor API client</description>
@@ -96,8 +96,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>21</source>
+                    <target>21</target>
                 </configuration>
             </plugin>
 

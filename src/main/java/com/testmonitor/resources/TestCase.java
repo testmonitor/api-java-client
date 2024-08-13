@@ -13,7 +13,9 @@ public class TestCase {
 
     private String description;
 
-    private Integer testSuiteId;
+    private Integer testCaseFolderId;
+
+    private Integer projectId;
 
     public TestCase setId(Integer id) {
         this.id = id;
@@ -41,20 +43,18 @@ public class TestCase {
         return this.name;
     }
 
-    public TestCase setTestSuiteId(Integer testSuiteId) {
-        this.testSuiteId = testSuiteId;
+    public TestCase setTestCaseFolderId(Integer testCaseFolderId) {
+        this.testCaseFolderId = testCaseFolderId;
 
         return this;
     }
 
-    public TestCase setTestSuiteId(String testSuiteId) {
-        this.testSuiteId = Integer.parseInt(testSuiteId);
-
-        return this;
+    public TestCase setTestCaseFolderId(String testCaseFolderId) {
+        return this.setTestCaseFolderId(Integer.parseInt(testCaseFolderId));
     }
 
-    public Integer getTestSuiteId() {
-        return this.testSuiteId;
+    public Integer getTestCaseFolderId() {
+        return this.testCaseFolderId;
     }
 
     public String getDescription() {
@@ -67,12 +67,27 @@ public class TestCase {
         return this;
     }
 
+    public Integer getProjectId() {
+        return this.projectId;
+    }
+
+    public TestCase setProjectId(Integer projectId) {
+        this.projectId = projectId;
+
+        return this;
+    }
+
+    public TestCase setProjectId(String projectId) {
+        return this.setProjectId(Integer.parseInt(projectId));
+    }
+
     public List<NameValuePair> toHttpParams() {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("name", this.name));
         params.add(new BasicNameValuePair("description", this.description));
-        params.add(new BasicNameValuePair("test_suite_id", this.testSuiteId.toString()));
+        params.add(new BasicNameValuePair("test_case_folder_id", this.testCaseFolderId.toString()));
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
 
         return params;
     }
