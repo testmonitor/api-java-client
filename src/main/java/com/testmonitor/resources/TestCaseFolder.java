@@ -21,6 +21,8 @@ public class TestCaseFolder {
 
     private Integer projectId;
 
+    private Integer parentId;
+
     public TestCaseFolder setId(Integer id) {
         this.id = id;
 
@@ -71,6 +73,20 @@ public class TestCaseFolder {
         return projectId;
     }
 
+    public TestCaseFolder setParentId(Integer parentId) {
+        this.parentId = parentId;
+
+        return this;
+    }
+
+    public TestCaseFolder setParentId(String parentId) {
+        return this.setParentId(Integer.parseInt(parentId));
+    }
+
+    public Integer getParentId() {
+        return this.parentId;
+    }
+
     public TestCaseFolder setProjectId(Integer projectId) {
         this.projectId = projectId;
 
@@ -96,6 +112,7 @@ public class TestCaseFolder {
         params.add(new BasicNameValuePair("description", this.description));
         params.add(new BasicNameValuePair("path", this.path));
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+        params.add(new BasicNameValuePair("parent_id", this.parentId.toString()));
 
         return params;
     }
