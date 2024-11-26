@@ -1,6 +1,5 @@
 package com.testmonitor.parsers;
 
-import com.testmonitor.resources.TestCase;
 import com.testmonitor.resources.TestCaseFolder;
 import org.json.JSONObject;
 
