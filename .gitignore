@@ -31,7 +31,7 @@ java/build/**
 
 # Test Files
 src/main/java/com/testmonitor/main/Main.java
-/src/main/java/com/testmonitor/Main.java
+/src/main/java/com/testmonitor/main/java/Main.java
 
 # Documentation
 javadoc/
