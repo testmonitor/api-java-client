@@ -64,6 +64,23 @@ public class TestCaseFolders {
     }
 
     /**
+     * @param id The test case ID
+     *
+     * @return The test case matching the ID
+     */
+    public TestCaseFolder get(Integer id) throws IOException, URISyntaxException {
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+
+        JSONObject response = this.connector.get("test-case/folders/" + id, params);
+
+        HashMap<String, Object> testCaseFolder = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return TestCaseFolderParser.parse(testCaseFolder);
+    }
+
+    /**
      * Create a test case folder
      *
      * @param testCaseFolder The test case your want to create

@@ -112,7 +112,10 @@ public class TestCaseFolder {
         params.add(new BasicNameValuePair("description", this.description));
         params.add(new BasicNameValuePair("path", this.path));
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
-        params.add(new BasicNameValuePair("parent_id", this.parentId.toString()));
+
+        if (this.parentId != null) {
+            params.add(new BasicNameValuePair("parent_id", this.parentId.toString()));
+        }
 
         return params;
     }
