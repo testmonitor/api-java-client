@@ -43,7 +43,7 @@ public class TestCaseFolders {
      * @return A list of test case folders
      */
     public ArrayList<TestCaseFolder> list(Integer page) throws IOException, URISyntaxException {
-        return this.list(page, 15);
+        return this.list(0, page, 15);
     }
 
     /**
@@ -53,9 +53,21 @@ public class TestCaseFolders {
      * @return A list of test case folders
      */
     public ArrayList<TestCaseFolder> list(Integer page, Integer limit) throws IOException, URISyntaxException {
+        return this.list(0, page, limit);
+    }
+
+    /**
+     * @param parentId test case folder parent id
+     * @param page Page number
+     * @param limit Paging limit
+     *
+     * @return A list of test case folders
+     */
+    public ArrayList<TestCaseFolder> list(Integer parentId, Integer page, Integer limit) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+        params.add(new BasicNameValuePair("parent_id", parentId.toString()));
         params.add(new BasicNameValuePair("page", page.toString()));
         params.add(new BasicNameValuePair("limit", limit.toString()));
 
@@ -112,7 +124,7 @@ public class TestCaseFolders {
     }
 
     /**
-     * Clome a test case folder
+     * Clone a test case folder
      *
      * @param source The test case folder you want to clone
      * @param name The name of the clone
@@ -136,7 +148,7 @@ public class TestCaseFolders {
     }
 
     /**
-     * Clome a test case folder
+     * Clone a test case folder
      *
      * @param source The test case folder you want to clone
      *
@@ -147,7 +159,7 @@ public class TestCaseFolders {
     }
 
     /**
-     * Clome a test case folder
+     * Clone a test case folder
      *
      * @param source The test case folder you want to clone
      * @param name The name of the clone
