@@ -75,9 +75,9 @@ public class TestCaseFolders {
     }
 
     /**
-     * @param id The test case ID
+     * @param id The test case folder ID
      *
-     * @return The test case matching the ID
+     * @return The test case folder matching the ID
      */
     public TestCaseFolder get(Integer id) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
