@@ -97,12 +97,32 @@ public class TestCaseFolder {
         return this.setProjectId(Integer.parseInt(projectId));
     }
 
+    public TestCaseFolder setChildrenCount(Integer childrenCount) {
+        this.childrenCount = childrenCount;
+
+        return this;
+    }
+
+    public TestCaseFolder setChildrenCount(String childrenCount) {
+        return this.setProjectId(Integer.parseInt(childrenCount));
+    }
+
     public Integer getChildrenCount() {
-        return childrenCount;
+        return this.childrenCount;
+    }
+
+    public TestCaseFolder setTestCasesCount(Integer testCasesCount) {
+        this.testCasesCount = testCasesCount;
+
+        return this;
+    }
+
+    public TestCaseFolder setTestCasesCount(String testCasesCount) {
+        return this.setProjectId(Integer.parseInt(testCasesCount));
     }
 
     public Integer getTestCasesCount() {
-        return testCasesCount;
+        return this.testCasesCount;
     }
 
     public List<NameValuePair> toHttpParams() {
@@ -110,7 +130,6 @@ public class TestCaseFolder {
 
         params.add(new BasicNameValuePair("name", this.name));
         params.add(new BasicNameValuePair("description", this.description));
-        params.add(new BasicNameValuePair("path", this.path));
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
 
         if (this.parentId != null) {

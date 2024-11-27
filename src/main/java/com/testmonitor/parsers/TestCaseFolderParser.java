@@ -12,7 +12,7 @@ public class TestCaseFolderParser {
      *
      * @param response The JSON response of a request
      *
-     * @return A parsed list of test cases
+     * @return A parsed list of test case folders
      */
     public static ArrayList<TestCaseFolder> parse(JSONObject response)
     {
@@ -32,7 +32,7 @@ public class TestCaseFolderParser {
      *
      * @param item the hashmap that contains the milestone data.
      *
-     * @return The parsed milestone
+     * @return The parsed test case folder
      */
     public static TestCaseFolder parse(HashMap<String, Object> item)
     {
@@ -49,6 +49,14 @@ public class TestCaseFolderParser {
 
         if (item.get("description") != null) {
             testCaseFolder.setDescription(item.get("description").toString());
+        }
+
+        if (item.get("children_count") != null) {
+            testCaseFolder.setChildrenCount(item.get("children_count").toString());
+        }
+
+        if (item.get("test_cases_count") != null) {
+            testCaseFolder.setTestCasesCount(item.get("test_cases_count").toString());
         }
 
         return testCaseFolder;

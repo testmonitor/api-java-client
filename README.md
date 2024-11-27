@@ -23,7 +23,7 @@ We recommend installing the API client in your Java project using Maven. Add it 
 <dependency>
     <groupId>com.testmonitor</groupId>
     <artifactId>api-java-client</artifactId>
-    <version>1.1</version>
+    <version>2.0</version>
 </dependency>
 ```
 
@@ -63,7 +63,7 @@ Use this code to create a new test case folder and test case (for project ID 1):
 Project project = client.projects().get(1);
 
 TestCaseFolder testCaseFolder = client.testCaseFolders(project).create("A Test Case Folder");
-TestCase testCaseFolder = client.testCases(project).create("A Test Case", testCaseFolder);
+TestCase testCase = client.testCases(project).create("A Test Case", testCaseFolder);
 ```
 
 Full documentation is available at our [Wiki](https://github.com/testmonitor/api-java-client/wiki).
