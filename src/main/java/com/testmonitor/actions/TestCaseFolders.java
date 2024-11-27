@@ -74,6 +74,15 @@ public class TestCaseFolders {
     }
 
     /**
+     * @return Get a root folder
+     */
+    public TestCaseFolder getRootFolder() throws IOException, URISyntaxException {
+        TestCaseFolder testCaseFolder = new TestCaseFolder();
+
+        return testCaseFolder.setId(0).setName("Home").setProjectId(this.projectId);
+    }
+
+    /**
      * @param id The test case folder ID
      *
      * @return The test case folder matching the ID
@@ -120,6 +129,37 @@ public class TestCaseFolders {
         testCaseFolder.setName(name);
 
         return this.create(testCaseFolder);
+    }
+
+    /**
+     * Create a test case subfolder
+     *
+     * @param name The name of the test case folder
+     * @param parent The parent folder
+     *
+     * @return The created test case folder
+     */
+    public TestCaseFolder createSubfolder(String name, TestCaseFolder parent) throws IOException {
+        TestCaseFolder testCaseFolder = new TestCaseFolder();
+
+        testCaseFolder
+                .setName(name)
+                .setProjectId(parent.getProjectId())
+                .setParentId(parent.getId());
+
+        return this.create(testCaseFolder);
+    }
+
+    /**
+     * Create a test case subfolder
+     *
+     * @param child The name of the test case folder
+     * @param parent The parent folder
+     *
+     * @return The created test case folder
+     */
+    public TestCaseFolder createSubfolder(TestCaseFolder child, TestCaseFolder parent) throws IOException {
+        return this.create(child.setParent(parent));
     }
 
     /**

@@ -23,6 +23,8 @@ public class TestCaseFolder {
 
     private Integer parentId;
 
+    private TestCaseFolder parent;
+
     public TestCaseFolder setId(Integer id) {
         this.id = id;
 
@@ -123,6 +125,13 @@ public class TestCaseFolder {
 
     public Integer getTestCasesCount() {
         return this.testCasesCount;
+    }
+
+    public TestCaseFolder setParent(TestCaseFolder parent) {
+        this.parent = parent;
+        this.setParentId(parent.getId());
+
+        return this;
     }
 
     public List<NameValuePair> toHttpParams() {
