@@ -233,4 +233,36 @@ public class TestCases
 
         return TestCaseParser.parse(updatedTestCase);
     }
+
+    /**
+     * Move a test case to another folder
+     *
+     * @param testCaseId The test case id you want to update
+     * @param folderId The test case folder id you want to update
+     *
+     * @return The moved test case
+     */
+    public TestCase move(int testCaseId, int folderId) throws IOException {
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("test_case_folder_id", Integer.toString(folderId)));
+
+        JSONObject response = this.connector.post("test-case/" + Integer.toString(testCaseId) + "/move", params);
+
+        HashMap<String, Object> updatedTestCase = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return TestCaseParser.parse(updatedTestCase);
+    }
+
+    /**
+     * Move a test case to another folder
+     *
+     * @param testCase The test case id you want to update
+     * @param folder The test case folder id you want to update
+     *
+     * @return The moved test case
+     */
+    public TestCase move(TestCase testCase, TestCaseFolder folder) throws IOException {
+        return this.move(testCase.getId(), folder.getId());
+    }
 }

@@ -6,6 +6,7 @@ import com.testmonitor.parsers.TestCaseParser;
 import com.testmonitor.resources.Project;
 import com.testmonitor.resources.TestCase;
 import com.testmonitor.resources.TestCaseFolder;
+import com.testmonitor.utilities.Convert;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -93,6 +94,53 @@ public class TestCaseFolders {
         testCaseFolder.setId(response.getJSONObject("data").get("id").toString());
 
         return testCaseFolder;
+    }
+
+    /**
+     * Clome a test case folder
+     *
+     * @param source The test case folder you want to clone
+     * @param name The name of the clone
+     * @param includeSubfolders Sets the option to include subfolders
+     * @param includeTestCases Sets the option to include testcases
+     *
+     * @return The cloned test case folder
+     */
+    public TestCaseFolder clone(TestCaseFolder source, String name, boolean includeSubfolders, boolean includeTestCases) throws IOException {
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("name", name));
+        params.add(new BasicNameValuePair("include_subfolders", Convert.booleanToNumericString(includeSubfolders)));
+        params.add(new BasicNameValuePair("include_test_cases", Convert.booleanToNumericString(includeTestCases)));
+
+        JSONObject response = this.connector.post("test-case/folder/" + source.getId().toString() + "/clone", params);
+
+        HashMap<String, Object> testCaseFolder = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return TestCaseFolderParser.parse(testCaseFolder);
+    }
+
+    /**
+     * Clome a test case folder
+     *
+     * @param source The test case folder you want to clone
+     *
+     * @return The cloned test case folder
+     */
+    public TestCaseFolder clone(TestCaseFolder source) throws IOException {
+        return this.clone(source, source.getName() + " (Copy)", true, true);
+    }
+
+    /**
+     * Clome a test case folder
+     *
+     * @param source The test case folder you want to clone
+     * @param name The name of the clone
+     *
+     * @return The cloned test case folder
+     */
+    public TestCaseFolder clone(TestCaseFolder source, String name) throws IOException {
+        return this.clone(source, name, true, true);
     }
 
     /**
