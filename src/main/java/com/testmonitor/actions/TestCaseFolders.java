@@ -2,9 +2,7 @@ package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
 import com.testmonitor.parsers.TestCaseFolderParser;
-import com.testmonitor.parsers.TestCaseParser;
 import com.testmonitor.resources.Project;
-import com.testmonitor.resources.TestCase;
 import com.testmonitor.resources.TestCaseFolder;
 import com.testmonitor.utilities.Convert;
 import org.apache.hc.core5.http.NameValuePair;
@@ -89,11 +87,28 @@ public class TestCaseFolders {
      * @return The created test case folder
      */
     public TestCaseFolder create(TestCaseFolder testCaseFolder) throws IOException {
+        testCaseFolder.setProjectId(this.projectId);
+
         JSONObject response = this.connector.post("test-case/folders", testCaseFolder.toHttpParams());
 
         testCaseFolder.setId(response.getJSONObject("data").get("id").toString());
 
         return testCaseFolder;
+    }
+
+    /**
+     * Create a test case folder
+     *
+     * @param name The test case folder name you want to create
+     *
+     * @return The created test case folder
+     */
+    public TestCaseFolder create(String name) throws IOException {
+        TestCaseFolder testCaseFolder = new TestCaseFolder();
+
+        testCaseFolder.setName(name);
+
+        return this.create(testCaseFolder);
     }
 
     /**

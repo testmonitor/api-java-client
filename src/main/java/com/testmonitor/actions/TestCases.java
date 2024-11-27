@@ -98,7 +98,7 @@ public class TestCases
     }
 
     /**
-     * Search though test cases in a test suite.
+     * Search though test cases in a folder.
      *
      * @param query The search query
      * @param testCaseFolderId The test folder ID
@@ -132,7 +132,7 @@ public class TestCases
     }
 
     /**
-     * Create a test case using the provided name and test suite ID.
+     * Create a test case using the provided name and test case folder ID.
      *
      * @param name The name of the test case
      * @param testCaseFolderId The test case folder ID
@@ -144,12 +144,13 @@ public class TestCases
 
         testCase.setName(name);
         testCase.setTestCaseFolderId(testCaseFolderId);
+        testCase.setProjectId(this.projectId);
 
         return this.create(testCase);
     }
 
     /**
-     * Create a test case using the provided name and test suite.
+     * Create a test case using the provided name and test case folder.
      *
      * @param name The name of the test case
      * @param testCaseFolder The test case folder
@@ -161,7 +162,7 @@ public class TestCases
     }
 
     /**
-     * Find a test case using the provided name and test suite or create a new one.
+     * Find a test case using the provided name and test case folder or create a new one.
      *
      * @param name The test case name
      * @param testCaseFolder The test case folder
@@ -202,12 +203,12 @@ public class TestCases
     }
 
     /**
-     * Find a test case using the provided name and test suite ID or create a new one.
+     * Find a test case using the provided name and test case folder ID or create a new one.
      *
      * @param name The name of the test case
      * @param testCaseFolderId The test folder ID
      *
-     * @return A test case matching the name and test suite ID or a new test case.
+     * @return A test case matching the name and test case folder ID or a new test case.
      */
     public TestCase findOrCreate(String name, Integer testCaseFolderId) throws IOException, URISyntaxException {
         ArrayList<TestCase> testCases = this.findByName(name, testCaseFolderId);
@@ -238,14 +239,14 @@ public class TestCases
      * Move a test case to another folder
      *
      * @param testCaseId The test case id you want to update
-     * @param folderId The test case folder id you want to update
+     * @param testCaseFolderId The test case folder id you want to update
      *
      * @return The moved test case
      */
-    public TestCase move(int testCaseId, int folderId) throws IOException {
+    public TestCase move(int testCaseId, int testCaseFolderId) throws IOException {
         List<NameValuePair> params = new ArrayList<>();
 
-        params.add(new BasicNameValuePair("test_case_folder_id", Integer.toString(folderId)));
+        params.add(new BasicNameValuePair("test_case_folder_id", Integer.toString(testCaseFolderId)));
 
         JSONObject response = this.connector.post("test-case/" + Integer.toString(testCaseId) + "/move", params);
 
