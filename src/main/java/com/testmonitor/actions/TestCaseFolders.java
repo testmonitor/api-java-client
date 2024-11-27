@@ -4,7 +4,6 @@ import com.testmonitor.api.Connector;
 import com.testmonitor.parsers.TestCaseFolderParser;
 import com.testmonitor.resources.Project;
 import com.testmonitor.resources.TestCaseFolder;
-import com.testmonitor.utilities.Convert;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -137,8 +136,8 @@ public class TestCaseFolders {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("name", name));
-        params.add(new BasicNameValuePair("include_subfolders", Convert.booleanToNumericString(includeSubfolders)));
-        params.add(new BasicNameValuePair("include_test_cases", Convert.booleanToNumericString(includeTestCases)));
+        params.add(new BasicNameValuePair("include_subfolders", includeSubfolders ? "1" : "0"));
+        params.add(new BasicNameValuePair("include_test_cases", includeTestCases ? "1" : "0"));
 
         JSONObject response = this.connector.post("test-case/folder/" + source.getId().toString() + "/clone", params);
 
