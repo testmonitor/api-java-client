@@ -239,7 +239,7 @@ public class TestCases
      * Move a test case to another folder
      *
      * @param testCaseId The test case id you want to update
-     * @param testCaseFolderId The test case folder id you want to update
+     * @param testCaseFolderId The destination test case folder id
      *
      * @return The moved test case
      */
@@ -259,11 +259,11 @@ public class TestCases
      * Move a test case to another folder
      *
      * @param testCase The test case id you want to update
-     * @param folder The test case folder id you want to update
+     * @param testCaseFolder The destination test case folder
      *
      * @return The moved test case
      */
-    public TestCase move(TestCase testCase, TestCaseFolder folder) throws IOException {
-        return this.move(testCase.getId(), folder.getId());
+    public TestCase move(TestCase testCase, TestCaseFolder testCaseFolder) throws IOException {
+        return this.move(testCase.getId(), testCaseFolder.getId());
     }
 }
