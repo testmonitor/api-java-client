@@ -2,10 +2,9 @@ package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
 import com.testmonitor.parsers.TestCaseParser;
-import com.testmonitor.parsers.TestSuiteParser;
 import com.testmonitor.resources.Project;
 import com.testmonitor.resources.TestCase;
-import com.testmonitor.resources.TestSuite;
+import com.testmonitor.resources.TestCaseFolder;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -99,18 +98,18 @@ public class TestCases
     }
 
     /**
-     * Search though test cases in a test suite.
+     * Search though test cases in a folder.
      *
      * @param query The search query
-     * @param testSuiteId The test suite ID
+     * @param testCaseFolderId The test folder ID
      *
      * @return A list of results
      */
-    public ArrayList<TestCase> search(String query, Integer testSuiteId) throws IOException, URISyntaxException {
+    public ArrayList<TestCase> search(String query, Integer testCaseFolderId) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
-        params.add(new BasicNameValuePair("test_suite", testSuiteId.toString()));
+        params.add(new BasicNameValuePair("test_case_folder_id", testCaseFolderId.toString()));
 
         params.add(new BasicNameValuePair("query", query));
 
@@ -133,44 +132,45 @@ public class TestCases
     }
 
     /**
-     * Create a test case using the provided name and test suite ID.
+     * Create a test case using the provided name and test case folder ID.
      *
      * @param name The name of the test case
-     * @param testSuiteId The test suite ID
+     * @param testCaseFolderId The test case folder ID
      *
      * @return The created test case
      */
-    public TestCase create(String name, Integer testSuiteId) throws IOException {
+    public TestCase create(String name, Integer testCaseFolderId) throws IOException {
         TestCase testCase = new TestCase();
 
         testCase.setName(name);
-        testCase.setTestSuiteId(testSuiteId);
+        testCase.setTestCaseFolderId(testCaseFolderId);
+        testCase.setProjectId(this.projectId);
 
         return this.create(testCase);
     }
 
     /**
-     * Create a test case using the provided name and test suite.
+     * Create a test case using the provided name and test case folder.
      *
      * @param name The name of the test case
-     * @param testSuite The test suite
+     * @param testCaseFolder The test case folder
      *
      * @return The created test case
      */
-    public TestCase create(String name, TestSuite testSuite) throws IOException {
-        return this.create(name, testSuite.getId());
+    public TestCase create(String name, TestCaseFolder testCaseFolder) throws IOException {
+        return this.create(name, testCaseFolder.getId());
     }
 
     /**
-     * Find a test case using the provided name and test suite or create a new one.
+     * Find a test case using the provided name and test case folder or create a new one.
      *
      * @param name The test case name
-     * @param testSuite The test suite
+     * @param testCaseFolder The test case folder
      *
      * @return A test case matching the provided name or a new test case.
      */
-    public TestCase findOrCreate(String name, TestSuite testSuite) throws IOException, URISyntaxException {
-        return this.findOrCreate(name, testSuite.getId());
+    public TestCase findOrCreate(String name, TestCaseFolder testCaseFolder) throws IOException, URISyntaxException {
+        return this.findOrCreate(name, testCaseFolder.getId());
     }
 
     /**
@@ -181,43 +181,43 @@ public class TestCases
      * @return A test case matching the test case object or a new test case.
      */
     public TestCase findOrCreate(TestCase testCase) throws IOException, URISyntaxException {
-        return this.findOrCreate(testCase.getName(), testCase.getTestSuiteId());
+        return this.findOrCreate(testCase.getName(), testCase.getTestCaseFolderId());
     }
 
     /**
-     * Find a test case using the provided name and test suite ID.
+     * Find a test case using the provided name and test folder ID.
      *
      * @param name The name of the test case
-     * @param testSuiteId The test suite ID
+     * @param testCaseFolderId The test folder ID
      *
      * @return Test cases matching the provided name.
      */
-    public ArrayList<TestCase> findByName(String name, Integer testSuiteId) throws IOException, URISyntaxException {
+    public ArrayList<TestCase> findByName(String name, Integer testCaseFolderId) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
 
         params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
-        params.add(new BasicNameValuePair("test_suite", testSuiteId.toString()));
+        params.add(new BasicNameValuePair("test_case_folder_id", testCaseFolderId.toString()));
         params.add(new BasicNameValuePair("filter[name]", name));
 
         return TestCaseParser.parse(this.connector.get("test-cases", params));
     }
 
     /**
-     * Find a test case using the provided name and test suite ID or create a new one.
+     * Find a test case using the provided name and test case folder ID or create a new one.
      *
      * @param name The name of the test case
-     * @param testSuiteId The test suite ID
+     * @param testCaseFolderId The test folder ID
      *
-     * @return A test case matching the name and test suite ID or a new test case.
+     * @return A test case matching the name and test case folder ID or a new test case.
      */
-    public TestCase findOrCreate(String name, Integer testSuiteId) throws IOException, URISyntaxException {
-        ArrayList<TestCase> testCases = this.findByName(name, testSuiteId);
+    public TestCase findOrCreate(String name, Integer testCaseFolderId) throws IOException, URISyntaxException {
+        ArrayList<TestCase> testCases = this.findByName(name, testCaseFolderId);
 
         if (testCases.size() > 0) {
             return testCases.get(0);
         }
 
-        return this.create(name, testSuiteId);
+        return this.create(name, testCaseFolderId);
     }
 
     /**
@@ -233,5 +233,37 @@ public class TestCases
         HashMap<String, Object> updatedTestCase = (HashMap<String, Object>) response.getJSONObject("data").toMap();
 
         return TestCaseParser.parse(updatedTestCase);
+    }
+
+    /**
+     * Move a test case to another folder
+     *
+     * @param testCaseId The test case id you want to update
+     * @param testCaseFolderId The destination test case folder id
+     *
+     * @return The moved test case
+     */
+    public TestCase move(int testCaseId, int testCaseFolderId) throws IOException {
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("test_case_folder_id", Integer.toString(testCaseFolderId)));
+
+        JSONObject response = this.connector.post("test-case/" + Integer.toString(testCaseId) + "/move", params);
+
+        HashMap<String, Object> updatedTestCase = (HashMap<String, Object>) response.getJSONObject("data").toMap();
+
+        return TestCaseParser.parse(updatedTestCase);
+    }
+
+    /**
+     * Move a test case to another folder
+     *
+     * @param testCase The test case id you want to update
+     * @param testCaseFolder The destination test case folder
+     *
+     * @return The moved test case
+     */
+    public TestCase move(TestCase testCase, TestCaseFolder testCaseFolder) throws IOException {
+        return this.move(testCase.getId(), testCaseFolder.getId());
     }
 }

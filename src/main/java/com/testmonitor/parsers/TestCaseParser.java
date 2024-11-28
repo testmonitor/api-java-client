@@ -39,8 +39,15 @@ public class TestCaseParser {
         TestCase testCase = new TestCase();
 
         testCase.setId(item.get("id").toString())
-                .setName(item.get("name").toString())
-                .setTestSuiteId(item.get("test_suite_id").toString());
+                .setName(item.get("name").toString());
+
+        if (item.get("test_case_folder_id") != null) {
+            testCase.setTestCaseFolderId(item.get("test_case_folder_id").toString());
+        }
+
+        if (item.get("project_id") != null) {
+            testCase.setProjectId(item.get("project_id").toString());
+        }
 
         if (item.get("description") != null) {
             testCase.setDescription(item.get("description").toString());
