@@ -74,15 +74,6 @@ public class TestCaseFolders {
     }
 
     /**
-     * @return Get a root folder
-     */
-    public TestCaseFolder getRootFolder() throws IOException, URISyntaxException {
-        TestCaseFolder testCaseFolder = new TestCaseFolder();
-
-        return testCaseFolder.setId(0).setName("Home").setProjectId(this.projectId);
-    }
-
-    /**
      * @param id The test case folder ID
      *
      * @return The test case folder matching the ID

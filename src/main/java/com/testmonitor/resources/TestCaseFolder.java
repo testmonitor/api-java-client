@@ -25,6 +25,16 @@ public class TestCaseFolder {
 
     private TestCaseFolder parent;
 
+    public static TestCaseFolder root(Project project) {
+        return TestCaseFolder.root(project.getId());
+    }
+
+    public static TestCaseFolder root(int projectId) {
+        TestCaseFolder testCaseFolder = new TestCaseFolder();
+
+        return testCaseFolder.setId(0).setName("Home").setProjectId(projectId);
+    }
+
     public TestCaseFolder setId(Integer id) {
         this.id = id;
 
