@@ -2,7 +2,9 @@ package com.testmonitor.actions;
 
 import com.testmonitor.api.Connector;
 import com.testmonitor.parsers.TestCaseFolderParser;
+import com.testmonitor.parsers.TestCaseParser;
 import com.testmonitor.resources.Project;
+import com.testmonitor.resources.TestCase;
 import com.testmonitor.resources.TestCaseFolder;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
@@ -198,6 +200,39 @@ public class TestCaseFolders {
      */
     public TestCaseFolder clone(TestCaseFolder source, String name) throws IOException {
         return this.clone(source, name, true, true);
+    }
+
+    /**
+     * Find a test case folder using the provided name or create a new one.
+     *
+     * @param name The name of the test case folder
+     *
+     * @return A test case matching the name and test case folder ID or a new test case.
+     */
+    public TestCaseFolder findOrCreate(String name) throws IOException, URISyntaxException {
+        ArrayList<TestCaseFolder> testCaseFolders = this.findByName(name);
+
+        if (testCaseFolders.size() > 0) {
+            return testCaseFolders.get(0);
+        }
+
+        return this.create(name);
+    }
+
+    /**
+     * Find a test case folder using the provided name and test folder.
+     *
+     * @param name The name of the test case
+     *
+     * @return Test cases matching the provided name.
+     */
+    public ArrayList<TestCaseFolder> findByName(String name) throws IOException, URISyntaxException {
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+        params.add(new BasicNameValuePair("filter[name]", name));
+
+        return TestCaseFolderParser.parse(this.connector.get("test-case/folders", params));
     }
 
     /**
