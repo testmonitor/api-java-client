@@ -127,29 +127,12 @@ public class TestCaseFolders {
     /**
      * Create a test case folder
      *
-     * @param name The test case folder name you want to create
-     * @param parent The parent
-     *
-     * @return The created test case folder
-     */
-    public TestCaseFolder create(String name, TestCaseFolder parent) throws IOException {
-        TestCaseFolder testCaseFolder = new TestCaseFolder();
-
-        testCaseFolder.setName(name);
-        testCaseFolder.setParent(parent);
-
-        return this.create(testCaseFolder);
-    }
-
-    /**
-     * Create a test case subfolder
-     *
      * @param name The name of the test case folder
      * @param parent The parent folder
      *
      * @return The created test case folder
      */
-    public TestCaseFolder createSubfolder(String name, TestCaseFolder parent) throws IOException {
+    public TestCaseFolder create(String name, TestCaseFolder parent) throws IOException {
         TestCaseFolder testCaseFolder = new TestCaseFolder();
 
         testCaseFolder
@@ -161,14 +144,14 @@ public class TestCaseFolders {
     }
 
     /**
-     * Create a test case subfolder
+     * Create a test case folder
      *
      * @param child The name of the test case folder
      * @param parent The parent folder
      *
      * @return The created test case folder
      */
-    public TestCaseFolder createSubfolder(TestCaseFolder child, TestCaseFolder parent) throws IOException {
+    public TestCaseFolder create(TestCaseFolder child, TestCaseFolder parent) throws IOException {
         return this.create(child.setParent(parent));
     }
 
