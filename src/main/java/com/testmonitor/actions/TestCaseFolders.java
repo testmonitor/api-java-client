@@ -125,6 +125,23 @@ public class TestCaseFolders {
     }
 
     /**
+     * Create a test case folder
+     *
+     * @param name The test case folder name you want to create
+     * @param parent The parent
+     *
+     * @return The created test case folder
+     */
+    public TestCaseFolder create(String name, TestCaseFolder parent) throws IOException {
+        TestCaseFolder testCaseFolder = new TestCaseFolder();
+
+        testCaseFolder.setName(name);
+        testCaseFolder.setParent(parent);
+
+        return this.create(testCaseFolder);
+    }
+
+    /**
      * Create a test case subfolder
      *
      * @param name The name of the test case folder
@@ -220,6 +237,24 @@ public class TestCaseFolders {
     }
 
     /**
+     * Find a test case folder using the provided name or create a new one.
+     *
+     * @param name The name of the test case folder
+     * @param parent The parent folder
+     *
+     * @return A test case folder matching the name or a new test case folder
+     */
+    public TestCaseFolder findOrCreate(String name, TestCaseFolder parent) throws IOException, URISyntaxException {
+        ArrayList<TestCaseFolder> testCaseFolders = this.findByName(name, parent);
+
+        if (testCaseFolders.size() > 0) {
+            return testCaseFolders.get(0);
+        }
+
+        return this.create(name, parent);
+    }
+
+    /**
      * Find a test case folder using the provided name and test folder.
      *
      * @param name The name of the test case folder
@@ -233,6 +268,36 @@ public class TestCaseFolders {
         params.add(new BasicNameValuePair("filter[name]", name));
 
         return TestCaseFolderParser.parse(this.connector.get("test-case/folders", params));
+    }
+
+    /**
+     * Find a test case folder using the provided name and test folder.
+     *
+     * @param name The name of the test case folder
+     * @param parentId The id of the parent folder
+     *
+     * @return Test case folders matching the provided name.
+     */
+    public ArrayList<TestCaseFolder> findByName(String name, Integer parentId) throws IOException, URISyntaxException {
+        List<NameValuePair> params = new ArrayList<>();
+
+        params.add(new BasicNameValuePair("project_id", this.projectId.toString()));
+        params.add(new BasicNameValuePair("parent_id", parentId.toString()));
+        params.add(new BasicNameValuePair("filter[name]", name));
+
+        return TestCaseFolderParser.parse(this.connector.get("test-case/folders", params));
+    }
+
+    /**
+     * Find a test case folder using the provided name and test folder.
+     *
+     * @param name The name of the test case folder
+     * @param parent The parent folder
+     *
+     * @return Test case folders matching the provided name.
+     */
+    public ArrayList<TestCaseFolder> findByName(String name, TestCaseFolder parent) throws IOException, URISyntaxException {
+        return this.findByName(name, parent.getId());
     }
 
     /**
