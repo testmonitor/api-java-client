@@ -222,7 +222,7 @@ public class TestCaseFolders {
     /**
      * Find a test case folder using the provided name and test folder.
      *
-     * @param name The name of the test case
+     * @param name The name of the test case folder
      *
      * @return Test cases matching the provided name.
      */
