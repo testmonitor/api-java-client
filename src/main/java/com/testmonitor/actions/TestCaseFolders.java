@@ -207,7 +207,7 @@ public class TestCaseFolders {
      *
      * @param name The name of the test case folder
      *
-     * @return A test case matching the name and test case folder ID or a new test case.
+     * @return A test case folder matching the name or a new test case folder
      */
     public TestCaseFolder findOrCreate(String name) throws IOException, URISyntaxException {
         ArrayList<TestCaseFolder> testCaseFolders = this.findByName(name);
