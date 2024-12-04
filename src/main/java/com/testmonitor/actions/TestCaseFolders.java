@@ -224,7 +224,7 @@ public class TestCaseFolders {
      *
      * @param name The name of the test case folder
      *
-     * @return Test cases matching the provided name.
+     * @return Test case folders matching the provided name.
      */
     public ArrayList<TestCaseFolder> findByName(String name) throws IOException, URISyntaxException {
         List<NameValuePair> params = new ArrayList<>();
