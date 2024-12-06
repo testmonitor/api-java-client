@@ -220,7 +220,7 @@ public class TestCaseFolders {
     }
 
     /**
-     * Find a test case folder using the provided name or create a new one.
+     * Find a test case folder using the provided name and parent folder or create a new one.
      *
      * @param name The name of the test case folder
      * @param parent The parent folder
@@ -238,7 +238,7 @@ public class TestCaseFolders {
     }
 
     /**
-     * Find a test case folder using the provided name and test folder.
+     * Find a test case folder using the provided name.
      *
      * @param name The name of the test case folder
      *
