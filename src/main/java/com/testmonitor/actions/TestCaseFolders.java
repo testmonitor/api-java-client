@@ -95,7 +95,7 @@ public class TestCaseFolders {
     /**
      * Create a test case folder
      *
-     * @param testCaseFolder The test case your want to create
+     * @param testCaseFolder The name of the test case folder
      *
      * @return The created test case folder
      */
@@ -112,7 +112,7 @@ public class TestCaseFolders {
     /**
      * Create a test case folder
      *
-     * @param name The test case folder name you want to create
+     * @param name The name of the test case folder
      *
      * @return The created test case folder
      */
@@ -205,7 +205,7 @@ public class TestCaseFolders {
     /**
      * Find a test case folder using the provided name or create a new one.
      *
-     * @param name The name of the test case folder
+     * @param name The provided name and parent folder
      *
      * @return A test case folder matching the name or a new test case folder
      */
@@ -254,7 +254,7 @@ public class TestCaseFolders {
     }
 
     /**
-     * Find a test case folder using the provided name and test folder.
+     * Find a test case folder using the provided name and parent folder id
      *
      * @param name The name of the test case folder
      * @param parentId The id of the parent folder
@@ -272,7 +272,7 @@ public class TestCaseFolders {
     }
 
     /**
-     * Find a test case folder using the provided name and test folder.
+     * Find a test case folder using the provided name and parent folder
      *
      * @param name The name of the test case folder
      * @param parent The parent folder
